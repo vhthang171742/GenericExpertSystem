@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePreprocess = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -38,6 +38,10 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblInstancesCount = new System.Windows.Forms.Label();
+            this.lblSumOfWeight = new System.Windows.Forms.Label();
+            this.lblAttributesCount = new System.Windows.Forms.Label();
+            this.lblRelationName = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -49,24 +53,28 @@
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.btnRemove = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvAttributes = new System.Windows.Forms.DataGridView();
+            this.Class = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.lblSUnique = new System.Windows.Forms.Label();
+            this.lblSType = new System.Windows.Forms.Label();
+            this.lblSMissingRate = new System.Windows.Forms.Label();
+            this.lblSAttributeName = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.selectedNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvSAttributes = new System.Windows.Forms.DataGridView();
             this.selectedLabel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.selectedCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.selectedWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.cbxAttributes = new System.Windows.Forms.ComboBox();
+            this.chtAttribute = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
@@ -86,12 +94,12 @@
             this.tableLayoutPanel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSAttributes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chtAttribute)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -179,6 +187,10 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.lblInstancesCount);
+            this.panel2.Controls.Add(this.lblSumOfWeight);
+            this.panel2.Controls.Add(this.lblAttributesCount);
+            this.panel2.Controls.Add(this.lblRelationName);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.label3);
@@ -188,6 +200,42 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(473, 35);
             this.panel2.TabIndex = 1;
+            // 
+            // lblInstancesCount
+            // 
+            this.lblInstancesCount.AutoSize = true;
+            this.lblInstancesCount.Location = new System.Drawing.Point(79, 19);
+            this.lblInstancesCount.Name = "lblInstancesCount";
+            this.lblInstancesCount.Size = new System.Drawing.Size(10, 13);
+            this.lblInstancesCount.TabIndex = 1;
+            this.lblInstancesCount.Text = "-";
+            // 
+            // lblSumOfWeight
+            // 
+            this.lblSumOfWeight.AutoSize = true;
+            this.lblSumOfWeight.Location = new System.Drawing.Point(376, 19);
+            this.lblSumOfWeight.Name = "lblSumOfWeight";
+            this.lblSumOfWeight.Size = new System.Drawing.Size(10, 13);
+            this.lblSumOfWeight.TabIndex = 1;
+            this.lblSumOfWeight.Text = "-";
+            // 
+            // lblAttributesCount
+            // 
+            this.lblAttributesCount.AutoSize = true;
+            this.lblAttributesCount.Location = new System.Drawing.Point(376, 3);
+            this.lblAttributesCount.Name = "lblAttributesCount";
+            this.lblAttributesCount.Size = new System.Drawing.Size(10, 13);
+            this.lblAttributesCount.TabIndex = 1;
+            this.lblAttributesCount.Text = "-";
+            // 
+            // lblRelationName
+            // 
+            this.lblRelationName.AutoSize = true;
+            this.lblRelationName.Location = new System.Drawing.Point(79, 3);
+            this.lblRelationName.Name = "lblRelationName";
+            this.lblRelationName.Size = new System.Drawing.Size(10, 13);
+            this.lblRelationName.TabIndex = 1;
+            this.lblRelationName.Text = "-";
             // 
             // label2
             // 
@@ -242,7 +290,7 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.panel3, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.panel4, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.dataGridView1, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.dgvAttributes, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -272,6 +320,7 @@
             this.btnDeselectAll.TabIndex = 0;
             this.btnDeselectAll.Text = "None";
             this.btnDeselectAll.UseVisualStyleBackColor = true;
+            this.btnDeselectAll.Click += new System.EventHandler(this.btnDeselectAll_Click);
             // 
             // btnSelectAll
             // 
@@ -282,6 +331,7 @@
             this.btnSelectAll.TabIndex = 0;
             this.btnSelectAll.Text = "All";
             this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
             // panel4
             // 
@@ -301,35 +351,56 @@
             this.btnRemove.TabIndex = 0;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
-            // dataGridView1
+            // dgvAttributes
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.no,
+            this.dgvAttributes.AllowUserToAddRows = false;
+            this.dgvAttributes.AllowUserToDeleteRows = false;
+            this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAttributes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Class,
+            this.Select,
             this.status,
             this.name});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 43);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(467, 436);
-            this.dataGridView1.TabIndex = 2;
+            this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAttributes.Location = new System.Drawing.Point(3, 43);
+            this.dgvAttributes.MultiSelect = false;
+            this.dgvAttributes.Name = "dgvAttributes";
+            this.dgvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAttributes.Size = new System.Drawing.Size(467, 436);
+            this.dgvAttributes.TabIndex = 2;
+            this.dgvAttributes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAttributes_CellClick);
+            this.dgvAttributes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAttributes_CellContentClick);
+            this.dgvAttributes.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAttributes_DataBindingComplete);
             // 
-            // no
+            // Class
             // 
-            this.no.HeaderText = "No.";
-            this.no.Name = "no";
-            this.no.ReadOnly = true;
+            this.Class.HeaderText = "Class";
+            this.Class.Name = "Class";
+            this.Class.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Class.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Class.Width = 40;
+            // 
+            // Select
+            // 
+            this.Select.HeaderText = "Affect";
+            this.Select.Name = "Select";
+            this.Select.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Select.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Select.Width = 45;
             // 
             // status
             // 
-            this.status.HeaderText = "";
+            this.status.DataPropertyName = "Enabled";
+            this.status.HeaderText = "Enable";
             this.status.Name = "status";
             this.status.Width = 50;
             // 
             // name
             // 
             this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.name.DataPropertyName = "Name";
             this.name.HeaderText = "Name";
             this.name.Name = "name";
             this.name.ReadOnly = true;
@@ -350,9 +421,9 @@
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.panel5, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.dataGridView2, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.comboBox1, 0, 2);
-            this.tableLayoutPanel5.Controls.Add(this.chart1, 0, 3);
+            this.tableLayoutPanel5.Controls.Add(this.dgvSAttributes, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.cbxAttributes, 0, 2);
+            this.tableLayoutPanel5.Controls.Add(this.chtAttribute, 0, 3);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
@@ -366,6 +437,10 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.lblSUnique);
+            this.panel5.Controls.Add(this.lblSType);
+            this.panel5.Controls.Add(this.lblSMissingRate);
+            this.panel5.Controls.Add(this.lblSAttributeName);
             this.panel5.Controls.Add(this.label5);
             this.panel5.Controls.Add(this.label6);
             this.panel5.Controls.Add(this.label7);
@@ -375,6 +450,42 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(473, 34);
             this.panel5.TabIndex = 2;
+            // 
+            // lblSUnique
+            // 
+            this.lblSUnique.AutoSize = true;
+            this.lblSUnique.Location = new System.Drawing.Point(356, 19);
+            this.lblSUnique.Name = "lblSUnique";
+            this.lblSUnique.Size = new System.Drawing.Size(10, 13);
+            this.lblSUnique.TabIndex = 1;
+            this.lblSUnique.Text = "-";
+            // 
+            // lblSType
+            // 
+            this.lblSType.AutoSize = true;
+            this.lblSType.Location = new System.Drawing.Point(356, 3);
+            this.lblSType.Name = "lblSType";
+            this.lblSType.Size = new System.Drawing.Size(10, 13);
+            this.lblSType.TabIndex = 1;
+            this.lblSType.Text = "-";
+            // 
+            // lblSMissingRate
+            // 
+            this.lblSMissingRate.AutoSize = true;
+            this.lblSMissingRate.Location = new System.Drawing.Point(68, 19);
+            this.lblSMissingRate.Name = "lblSMissingRate";
+            this.lblSMissingRate.Size = new System.Drawing.Size(10, 13);
+            this.lblSMissingRate.TabIndex = 1;
+            this.lblSMissingRate.Text = "-";
+            // 
+            // lblSAttributeName
+            // 
+            this.lblSAttributeName.AutoSize = true;
+            this.lblSAttributeName.Location = new System.Drawing.Point(68, 3);
+            this.lblSAttributeName.Name = "lblSAttributeName";
+            this.lblSAttributeName.Size = new System.Drawing.Size(10, 13);
+            this.lblSAttributeName.TabIndex = 1;
+            this.lblSAttributeName.Text = "-";
             // 
             // label5
             // 
@@ -412,71 +523,70 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "Name:";
             // 
-            // dataGridView2
+            // dgvSAttributes
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.selectedNo,
+            this.dgvSAttributes.AllowUserToAddRows = false;
+            this.dgvSAttributes.AllowUserToDeleteRows = false;
+            this.dgvSAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSAttributes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.selectedLabel,
             this.selectedCount,
             this.selectedWeight});
-            this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView2.Location = new System.Drawing.Point(3, 43);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(473, 255);
-            this.dataGridView2.TabIndex = 3;
-            // 
-            // selectedNo
-            // 
-            this.selectedNo.HeaderText = "No.";
-            this.selectedNo.Name = "selectedNo";
-            this.selectedNo.ReadOnly = true;
+            this.dgvSAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSAttributes.Location = new System.Drawing.Point(3, 43);
+            this.dgvSAttributes.Name = "dgvSAttributes";
+            this.dgvSAttributes.ReadOnly = true;
+            this.dgvSAttributes.Size = new System.Drawing.Size(473, 255);
+            this.dgvSAttributes.TabIndex = 3;
             // 
             // selectedLabel
             // 
             this.selectedLabel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.selectedLabel.DataPropertyName = "Label";
             this.selectedLabel.HeaderText = "Label";
             this.selectedLabel.Name = "selectedLabel";
             this.selectedLabel.ReadOnly = true;
             // 
             // selectedCount
             // 
+            this.selectedCount.DataPropertyName = "Count";
             this.selectedCount.HeaderText = "Count";
             this.selectedCount.Name = "selectedCount";
             this.selectedCount.ReadOnly = true;
             // 
             // selectedWeight
             // 
+            this.selectedWeight.DataPropertyName = "Count";
             this.selectedWeight.HeaderText = "Weight";
             this.selectedWeight.Name = "selectedWeight";
             this.selectedWeight.ReadOnly = true;
             // 
-            // comboBox1
+            // cbxAttributes
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 304);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(473, 21);
-            this.comboBox1.TabIndex = 4;
+            this.cbxAttributes.FormattingEnabled = true;
+            this.cbxAttributes.Location = new System.Drawing.Point(3, 304);
+            this.cbxAttributes.Name = "cbxAttributes";
+            this.cbxAttributes.Size = new System.Drawing.Size(473, 21);
+            this.cbxAttributes.TabIndex = 4;
+            this.cbxAttributes.SelectedIndexChanged += new System.EventHandler(this.cbxAttributes_SelectedIndexChanged);
             // 
-            // chart1
+            // chtAttribute
             // 
-            this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.chtAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(3, 329);
-            this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(473, 256);
-            this.chart1.TabIndex = 5;
-            this.chart1.Text = "chart1";
+            chartArea3.Name = "ChartArea1";
+            this.chtAttribute.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chtAttribute.Legends.Add(legend3);
+            this.chtAttribute.Location = new System.Drawing.Point(3, 329);
+            this.chtAttribute.Name = "chtAttribute";
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chtAttribute.Series.Add(series3);
+            this.chtAttribute.Size = new System.Drawing.Size(473, 256);
+            this.chtAttribute.TabIndex = 5;
             // 
             // panel1
             // 
@@ -531,6 +641,7 @@
             this.btnOpenFile.TabIndex = 0;
             this.btnOpenFile.Text = "Open file...";
             this.btnOpenFile.UseVisualStyleBackColor = true;
+            this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
             // 
             // tabPage2
             // 
@@ -582,13 +693,13 @@
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSAttributes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chtAttribute)).EndInit();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -620,10 +731,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn no;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn status;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridView dgvAttributes;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Panel panel5;
@@ -631,15 +739,26 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn selectedNo;
+        private System.Windows.Forms.DataGridView dgvSAttributes;
+        private System.Windows.Forms.ComboBox cbxAttributes;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chtAttribute;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label lblInstancesCount;
+        private System.Windows.Forms.Label lblSumOfWeight;
+        private System.Windows.Forms.Label lblAttributesCount;
+        private System.Windows.Forms.Label lblRelationName;
+        private System.Windows.Forms.Label lblSUnique;
+        private System.Windows.Forms.Label lblSType;
+        private System.Windows.Forms.Label lblSMissingRate;
+        private System.Windows.Forms.Label lblSAttributeName;
         private System.Windows.Forms.DataGridViewTextBoxColumn selectedLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn selectedCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn selectedWeight;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Class;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Select;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn status;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
     }
 }
 
