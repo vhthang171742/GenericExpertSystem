@@ -62,6 +62,12 @@ namespace DataMining
             btnRemove.Enabled = false;
 
             cbxAttributes.Enabled = false;
+
+
+            //tạo tạm để thực hiện
+            taoDL();
+            //hiển thị giao diện mặc định
+            HienThiMacDinh();
         }
         #endregion
 
@@ -420,6 +426,256 @@ namespace DataMining
             }
         }
         #endregion
+
+        // <Generate ruleset>
+
+        //Tạo danh sách chứa các thuộc tính
+        Dictionary<string, string> dsTT = new Dictionary<string, string>();
+
+        //Tạo danh sách chứa các luật
+        List<List<String>> dsLuat = new List<List<string>>();
+
+        //Tạo một luật mới, vế phải là gtri cuối
+        List<string> luatMoi = new List<string>();
+        int dongChonLuat;
+
+        //Hiển thị lên các thuộc tính được chọn, cần ấn nút trước khi thực hiện các thao tác thêm, sửa
+        private void btnHienThi_Click(object sender, EventArgs e)
+        {
+            luatMoi = new List<string>();
+
+            //thao tác thêm luật
+            themLuat(luatMoi);
+
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            dsLuat.Add(luatMoi);
+            MessageBox.Show("Thêm luật mới thành công.");
+            HienThiMacDinh();
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            dsLuat[dongChonLuat] = luatMoi;
+            MessageBox.Show("Sửa luật số "+(dongChonLuat + 1) + " thành công.");
+            HienThiMacDinh();
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            dsLuat.RemoveAt(dongChonLuat);
+            MessageBox.Show("Xóa luật số " + (dongChonLuat + 1) + " thành công.");
+            HienThiMacDinh();
+        }
+
+        private void dgvThuocTinh_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MacDinh();
+
+            //kiểm tra nếu dòng này có vế phải được chọn thì các dòng khác sẽ không đươc chọn
+            if (e.ColumnIndex == 1)
+            {
+                foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+                {
+                    row.Cells[1].Value = false;
+                }
+            }
+        }
+
+        private void dgvLuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dongChonLuat = e.RowIndex;
+            btnXoa.Enabled = true;
+
+            if(dongChonLuat >= 0)
+            {
+                txtLuat.Text = dgvLuat.Rows[dongChonLuat].Cells[0].Value.ToString();
+
+                List<string> luat = dsLuat[dongChonLuat];
+
+                string tam;
+
+                //duyệt dgvThuocTinh để chọn những giá trị phù hợp vs luật đc chọn
+                foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+                {
+                    if (row.Cells[2].Value != null)
+                    {
+                        row.Cells[0].Value = false;
+                        row.Cells[1].Value = false;
+
+                        tam = (string)row.Cells[2].Value;
+                        if ((Boolean)tam.Equals(luat[luat.Count - 1]))
+                        {
+                            row.Cells[1].Value = true;
+                        }
+
+                        for (int i = 0; i < luat.Count - 1; i++)
+                        {
+                            if ((Boolean)tam.Equals(luat[i]))
+                            {
+                                row.Cells[0].Value = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                txtLuat.Text = "Dòng bạn chọn luật không đúng";
+            }
+        }
+
+        private void taoDL()
+        {
+            dsTT.Add("tt1", "Số a");
+            dsTT.Add("tt2", "Số b");
+            dsTT.Add("tt3", "Số c");
+            dsTT.Add("tt4", "Số d");
+            dsTT.Add("tt5", "Số e");
+            dsTT.Add("tt6", "Số f");
+            dsTT.Add("tt7", "Số g");
+
+            dsLuat.Add(new List<string> { "tt3", "tt1", "tt2" });
+            dsLuat.Add(new List<string> { "tt4", "tt2", "tt3" });
+            dsLuat.Add(new List<string> { "tt2", "tt1", "tt4" });
+            dsLuat.Add(new List<string> { "tt1", "tt3", "tt5" });
+            dsLuat.Add(new List<string> { "tt5", "tt4" });
+        }
+
+        //Tạo cách hiển thị luật
+        private string HienThiLuat(List<string> luat)
+        {
+            string tenLuat = "";
+
+            //duyệt để thêm vào Vế trái
+            for (int i = 0; i < luat.Count-1; i++)
+            {
+                string vt = luat[i];
+                tenLuat += dsTT[vt] + " ^ ";
+            }
+
+            //thêm vào Vế phải
+            int j = luat.Count-1;
+            string vp = luat[j];
+
+            //loại bỏ 2 ký tự thừa cuối cùng
+            tenLuat = tenLuat.Remove(tenLuat.Length - 2);
+
+            //hiển thị
+            return tenLuat + " --> " + dsTT[vp];
+        }
+
+        private void MacDinh()
+        {
+            txtLuat.Text = "";
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
+        }
+
+        private void HienThiMacDinh()
+        {
+            MacDinh();
+            dongChonLuat = -1;
+
+            int dongTT = 0;
+            int dongLuat = 0;
+            dgvThuocTinh.Rows.Clear();
+            dgvLuat.Rows.Clear();
+            
+            //thêm DL vào bảng dgvThuocTinh
+            foreach (KeyValuePair<string, string> TT in dsTT)
+            {
+                dgvThuocTinh.Rows.Add();
+
+                dgvThuocTinh.Rows[dongTT].Cells[2].Value = TT.Key.ToString();
+                dgvThuocTinh.Rows[dongTT].Cells[3].Value = TT.Value.ToString();
+
+                dongTT++;
+            }
+
+            //thêm DL vào bảng dgvLuat
+            foreach (List<string> luat in dsLuat)
+            {
+                dgvLuat.Rows.Add();
+
+                dgvLuat.Rows[dongLuat].Cells[0].Value = HienThiLuat(luat).ToString();
+
+                dongLuat++;
+            }
+        }
+
+        private void themLuat(List<string> luat)
+        {
+            int kt_vt = 0, kt_vp = 0;
+
+            foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+            {
+                if (row.Cells[0].Value != null)
+                {
+                    if ((Boolean)row.Cells[0].Value == true)
+                    {
+                        if ((Boolean)row.Cells[1].Value == true)
+                        {
+                            kt_vt = -1;
+                            break;
+                        }
+                        else
+                        {
+                            string tt = row.Cells[2].Value.ToString();
+                            luat.Add(tt);
+                            kt_vt++;
+                        }
+                    }
+                }
+            }
+
+            foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+            {
+                if (row.Cells[1].Value != null)
+                {
+                    if ((Boolean)row.Cells[1].Value == true)
+                    {
+                        string tt = row.Cells[2].Value.ToString();
+                        luat.Add(tt);
+                        kt_vp = 1;
+                    }
+                }
+            }
+
+            if (kt_vt > 0 && kt_vp == 1)
+            {
+                txtLuat.Text = HienThiLuat(luat);
+                btnThem.Enabled = true;
+            }
+            else
+            {
+                txtLuat.Text = "Lỗi: ";
+                if (kt_vp == 0)
+                {
+                    txtLuat.Text += "chưa thêm vế phải của luật; ";
+                }
+                if (kt_vt == -1)
+                {
+                    txtLuat.Text += "2 vế có 1 thuộc tính giống nhau; ";
+                }
+                if (kt_vt == 0)
+                {
+                    txtLuat.Text += "chưa thêm vế trái của luật; ";
+                }
+            }
+            
+            if(dongChonLuat != -1)
+            {
+                btnSua.Enabled = true;
+            }
+            btnThem.Enabled = true;
+        }
+
+
+        // </Generate ruleset>
     }
 
     /// <summary>
