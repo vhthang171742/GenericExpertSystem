@@ -45,6 +45,10 @@ namespace DataMining
             this.lsbProcess = new System.Windows.Forms.ListBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePreprocess = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -104,6 +108,34 @@ namespace DataMining
             this.tableLayoutPanel8.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnKhoiTao = new System.Windows.Forms.Button();
+            this.txtKetLuan = new System.Windows.Forms.TextBox();
+            this.lstGiaThiet = new System.Windows.Forms.ListBox();
+            this.lstTapLuat = new System.Windows.Forms.ListBox();
+            this.lstTapSuKien = new System.Windows.Forms.ListBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txtDuongDi = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtTapSuKienDich = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lblKetQua = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.btnXoaLuat = new System.Windows.Forms.Button();
+            this.btnThemLuat = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.btnSuyDienTien = new System.Windows.Forms.Button();
+            this.btnThemKL = new System.Windows.Forms.Button();
+            this.btnThemGT = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.tabMain.SuspendLayout();
             this.tabPagePreprocess.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -122,6 +154,12 @@ namespace DataMining
             ((System.ComponentModel.ISupportInitialize)(this.chtAttribute)).BeginInit();
             this.panel1.SuspendLayout();
             this.tabMain.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage3
@@ -262,14 +300,26 @@ namespace DataMining
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Generate ruleset";
             this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabMain.Controls.Add(this.tabPagePreprocess);
+            this.tabMain.Controls.Add(this.tabPage2);
+            this.tabMain.Controls.Add(this.tabPage1);
+            this.tabMain.Controls.Add(this.tabPage3);
+            this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabMain.Location = new System.Drawing.Point(0, 0);
+            this.tabMain.Margin = new System.Windows.Forms.Padding(4);
+            this.tabMain.Name = "tabMain";
+            this.tabMain.SelectedIndex = 0;
+            this.tabMain.Size = new System.Drawing.Size(1278, 849);
+            this.tabMain.TabIndex = 0;
             // 
             // tabPagePreprocess
             // 
             this.tabPagePreprocess.Controls.Add(this.tableLayoutPanel1);
-            this.tabPagePreprocess.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePreprocess.Location = new System.Drawing.Point(4, 25);
+            this.tabPagePreprocess.Margin = new System.Windows.Forms.Padding(4);
             this.tabPagePreprocess.Name = "tabPagePreprocess";
-            this.tabPagePreprocess.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePreprocess.Size = new System.Drawing.Size(994, 665);
+            this.tabPagePreprocess.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPagePreprocess.Size = new System.Drawing.Size(1270, 820);
             this.tabPagePreprocess.TabIndex = 0;
             this.tabPagePreprocess.Text = "Preprocess";
             this.tabPagePreprocess.UseVisualStyleBackColor = true;
@@ -281,13 +331,14 @@ namespace DataMining
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(988, 659);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1262, 812);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -298,11 +349,12 @@ namespace DataMining
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.groupBox3, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 43);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 53);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(982, 613);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1254, 755);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -312,22 +364,25 @@ namespace DataMining
             this.tableLayoutPanel3.Controls.Add(this.groupBox1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.groupBox2, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(485, 607);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(619, 747);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Location = new System.Drawing.Point(4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(479, 54);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(611, 66);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Current relation";
@@ -343,80 +398,89 @@ namespace DataMining
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 16);
+            this.panel2.Location = new System.Drawing.Point(4, 19);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(473, 35);
+            this.panel2.Size = new System.Drawing.Size(603, 43);
             this.panel2.TabIndex = 1;
             // 
             // lblInstancesCount
             // 
             this.lblInstancesCount.AutoSize = true;
-            this.lblInstancesCount.Location = new System.Drawing.Point(79, 19);
+            this.lblInstancesCount.Location = new System.Drawing.Point(105, 23);
+            this.lblInstancesCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblInstancesCount.Name = "lblInstancesCount";
-            this.lblInstancesCount.Size = new System.Drawing.Size(10, 13);
+            this.lblInstancesCount.Size = new System.Drawing.Size(13, 17);
             this.lblInstancesCount.TabIndex = 1;
             this.lblInstancesCount.Text = "-";
             // 
             // lblSumOfWeight
             // 
             this.lblSumOfWeight.AutoSize = true;
-            this.lblSumOfWeight.Location = new System.Drawing.Point(376, 19);
+            this.lblSumOfWeight.Location = new System.Drawing.Point(501, 23);
+            this.lblSumOfWeight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSumOfWeight.Name = "lblSumOfWeight";
-            this.lblSumOfWeight.Size = new System.Drawing.Size(10, 13);
+            this.lblSumOfWeight.Size = new System.Drawing.Size(13, 17);
             this.lblSumOfWeight.TabIndex = 1;
             this.lblSumOfWeight.Text = "-";
             // 
             // lblAttributesCount
             // 
             this.lblAttributesCount.AutoSize = true;
-            this.lblAttributesCount.Location = new System.Drawing.Point(376, 3);
+            this.lblAttributesCount.Location = new System.Drawing.Point(501, 4);
+            this.lblAttributesCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAttributesCount.Name = "lblAttributesCount";
-            this.lblAttributesCount.Size = new System.Drawing.Size(10, 13);
+            this.lblAttributesCount.Size = new System.Drawing.Size(13, 17);
             this.lblAttributesCount.TabIndex = 1;
             this.lblAttributesCount.Text = "-";
             // 
             // lblRelationName
             // 
             this.lblRelationName.AutoSize = true;
-            this.lblRelationName.Location = new System.Drawing.Point(79, 3);
+            this.lblRelationName.Location = new System.Drawing.Point(105, 4);
+            this.lblRelationName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRelationName.Name = "lblRelationName";
-            this.lblRelationName.Size = new System.Drawing.Size(10, 13);
+            this.lblRelationName.Size = new System.Drawing.Size(13, 17);
             this.lblRelationName.TabIndex = 1;
             this.lblRelationName.Text = "-";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 19);
+            this.label2.Location = new System.Drawing.Point(37, 23);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.Size = new System.Drawing.Size(72, 17);
             this.label2.TabIndex = 0;
             this.label2.Text = "Instances:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(299, 19);
+            this.label4.Location = new System.Drawing.Point(399, 23);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 13);
+            this.label4.Size = new System.Drawing.Size(107, 17);
             this.label4.TabIndex = 0;
             this.label4.Text = "Sum of weights:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(327, 3);
+            this.label3.Location = new System.Drawing.Point(436, 4);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.Size = new System.Drawing.Size(72, 17);
             this.label3.TabIndex = 0;
             this.label3.Text = "Attributes:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(35, 3);
+            this.label1.Location = new System.Drawing.Point(47, 4);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.Size = new System.Drawing.Size(64, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Relation:";
             // 
@@ -424,9 +488,11 @@ namespace DataMining
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel4);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(3, 63);
+            this.groupBox2.Location = new System.Drawing.Point(4, 78);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(479, 541);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Size = new System.Drawing.Size(611, 665);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Attributes";
@@ -439,13 +505,14 @@ namespace DataMining
             this.tableLayoutPanel4.Controls.Add(this.panel4, 0, 2);
             this.tableLayoutPanel4.Controls.Add(this.dgvAttributes, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(4, 19);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 3;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(473, 522);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 49F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(603, 642);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // panel3
@@ -454,9 +521,10 @@ namespace DataMining
             this.panel3.Controls.Add(this.btnDeselectAll);
             this.panel3.Controls.Add(this.btnSelectAll);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Location = new System.Drawing.Point(4, 4);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(467, 34);
+            this.panel3.Size = new System.Drawing.Size(595, 41);
             this.panel3.TabIndex = 0;
             // 
             // btnAddAttribute
@@ -475,6 +543,10 @@ namespace DataMining
             this.btnDeselectAll.Location = new System.Drawing.Point(318, 5);
             this.btnDeselectAll.Name = "btnDeselectAll";
             this.btnDeselectAll.Size = new System.Drawing.Size(149, 23);
+            this.btnDeselectAll.Location = new System.Drawing.Point(347, 5);
+            this.btnDeselectAll.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDeselectAll.Name = "btnDeselectAll";
+            this.btnDeselectAll.Size = new System.Drawing.Size(173, 28);
             this.btnDeselectAll.TabIndex = 0;
             this.btnDeselectAll.Text = "None";
             this.btnDeselectAll.UseVisualStyleBackColor = true;
@@ -486,6 +558,10 @@ namespace DataMining
             this.btnSelectAll.Location = new System.Drawing.Point(0, 5);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(148, 23);
+            this.btnSelectAll.Location = new System.Drawing.Point(24, 5);
+            this.btnSelectAll.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(173, 28);
             this.btnSelectAll.TabIndex = 0;
             this.btnSelectAll.Text = "All";
             this.btnSelectAll.UseVisualStyleBackColor = true;
@@ -495,17 +571,19 @@ namespace DataMining
             // 
             this.panel4.Controls.Add(this.btnRemove);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(3, 485);
+            this.panel4.Location = new System.Drawing.Point(4, 597);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(467, 34);
+            this.panel4.Size = new System.Drawing.Size(595, 41);
             this.panel4.TabIndex = 1;
             // 
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(4, 4);
+            this.btnRemove.Location = new System.Drawing.Point(5, 4);
+            this.btnRemove.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(460, 27);
+            this.btnRemove.Size = new System.Drawing.Size(585, 33);
             this.btnRemove.TabIndex = 0;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -522,11 +600,13 @@ namespace DataMining
             this.status,
             this.name});
             this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAttributes.Location = new System.Drawing.Point(3, 43);
+            this.dgvAttributes.Location = new System.Drawing.Point(4, 53);
+            this.dgvAttributes.Margin = new System.Windows.Forms.Padding(4);
             this.dgvAttributes.MultiSelect = false;
             this.dgvAttributes.Name = "dgvAttributes";
+            this.dgvAttributes.RowHeadersWidth = 51;
             this.dgvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAttributes.Size = new System.Drawing.Size(467, 436);
+            this.dgvAttributes.Size = new System.Drawing.Size(595, 536);
             this.dgvAttributes.TabIndex = 2;
             this.dgvAttributes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAttributes_CellClick);
             this.dgvAttributes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAttributes_CellContentClick);
@@ -535,6 +615,7 @@ namespace DataMining
             // Class
             // 
             this.Class.HeaderText = "Class";
+            this.Class.MinimumWidth = 6;
             this.Class.Name = "Class";
             this.Class.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Class.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -543,6 +624,7 @@ namespace DataMining
             // Select
             // 
             this.Select.HeaderText = "Affect";
+            this.Select.MinimumWidth = 6;
             this.Select.Name = "Select";
             this.Select.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Select.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -552,6 +634,7 @@ namespace DataMining
             // 
             this.status.DataPropertyName = "Enabled";
             this.status.HeaderText = "Enable";
+            this.status.MinimumWidth = 6;
             this.status.Name = "status";
             this.status.Width = 50;
             // 
@@ -560,6 +643,7 @@ namespace DataMining
             this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.name.DataPropertyName = "Name";
             this.name.HeaderText = "Name";
+            this.name.MinimumWidth = 6;
             this.name.Name = "name";
             this.name.ReadOnly = true;
             // 
@@ -567,9 +651,11 @@ namespace DataMining
             // 
             this.groupBox3.Controls.Add(this.tableLayoutPanel5);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(494, 3);
+            this.groupBox3.Location = new System.Drawing.Point(631, 4);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(485, 607);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox3.Size = new System.Drawing.Size(619, 747);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Selected attribute";
@@ -583,14 +669,15 @@ namespace DataMining
             this.tableLayoutPanel5.Controls.Add(this.cbxAttributes, 0, 2);
             this.tableLayoutPanel5.Controls.Add(this.chtAttribute, 0, 3);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(4, 19);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 4;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(479, 588);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(611, 724);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // panel5
@@ -604,80 +691,89 @@ namespace DataMining
             this.panel5.Controls.Add(this.label7);
             this.panel5.Controls.Add(this.label8);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(3, 3);
+            this.panel5.Location = new System.Drawing.Point(4, 4);
+            this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(473, 34);
+            this.panel5.Size = new System.Drawing.Size(603, 41);
             this.panel5.TabIndex = 2;
             // 
             // lblSUnique
             // 
             this.lblSUnique.AutoSize = true;
-            this.lblSUnique.Location = new System.Drawing.Point(356, 19);
+            this.lblSUnique.Location = new System.Drawing.Point(475, 23);
+            this.lblSUnique.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSUnique.Name = "lblSUnique";
-            this.lblSUnique.Size = new System.Drawing.Size(10, 13);
+            this.lblSUnique.Size = new System.Drawing.Size(13, 17);
             this.lblSUnique.TabIndex = 1;
             this.lblSUnique.Text = "-";
             // 
             // lblSType
             // 
             this.lblSType.AutoSize = true;
-            this.lblSType.Location = new System.Drawing.Point(356, 3);
+            this.lblSType.Location = new System.Drawing.Point(475, 4);
+            this.lblSType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSType.Name = "lblSType";
-            this.lblSType.Size = new System.Drawing.Size(10, 13);
+            this.lblSType.Size = new System.Drawing.Size(13, 17);
             this.lblSType.TabIndex = 1;
             this.lblSType.Text = "-";
             // 
             // lblSMissingRate
             // 
             this.lblSMissingRate.AutoSize = true;
-            this.lblSMissingRate.Location = new System.Drawing.Point(68, 19);
+            this.lblSMissingRate.Location = new System.Drawing.Point(91, 23);
+            this.lblSMissingRate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSMissingRate.Name = "lblSMissingRate";
-            this.lblSMissingRate.Size = new System.Drawing.Size(10, 13);
+            this.lblSMissingRate.Size = new System.Drawing.Size(13, 17);
             this.lblSMissingRate.TabIndex = 1;
             this.lblSMissingRate.Text = "-";
             // 
             // lblSAttributeName
             // 
             this.lblSAttributeName.AutoSize = true;
-            this.lblSAttributeName.Location = new System.Drawing.Point(68, 3);
+            this.lblSAttributeName.Location = new System.Drawing.Point(91, 4);
+            this.lblSAttributeName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSAttributeName.Name = "lblSAttributeName";
-            this.lblSAttributeName.Size = new System.Drawing.Size(10, 13);
+            this.lblSAttributeName.Size = new System.Drawing.Size(13, 17);
             this.lblSAttributeName.TabIndex = 1;
             this.lblSAttributeName.Text = "-";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 19);
+            this.label5.Location = new System.Drawing.Point(37, 23);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 13);
+            this.label5.Size = new System.Drawing.Size(59, 17);
             this.label5.TabIndex = 0;
             this.label5.Text = "Missing:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(317, 19);
+            this.label6.Location = new System.Drawing.Point(423, 23);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(44, 13);
+            this.label6.Size = new System.Drawing.Size(57, 17);
             this.label6.TabIndex = 0;
             this.label6.Text = "Unique:";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(327, 3);
+            this.label7.Location = new System.Drawing.Point(436, 4);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(34, 13);
+            this.label7.Size = new System.Drawing.Size(44, 17);
             this.label7.TabIndex = 0;
             this.label7.Text = "Type:";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(35, 3);
+            this.label8.Location = new System.Drawing.Point(47, 4);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(38, 13);
+            this.label8.Size = new System.Drawing.Size(49, 17);
             this.label8.TabIndex = 0;
             this.label8.Text = "Name:";
             // 
@@ -691,10 +787,12 @@ namespace DataMining
             this.selectedCount,
             this.selectedWeight});
             this.dgvSAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSAttributes.Location = new System.Drawing.Point(3, 43);
+            this.dgvSAttributes.Location = new System.Drawing.Point(4, 53);
+            this.dgvSAttributes.Margin = new System.Windows.Forms.Padding(4);
             this.dgvSAttributes.Name = "dgvSAttributes";
             this.dgvSAttributes.ReadOnly = true;
-            this.dgvSAttributes.Size = new System.Drawing.Size(473, 255);
+            this.dgvSAttributes.RowHeadersWidth = 51;
+            this.dgvSAttributes.Size = new System.Drawing.Size(603, 314);
             this.dgvSAttributes.TabIndex = 3;
             // 
             // selectedLabel
@@ -702,6 +800,7 @@ namespace DataMining
             this.selectedLabel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.selectedLabel.DataPropertyName = "Label";
             this.selectedLabel.HeaderText = "Label";
+            this.selectedLabel.MinimumWidth = 6;
             this.selectedLabel.Name = "selectedLabel";
             this.selectedLabel.ReadOnly = true;
             // 
@@ -709,22 +808,27 @@ namespace DataMining
             // 
             this.selectedCount.DataPropertyName = "Count";
             this.selectedCount.HeaderText = "Count";
+            this.selectedCount.MinimumWidth = 6;
             this.selectedCount.Name = "selectedCount";
             this.selectedCount.ReadOnly = true;
+            this.selectedCount.Width = 125;
             // 
             // selectedWeight
             // 
             this.selectedWeight.DataPropertyName = "Count";
             this.selectedWeight.HeaderText = "Weight";
+            this.selectedWeight.MinimumWidth = 6;
             this.selectedWeight.Name = "selectedWeight";
             this.selectedWeight.ReadOnly = true;
+            this.selectedWeight.Width = 125;
             // 
             // cbxAttributes
             // 
             this.cbxAttributes.FormattingEnabled = true;
-            this.cbxAttributes.Location = new System.Drawing.Point(3, 304);
+            this.cbxAttributes.Location = new System.Drawing.Point(4, 375);
+            this.cbxAttributes.Margin = new System.Windows.Forms.Padding(4);
             this.cbxAttributes.Name = "cbxAttributes";
-            this.cbxAttributes.Size = new System.Drawing.Size(473, 21);
+            this.cbxAttributes.Size = new System.Drawing.Size(603, 24);
             this.cbxAttributes.TabIndex = 4;
             this.cbxAttributes.SelectedIndexChanged += new System.EventHandler(this.cbxAttributes_SelectedIndexChanged);
             // 
@@ -744,6 +848,18 @@ namespace DataMining
             series2.Name = "Series1";
             this.chtAttribute.Series.Add(series2);
             this.chtAttribute.Size = new System.Drawing.Size(473, 256);
+            chartArea13.Name = "ChartArea1";
+            this.chtAttribute.ChartAreas.Add(chartArea13);
+            legend13.Name = "Legend1";
+            this.chtAttribute.Legends.Add(legend13);
+            this.chtAttribute.Location = new System.Drawing.Point(4, 406);
+            this.chtAttribute.Margin = new System.Windows.Forms.Padding(4);
+            this.chtAttribute.Name = "chtAttribute";
+            series13.ChartArea = "ChartArea1";
+            series13.Legend = "Legend1";
+            series13.Name = "Series1";
+            this.chtAttribute.Series.Add(series13);
+            this.chtAttribute.Size = new System.Drawing.Size(603, 314);
             this.chtAttribute.TabIndex = 5;
             // 
             // panel1
@@ -752,9 +868,10 @@ namespace DataMining
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.btnOpenFile);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Location = new System.Drawing.Point(4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(982, 34);
+            this.panel1.Size = new System.Drawing.Size(1254, 41);
             this.panel1.TabIndex = 1;
             // 
             // btnOpenFile
@@ -762,6 +879,46 @@ namespace DataMining
             this.btnOpenFile.Location = new System.Drawing.Point(12, 3);
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(961, 27);
+            // btnSave
+            // 
+            this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnSave.Location = new System.Drawing.Point(1037, 6);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(173, 28);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnEdit.Location = new System.Drawing.Point(686, 6);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(173, 28);
+            this.btnEdit.TabIndex = 0;
+            this.btnEdit.Text = "Edit";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            // 
+            // btnGenerate
+            // 
+            this.btnGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnGenerate.Location = new System.Drawing.Point(391, 6);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(173, 28);
+            this.btnGenerate.TabIndex = 0;
+            this.btnGenerate.Text = "Generate";
+            this.btnGenerate.UseVisualStyleBackColor = true;
+            // 
+            // btnOpenFile
+            // 
+            this.btnOpenFile.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnOpenFile.Location = new System.Drawing.Point(40, 6);
+            this.btnOpenFile.Margin = new System.Windows.Forms.Padding(4);
+            this.btnOpenFile.Name = "btnOpenFile";
+            this.btnOpenFile.Size = new System.Drawing.Size(173, 28);
             this.btnOpenFile.TabIndex = 0;
             this.btnOpenFile.Text = "Open file...";
             this.btnOpenFile.UseVisualStyleBackColor = true;
@@ -779,6 +936,14 @@ namespace DataMining
             this.tabMain.SelectedIndex = 0;
             this.tabMain.Size = new System.Drawing.Size(1002, 691);
             this.tabMain.TabIndex = 0;
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Size = new System.Drawing.Size(1270, 820);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Generate ruleset";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // txtInsertRule
             // 
@@ -787,6 +952,14 @@ namespace DataMining
             this.txtInsertRule.Size = new System.Drawing.Size(377, 20);
             this.txtInsertRule.TabIndex = 1;
             this.txtInsertRule.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInsertRule_KeyDown);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Size = new System.Drawing.Size(1270, 820);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Optimize ruleset";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // btnInsertRule
             // 
@@ -814,13 +987,310 @@ namespace DataMining
             this.lsbOptimizedRuleset.Name = "lsbOptimizedRuleset";
             this.lsbOptimizedRuleset.Size = new System.Drawing.Size(575, 302);
             this.lsbOptimizedRuleset.TabIndex = 0;
+            this.tabPage3.Controls.Add(this.panel7);
+            this.tabPage3.Controls.Add(this.panel6);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage3.Size = new System.Drawing.Size(1270, 820);
+            this.tabPage3.TabIndex = 3;
+            this.tabPage3.Text = "Inference";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnKhoiTao
+            // 
+            this.btnKhoiTao.Location = new System.Drawing.Point(354, 67);
+            this.btnKhoiTao.Name = "btnKhoiTao";
+            this.btnKhoiTao.Size = new System.Drawing.Size(132, 44);
+            this.btnKhoiTao.TabIndex = 2;
+            this.btnKhoiTao.Text = "Khởi tạo";
+            this.btnKhoiTao.UseVisualStyleBackColor = true;
+            this.btnKhoiTao.Click += new System.EventHandler(this.btnKhoiTao_Click);
+            // 
+            // txtKetLuan
+            // 
+            this.txtKetLuan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtKetLuan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtKetLuan.Location = new System.Drawing.Point(810, 71);
+            this.txtKetLuan.Multiline = true;
+            this.txtKetLuan.Name = "txtKetLuan";
+            this.txtKetLuan.Size = new System.Drawing.Size(172, 180);
+            this.txtKetLuan.TabIndex = 14;
+            // 
+            // lstGiaThiet
+            // 
+            this.lstGiaThiet.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstGiaThiet.FormattingEnabled = true;
+            this.lstGiaThiet.ItemHeight = 25;
+            this.lstGiaThiet.Location = new System.Drawing.Point(536, 72);
+            this.lstGiaThiet.Name = "lstGiaThiet";
+            this.lstGiaThiet.Size = new System.Drawing.Size(208, 179);
+            this.lstGiaThiet.TabIndex = 13;
+            // 
+            // lstTapLuat
+            // 
+            this.lstTapLuat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lstTapLuat.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstTapLuat.FormattingEnabled = true;
+            this.lstTapLuat.ItemHeight = 20;
+            this.lstTapLuat.Location = new System.Drawing.Point(4, 31);
+            this.lstTapLuat.Name = "lstTapLuat";
+            this.lstTapLuat.Size = new System.Drawing.Size(281, 544);
+            this.lstTapLuat.TabIndex = 13;
+            // 
+            // lstTapSuKien
+            // 
+            this.lstTapSuKien.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstTapSuKien.FormattingEnabled = true;
+            this.lstTapSuKien.ItemHeight = 25;
+            this.lstTapSuKien.Items.AddRange(new object[] {
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j",
+            "k",
+            "l",
+            "o",
+            "m",
+            "n",
+            "p",
+            "q",
+            "s",
+            "t",
+            "x",
+            "v"});
+            this.lstTapSuKien.Location = new System.Drawing.Point(3, 75);
+            this.lstTapSuKien.Name = "lstTapSuKien";
+            this.lstTapSuKien.Size = new System.Drawing.Size(321, 179);
+            this.lstTapSuKien.TabIndex = 13;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.txtDuongDi);
+            this.groupBox4.Controls.Add(this.label14);
+            this.groupBox4.Controls.Add(this.txtTapSuKienDich);
+            this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.Controls.Add(this.lblKetQua);
+            this.groupBox4.Location = new System.Drawing.Point(551, 17);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(716, 546);
+            this.groupBox4.TabIndex = 12;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Quá trình";
+            // 
+            // txtDuongDi
+            // 
+            this.txtDuongDi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDuongDi.Location = new System.Drawing.Point(184, 196);
+            this.txtDuongDi.Name = "txtDuongDi";
+            this.txtDuongDi.Size = new System.Drawing.Size(425, 27);
+            this.txtDuongDi.TabIndex = 1;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(25, 201);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(138, 24);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "Đường đi(VET)";
+            // 
+            // txtTapSuKienDich
+            // 
+            this.txtTapSuKienDich.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTapSuKienDich.Location = new System.Drawing.Point(184, 113);
+            this.txtTapSuKienDich.Name = "txtTapSuKienDich";
+            this.txtTapSuKienDich.Size = new System.Drawing.Size(425, 27);
+            this.txtTapSuKienDich.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(21, 113);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(150, 24);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Tập sự kiện đích";
+            // 
+            // lblKetQua
+            // 
+            this.lblKetQua.AutoSize = true;
+            this.lblKetQua.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKetQua.ForeColor = System.Drawing.Color.Red;
+            this.lblKetQua.Location = new System.Drawing.Point(21, 49);
+            this.lblKetQua.Name = "lblKetQua";
+            this.lblKetQua.Size = new System.Drawing.Size(116, 29);
+            this.lblKetQua.TabIndex = 0;
+            this.lblKetQua.Text = "GT => KL";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(7, 11);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(60, 17);
+            this.label12.TabIndex = 10;
+            this.label12.Text = "Tập luật";
+            // 
+            // btnXoaLuat
+            // 
+            this.btnXoaLuat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnXoaLuat.Location = new System.Drawing.Point(1066, 131);
+            this.btnXoaLuat.Name = "btnXoaLuat";
+            this.btnXoaLuat.Size = new System.Drawing.Size(128, 42);
+            this.btnXoaLuat.TabIndex = 9;
+            this.btnXoaLuat.Text = "Xóa luật";
+            this.btnXoaLuat.UseVisualStyleBackColor = true;
+            this.btnXoaLuat.Click += new System.EventHandler(this.btnXoaLuat_Click);
+            // 
+            // btnThemLuat
+            // 
+            this.btnThemLuat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnThemLuat.Location = new System.Drawing.Point(1066, 67);
+            this.btnThemLuat.Name = "btnThemLuat";
+            this.btnThemLuat.Size = new System.Drawing.Size(128, 42);
+            this.btnThemLuat.TabIndex = 9;
+            this.btnThemLuat.Text = "Thêm luật";
+            this.btnThemLuat.UseVisualStyleBackColor = true;
+            this.btnThemLuat.Click += new System.EventHandler(this.btnThemLuat_Click);
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(807, 24);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(25, 17);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "KL";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(533, 24);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(28, 17);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "GT";
+            // 
+            // btnSuyDienTien
+            // 
+            this.btnSuyDienTien.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSuyDienTien.Location = new System.Drawing.Point(79, 195);
+            this.btnSuyDienTien.Name = "btnSuyDienTien";
+            this.btnSuyDienTien.Size = new System.Drawing.Size(132, 47);
+            this.btnSuyDienTien.TabIndex = 4;
+            this.btnSuyDienTien.Text = "Suy diễn tiến FPG";
+            this.btnSuyDienTien.UseVisualStyleBackColor = true;
+            this.btnSuyDienTien.Click += new System.EventHandler(this.btnSuyDienTien_Click);
+            // 
+            // btnThemKL
+            // 
+            this.btnThemKL.Location = new System.Drawing.Point(354, 194);
+            this.btnThemKL.Name = "btnThemKL";
+            this.btnThemKL.Size = new System.Drawing.Size(132, 44);
+            this.btnThemKL.TabIndex = 4;
+            this.btnThemKL.Text = "Thêm KL";
+            this.btnThemKL.UseVisualStyleBackColor = true;
+            this.btnThemKL.Click += new System.EventHandler(this.btnThemKL_Click);
+            // 
+            // btnThemGT
+            // 
+            this.btnThemGT.Location = new System.Drawing.Point(354, 129);
+            this.btnThemGT.Name = "btnThemGT";
+            this.btnThemGT.Size = new System.Drawing.Size(132, 44);
+            this.btnThemGT.TabIndex = 3;
+            this.btnThemGT.Text = "Thêm GT";
+            this.btnThemGT.UseVisualStyleBackColor = true;
+            this.btnThemGT.Click += new System.EventHandler(this.btnThemGT_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 24);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(82, 17);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Tập sự kiện";
+            // 
+            // panel7
+            // 
+            this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel7.Controls.Add(this.panel9);
+            this.panel7.Controls.Add(this.panel8);
+            this.panel7.Controls.Add(this.groupBox4);
+            this.panel7.Location = new System.Drawing.Point(-4, 257);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(1278, 560);
+            this.panel7.TabIndex = 16;
+            // 
+            // panel6
+            // 
+            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel6.Controls.Add(this.btnKhoiTao);
+            this.panel6.Controls.Add(this.txtKetLuan);
+            this.panel6.Controls.Add(this.lstTapSuKien);
+            this.panel6.Controls.Add(this.lstGiaThiet);
+            this.panel6.Controls.Add(this.btnXoaLuat);
+            this.panel6.Controls.Add(this.label9);
+            this.panel6.Controls.Add(this.btnThemLuat);
+            this.panel6.Controls.Add(this.btnThemGT);
+            this.panel6.Controls.Add(this.label11);
+            this.panel6.Controls.Add(this.btnThemKL);
+            this.panel6.Controls.Add(this.label10);
+            this.panel6.Location = new System.Drawing.Point(0, 0);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(1274, 254);
+            this.panel6.TabIndex = 15;
+            // 
+            // panel8
+            // 
+            this.panel8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel8.Controls.Add(this.lstTapLuat);
+            this.panel8.Controls.Add(this.label12);
+            this.panel8.Location = new System.Drawing.Point(0, 3);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(290, 552);
+            this.panel8.TabIndex = 14;
+            // 
+            // panel9
+            // 
+            this.panel9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel9.Controls.Add(this.btnSuyDienTien);
+            this.panel9.Location = new System.Drawing.Point(291, 0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(254, 560);
+            this.panel9.TabIndex = 15;
             // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1002, 691);
+            this.ClientSize = new System.Drawing.Size(1278, 849);
             this.Controls.Add(this.tabMain);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMain";
             this.Text = "Generic Expert System";
             this.tabPage1.ResumeLayout(false);
@@ -852,6 +1322,15 @@ namespace DataMining
             ((System.ComponentModel.ISupportInitialize)(this.chtAttribute)).EndInit();
             this.panel1.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.panel9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -921,6 +1400,34 @@ namespace DataMining
         private TextBox txtInsertRule;
         private ListBox lsbRawRuleset;
         private ListBox lsbOptimizedRuleset;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Class;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Select;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn status;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnThemKL;
+        private System.Windows.Forms.Button btnThemGT;
+        private System.Windows.Forms.Button btnKhoiTao;
+        private System.Windows.Forms.Button btnXoaLuat;
+        private System.Windows.Forms.Button btnThemLuat;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label lblKetQua;
+        private System.Windows.Forms.Button btnSuyDienTien;
+        private System.Windows.Forms.TextBox txtDuongDi;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtTapSuKienDich;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtKetLuan;
+        private System.Windows.Forms.ListBox lstGiaThiet;
+        private System.Windows.Forms.ListBox lstTapLuat;
+        private System.Windows.Forms.ListBox lstTapSuKien;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Panel panel8;
     }
 }
 

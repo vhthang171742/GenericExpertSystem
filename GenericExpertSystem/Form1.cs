@@ -419,6 +419,114 @@ namespace DataMining
             }
         }
 
+        #endregion
+       static List<RuleItem> list = new List<RuleItem>();
+       static int i = 1;
+        private void btnKhoiTao_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void btnThemGT_Click(object sender, EventArgs e)
+        {
+            string text = lstTapSuKien.GetItemText(lstTapSuKien.SelectedItem);
+            if (String.IsNullOrEmpty(text))
+            {
+
+                MessageBox.Show("Hãy chọn sự kiện thêm vào GT");
+                return;
+            }
+            lstGiaThiet.Items.Add(text);
+        }
+
+        private void btnThemKL_Click(object sender, EventArgs e)
+        {
+            string text = lstTapSuKien.GetItemText(lstTapSuKien.SelectedItem);
+            if (String.IsNullOrEmpty(text))
+            {
+                MessageBox.Show("Hãy chọn sự kiện thêm vào KL");
+                return;
+            }
+            txtKetLuan.Text = text;
+        }
+        private void btnThemLuat_Click(object sender, EventArgs e)
+        {
+            if(lstGiaThiet.Items.Count==0 || txtKetLuan.Text == "")
+            {
+                MessageBox.Show("Chọn GT và KL phù hợp");
+                return;
+            }
+            RuleItem rule;
+            List<string> left = new List<string>();
+            string right = txtKetLuan.Text;
+            for (int i = 0; i < lstGiaThiet.Items.Count; i++)
+            {
+                left.Add(lstGiaThiet.Items[i].ToString());
+            }
+            string nameRule = "r" + i.ToString();
+            rule = new RuleItem(nameRule, left, right);
+            list.Add(rule);
+            i++;
+            lstTapLuat.Items.Add(rule.Name+" : "+rule.ToString());
+            lstGiaThiet.Items.Clear();
+            txtKetLuan.Text = "";
+        }
+
+        private void btnXoaLuat_Click(object sender, EventArgs e)
+        {
+            if (lstTapLuat.Items.Count == 0)
+            {
+                MessageBox.Show("Tập luật rỗng");
+                return;
+            }
+            lstTapLuat.Items.Remove(lstTapLuat.SelectedItem);
+            
+        }
+
+        private void btnSuyDienTien_Click(object sender, EventArgs e)
+        {
+            if (lstGiaThiet.Items.Count == 0 || txtKetLuan.Text == "")
+            {
+                MessageBox.Show("Chọn GT và KL phù hợp");
+                return;
+            }
+            List<string> gt = new List<string>();
+            for (int i = 0; i < lstGiaThiet.Items.Count; i++)
+            {
+                gt.Add(lstGiaThiet.Items[i].ToString());
+            }
+            string kl = txtKetLuan.Text;
+            Rule rule = new Rule(list, gt, kl);
+
+            rule.SuyDienTien(list,kl);
+
+            if (rule.ketQua)
+            {
+                string tg = "", vet="";
+                foreach (var item in rule.TG)
+                {
+                    tg += item.ToString() + " , ";
+                }
+                foreach (var item in rule.VET)
+                {
+                    vet += item.Name+" , ";
+                }
+                lblKetQua.Text = "GT ->  KL là TRUE được chứng minh";
+                txtDuongDi.Text = vet;
+                txtTapSuKienDich.Text = tg;
+            }
+            else
+            {
+                lblKetQua.Text = "GT ->  KL là FALSE";
+                txtDuongDi.Text = "FALSE";
+                txtTapSuKienDich.Text = "FALSE";
+            }
+            
+        }
+
+       
+    }
+
         /// <summary>
         /// Determine whether a rule is unnecessary in ruleset and remove it
         /// </summary>
