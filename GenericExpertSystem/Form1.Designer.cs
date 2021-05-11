@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace DataMining
+﻿namespace DataMining
 {
     partial class FrmMain
     {
@@ -30,21 +28,6 @@ namespace DataMining
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.btnOptimize = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.lsbProcess = new System.Windows.Forms.ListBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -66,7 +49,6 @@ namespace DataMining
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnAddAttribute = new System.Windows.Forms.Button();
             this.btnDeselectAll = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -94,20 +76,10 @@ namespace DataMining
             this.cbxAttributes = new System.Windows.Forms.ComboBox();
             this.chtAttribute = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnGenerate = new System.Windows.Forms.Button();
             this.btnOpenFile = new System.Windows.Forms.Button();
-            this.tabMain = new System.Windows.Forms.TabControl();
-            this.txtInsertRule = new System.Windows.Forms.TextBox();
-            this.btnInsertRule = new System.Windows.Forms.Button();
-            this.lsbRawRuleset = new System.Windows.Forms.ListBox();
-            this.lsbOptimizedRuleset = new System.Windows.Forms.ListBox();
-            this.tabPage1.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
-            this.tableLayoutPanel7.SuspendLayout();
-            this.panel6.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.tableLayoutPanel8.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -153,7 +125,6 @@ namespace DataMining
             ((System.ComponentModel.ISupportInitialize)(this.dgvSAttributes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chtAttribute)).BeginInit();
             this.panel1.SuspendLayout();
-            this.tabMain.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -162,144 +133,8 @@ namespace DataMining
             this.panel9.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabPage3
+            // tabMain
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(994, 665);
-            this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "Inference";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.tableLayoutPanel6);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(994, 665);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Optimize ruleset";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel7, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel8, 1, 0);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 1;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(988, 659);
-            this.tableLayoutPanel6.TabIndex = 0;
-            // 
-            // tableLayoutPanel7
-            // 
-            this.tableLayoutPanel7.ColumnCount = 1;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Controls.Add(this.panel6, 0, 1);
-            this.tableLayoutPanel7.Controls.Add(this.groupBox4, 0, 0);
-            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 2;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(389, 653);
-            this.tableLayoutPanel7.TabIndex = 0;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.btnOptimize);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(3, 616);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(383, 34);
-            this.panel6.TabIndex = 0;
-            // 
-            // btnOptimize
-            // 
-            this.btnOptimize.Location = new System.Drawing.Point(3, 2);
-            this.btnOptimize.Name = "btnOptimize";
-            this.btnOptimize.Size = new System.Drawing.Size(377, 27);
-            this.btnOptimize.TabIndex = 0;
-            this.btnOptimize.Text = "Optimize";
-            this.btnOptimize.UseVisualStyleBackColor = true;
-            this.btnOptimize.Click += new System.EventHandler(this.btnOptimize_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.lsbRawRuleset);
-            this.groupBox4.Controls.Add(this.btnInsertRule);
-            this.groupBox4.Controls.Add(this.txtInsertRule);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 3);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(383, 607);
-            this.groupBox4.TabIndex = 1;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Raw ruleset";
-            // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.ColumnCount = 1;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Controls.Add(this.groupBox5, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.groupBox6, 0, 1);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(398, 3);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 2;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(587, 653);
-            this.tableLayoutPanel8.TabIndex = 1;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.lsbProcess);
-            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(3, 3);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(581, 320);
-            this.groupBox5.TabIndex = 0;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Process";
-            // 
-            // lsbProcess
-            // 
-            this.lsbProcess.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lsbProcess.FormattingEnabled = true;
-            this.lsbProcess.Location = new System.Drawing.Point(3, 16);
-            this.lsbProcess.Name = "lsbProcess";
-            this.lsbProcess.Size = new System.Drawing.Size(575, 301);
-            this.lsbProcess.TabIndex = 0;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.lsbOptimizedRuleset);
-            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox6.Location = new System.Drawing.Point(3, 329);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(581, 321);
-            this.groupBox6.TabIndex = 1;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Optimized ruleset";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(994, 665);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Generate ruleset";
-            this.tabPage2.UseVisualStyleBackColor = true;
             this.tabMain.Controls.Add(this.tabPagePreprocess);
             this.tabMain.Controls.Add(this.tabPage2);
             this.tabMain.Controls.Add(this.tabPage1);
@@ -517,7 +352,6 @@ namespace DataMining
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.btnAddAttribute);
             this.panel3.Controls.Add(this.btnDeselectAll);
             this.panel3.Controls.Add(this.btnSelectAll);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -527,22 +361,9 @@ namespace DataMining
             this.panel3.Size = new System.Drawing.Size(595, 41);
             this.panel3.TabIndex = 0;
             // 
-            // btnAddAttribute
-            // 
-            this.btnAddAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddAttribute.Location = new System.Drawing.Point(154, 5);
-            this.btnAddAttribute.Name = "btnAddAttribute";
-            this.btnAddAttribute.Size = new System.Drawing.Size(158, 23);
-            this.btnAddAttribute.TabIndex = 1;
-            this.btnAddAttribute.Text = "Add";
-            this.btnAddAttribute.UseVisualStyleBackColor = true;
-            // 
             // btnDeselectAll
             // 
             this.btnDeselectAll.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnDeselectAll.Location = new System.Drawing.Point(318, 5);
-            this.btnDeselectAll.Name = "btnDeselectAll";
-            this.btnDeselectAll.Size = new System.Drawing.Size(149, 23);
             this.btnDeselectAll.Location = new System.Drawing.Point(347, 5);
             this.btnDeselectAll.Margin = new System.Windows.Forms.Padding(4);
             this.btnDeselectAll.Name = "btnDeselectAll";
@@ -555,9 +376,6 @@ namespace DataMining
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnSelectAll.Location = new System.Drawing.Point(0, 5);
-            this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(148, 23);
             this.btnSelectAll.Location = new System.Drawing.Point(24, 5);
             this.btnSelectAll.Margin = new System.Windows.Forms.Padding(4);
             this.btnSelectAll.Name = "btnSelectAll";
@@ -837,17 +655,6 @@ namespace DataMining
             this.chtAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.chtAttribute.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chtAttribute.Legends.Add(legend2);
-            this.chtAttribute.Location = new System.Drawing.Point(3, 329);
-            this.chtAttribute.Name = "chtAttribute";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chtAttribute.Series.Add(series2);
-            this.chtAttribute.Size = new System.Drawing.Size(473, 256);
             chartArea13.Name = "ChartArea1";
             this.chtAttribute.ChartAreas.Add(chartArea13);
             legend13.Name = "Legend1";
@@ -867,6 +674,9 @@ namespace DataMining
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.btnSave);
+            this.panel1.Controls.Add(this.btnEdit);
+            this.panel1.Controls.Add(this.btnGenerate);
             this.panel1.Controls.Add(this.btnOpenFile);
             this.panel1.Location = new System.Drawing.Point(4, 4);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
@@ -874,11 +684,6 @@ namespace DataMining
             this.panel1.Size = new System.Drawing.Size(1254, 41);
             this.panel1.TabIndex = 1;
             // 
-            // btnOpenFile
-            // 
-            this.btnOpenFile.Location = new System.Drawing.Point(12, 3);
-            this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(961, 27);
             // btnSave
             // 
             this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -924,18 +729,8 @@ namespace DataMining
             this.btnOpenFile.UseVisualStyleBackColor = true;
             this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
             // 
-            // tabMain
+            // tabPage2
             // 
-            this.tabMain.Controls.Add(this.tabPagePreprocess);
-            this.tabMain.Controls.Add(this.tabPage2);
-            this.tabMain.Controls.Add(this.tabPage1);
-            this.tabMain.Controls.Add(this.tabPage3);
-            this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabMain.Location = new System.Drawing.Point(0, 0);
-            this.tabMain.Name = "tabMain";
-            this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(1002, 691);
-            this.tabMain.TabIndex = 0;
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
@@ -945,13 +740,8 @@ namespace DataMining
             this.tabPage2.Text = "Generate ruleset";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // txtInsertRule
+            // tabPage1
             // 
-            this.txtInsertRule.Location = new System.Drawing.Point(3, 16);
-            this.txtInsertRule.Name = "txtInsertRule";
-            this.txtInsertRule.Size = new System.Drawing.Size(377, 20);
-            this.txtInsertRule.TabIndex = 1;
-            this.txtInsertRule.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInsertRule_KeyDown);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
@@ -961,32 +751,8 @@ namespace DataMining
             this.tabPage1.Text = "Optimize ruleset";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // btnInsertRule
+            // tabPage3
             // 
-            this.btnInsertRule.Location = new System.Drawing.Point(3, 43);
-            this.btnInsertRule.Name = "btnInsertRule";
-            this.btnInsertRule.Size = new System.Drawing.Size(377, 23);
-            this.btnInsertRule.TabIndex = 2;
-            this.btnInsertRule.Text = "Insert";
-            this.btnInsertRule.UseVisualStyleBackColor = true;
-            this.btnInsertRule.Click += new System.EventHandler(this.btnInsertRule_Click);
-            // 
-            // lsbRawRuleset
-            // 
-            this.lsbRawRuleset.FormattingEnabled = true;
-            this.lsbRawRuleset.Location = new System.Drawing.Point(3, 72);
-            this.lsbRawRuleset.Name = "lsbRawRuleset";
-            this.lsbRawRuleset.Size = new System.Drawing.Size(377, 537);
-            this.lsbRawRuleset.TabIndex = 3;
-            // 
-            // lsbOptimizedRuleset
-            // 
-            this.lsbOptimizedRuleset.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lsbOptimizedRuleset.FormattingEnabled = true;
-            this.lsbOptimizedRuleset.Location = new System.Drawing.Point(3, 16);
-            this.lsbOptimizedRuleset.Name = "lsbOptimizedRuleset";
-            this.lsbOptimizedRuleset.Size = new System.Drawing.Size(575, 302);
-            this.lsbOptimizedRuleset.TabIndex = 0;
             this.tabPage3.Controls.Add(this.panel7);
             this.tabPage3.Controls.Add(this.panel6);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
@@ -1293,15 +1059,7 @@ namespace DataMining
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMain";
             this.Text = "Generic Expert System";
-            this.tabPage1.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel7.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.tableLayoutPanel8.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
+            this.tabMain.ResumeLayout(false);
             this.tabPagePreprocess.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -1321,7 +1079,6 @@ namespace DataMining
             ((System.ComponentModel.ISupportInitialize)(this.dgvSAttributes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chtAttribute)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.tabMain.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -1337,19 +1094,13 @@ namespace DataMining
 
         #endregion
 
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabPagePreprocess;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label lblInstancesCount;
-        private System.Windows.Forms.Label lblSumOfWeight;
-        private System.Windows.Forms.Label lblAttributesCount;
-        private System.Windows.Forms.Label lblRelationName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
@@ -1357,49 +1108,40 @@ namespace DataMining
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button btnAddAttribute;
         private System.Windows.Forms.Button btnDeselectAll;
         private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.Button btnOpenFile;
+        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.DataGridView dgvAttributes;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Class;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Select;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn status;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label lblSUnique;
-        private System.Windows.Forms.Label lblSType;
-        private System.Windows.Forms.Label lblSMissingRate;
-        private System.Windows.Forms.Label lblSAttributeName;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridView dgvSAttributes;
+        private System.Windows.Forms.ComboBox cbxAttributes;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chtAttribute;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label lblInstancesCount;
+        private System.Windows.Forms.Label lblSumOfWeight;
+        private System.Windows.Forms.Label lblAttributesCount;
+        private System.Windows.Forms.Label lblRelationName;
+        private System.Windows.Forms.Label lblSUnique;
+        private System.Windows.Forms.Label lblSType;
+        private System.Windows.Forms.Label lblSMissingRate;
+        private System.Windows.Forms.Label lblSAttributeName;
         private System.Windows.Forms.DataGridViewTextBoxColumn selectedLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn selectedCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn selectedWeight;
-        private System.Windows.Forms.ComboBox cbxAttributes;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chtAttribute;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TabControl tabMain;
-        private TableLayoutPanel tableLayoutPanel6;
-        private TableLayoutPanel tableLayoutPanel7;
-        private TableLayoutPanel tableLayoutPanel8;
-        private Panel panel6;
-        private Button btnOptimize;
-        private GroupBox groupBox4;
-        private GroupBox groupBox5;
-        private GroupBox groupBox6;
-        private ListBox lsbProcess;
-        private Button btnOpenFile;
-        private Button btnInsertRule;
-        private TextBox txtInsertRule;
-        private ListBox lsbRawRuleset;
-        private ListBox lsbOptimizedRuleset;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Class;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Select;
         private System.Windows.Forms.DataGridViewCheckBoxColumn status;
