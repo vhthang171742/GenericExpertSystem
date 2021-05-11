@@ -429,10 +429,10 @@ namespace DataMining
 
         // <Generate ruleset>
 
-        //Tạo danh sách chứa các thuộc tính
+        //Tạo danh sáchthuộc tính
         Dictionary<string, string> dsTT = new Dictionary<string, string>();
 
-        //Tạo danh sách chứa các luật
+        //Tạo danh sách luật
         List<List<String>> dsLuat = new List<List<string>>();
 
         //Tạo một luật mới, vế phải là gtri cuối
@@ -474,7 +474,7 @@ namespace DataMining
         {
             MacDinh();
 
-            //kiểm tra nếu dòng này có vế phải được chọn thì các dòng khác sẽ không đươc chọn
+            //kiểm tra cột vế phải
             if (e.ColumnIndex == 1)
             {
                 foreach (DataGridViewRow row in dgvThuocTinh.Rows)
@@ -487,17 +487,20 @@ namespace DataMining
         private void dgvLuat_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             dongChonLuat = e.RowIndex;
-            btnXoa.Enabled = true;
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
 
-            if(dongChonLuat >= 0)
+            if (dongChonLuat >= 0)
             {
+                btnXoa.Enabled = true;
+
                 txtLuat.Text = dgvLuat.Rows[dongChonLuat].Cells[0].Value.ToString();
 
                 List<string> luat = dsLuat[dongChonLuat];
 
                 string tam;
 
-                //duyệt dgvThuocTinh để chọn những giá trị phù hợp vs luật đc chọn
+                //duyệt dgvThuocTinh
                 foreach (DataGridViewRow row in dgvThuocTinh.Rows)
                 {
                     if (row.Cells[2].Value != null)
@@ -524,6 +527,7 @@ namespace DataMining
             else
             {
                 txtLuat.Text = "Dòng bạn chọn luật không đúng";
+                btnXoa.Enabled = false;
             }
         }
 
@@ -544,26 +548,22 @@ namespace DataMining
             dsLuat.Add(new List<string> { "tt5", "tt4" });
         }
 
-        //Tạo cách hiển thị luật
+        //Tạo hiển thị luật
         private string HienThiLuat(List<string> luat)
         {
             string tenLuat = "";
 
-            //duyệt để thêm vào Vế trái
             for (int i = 0; i < luat.Count-1; i++)
             {
                 string vt = luat[i];
                 tenLuat += dsTT[vt] + " ^ ";
             }
 
-            //thêm vào Vế phải
             int j = luat.Count-1;
             string vp = luat[j];
 
-            //loại bỏ 2 ký tự thừa cuối cùng
             tenLuat = tenLuat.Remove(tenLuat.Length - 2);
 
-            //hiển thị
             return tenLuat + " --> " + dsTT[vp];
         }
 
