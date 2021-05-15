@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePreprocess = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -83,11 +83,6 @@
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvThuocTinh = new System.Windows.Forms.DataGridView();
-            this.vt = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.vp = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.matt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tentt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvLuat = new System.Windows.Forms.DataGridView();
@@ -141,6 +136,13 @@
             this.label11 = new System.Windows.Forms.Label();
             this.btnThemKL = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvAttributes1 = new System.Windows.Forms.DataGridView();
+            this.dgvThuocTinh = new System.Windows.Forms.DataGridView();
+            this.AttributeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.vt = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.vp = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.tentt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabMain.SuspendLayout();
             this.tabPagePreprocess.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -164,7 +166,6 @@
             this.tableLayoutPanel11.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvThuocTinh)).BeginInit();
             this.groupBox9.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLuat)).BeginInit();
@@ -186,6 +187,9 @@
             this.panel8.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.panel6.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvThuocTinh)).BeginInit();
             this.SuspendLayout();
             // 
             // tabMain
@@ -200,6 +204,7 @@
             this.tabMain.SelectedIndex = 0;
             this.tabMain.Size = new System.Drawing.Size(1123, 749);
             this.tabMain.TabIndex = 0;
+            this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
             // 
             // tabPagePreprocess
             // 
@@ -670,10 +675,11 @@
             // 
             // cbxAttributes
             // 
+            this.cbxAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbxAttributes.FormattingEnabled = true;
             this.cbxAttributes.Location = new System.Drawing.Point(3, 333);
             this.cbxAttributes.Name = "cbxAttributes";
-            this.cbxAttributes.Size = new System.Drawing.Size(451, 21);
+            this.cbxAttributes.Size = new System.Drawing.Size(534, 21);
             this.cbxAttributes.TabIndex = 4;
             this.cbxAttributes.SelectedIndexChanged += new System.EventHandler(this.cbxAttributes_SelectedIndexChanged);
             // 
@@ -682,16 +688,16 @@
             this.chtAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "ChartArea1";
-            this.chtAttribute.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chtAttribute.Legends.Add(legend1);
+            chartArea7.Name = "ChartArea1";
+            this.chtAttribute.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            this.chtAttribute.Legends.Add(legend7);
             this.chtAttribute.Location = new System.Drawing.Point(3, 358);
             this.chtAttribute.Name = "chtAttribute";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chtAttribute.Series.Add(series1);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.chtAttribute.Series.Add(series7);
             this.chtAttribute.Size = new System.Drawing.Size(534, 285);
             this.chtAttribute.TabIndex = 5;
             // 
@@ -776,7 +782,7 @@
             this.tableLayoutPanel12.ColumnCount = 1;
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel12.Controls.Add(this.dgvThuocTinh, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.tableLayoutPanel17, 0, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
@@ -785,52 +791,6 @@
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 615F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(484, 615);
             this.tableLayoutPanel12.TabIndex = 0;
-            // 
-            // dgvThuocTinh
-            // 
-            this.dgvThuocTinh.AllowUserToAddRows = false;
-            this.dgvThuocTinh.AllowUserToDeleteRows = false;
-            this.dgvThuocTinh.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvThuocTinh.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.vt,
-            this.vp,
-            this.matt,
-            this.tentt});
-            this.dgvThuocTinh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvThuocTinh.Location = new System.Drawing.Point(3, 3);
-            this.dgvThuocTinh.Name = "dgvThuocTinh";
-            this.dgvThuocTinh.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvThuocTinh.Size = new System.Drawing.Size(478, 609);
-            this.dgvThuocTinh.TabIndex = 1;
-            this.dgvThuocTinh.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvThuocTinh_CellClick);
-            // 
-            // vt
-            // 
-            this.vt.HeaderText = "Vế trái";
-            this.vt.Name = "vt";
-            this.vt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.vt.Width = 70;
-            // 
-            // vp
-            // 
-            this.vp.HeaderText = "Vế phải";
-            this.vp.Name = "vp";
-            this.vp.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.vp.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.vp.Width = 70;
-            // 
-            // matt
-            // 
-            this.matt.HeaderText = "Mã thuộc tính";
-            this.matt.Name = "matt";
-            this.matt.Visible = false;
-            // 
-            // tentt
-            // 
-            this.tentt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.tentt.HeaderText = "Tên thuộc tính";
-            this.tentt.Name = "tentt";
-            this.tentt.ReadOnly = true;
             // 
             // groupBox9
             // 
@@ -876,6 +836,7 @@
             // luat
             // 
             this.luat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.luat.DataPropertyName = "RuleText";
             this.luat.HeaderText = "Luật";
             this.luat.Name = "luat";
             this.luat.ReadOnly = true;
@@ -1506,6 +1467,81 @@
             this.label10.TabIndex = 5;
             this.label10.Text = "GT";
             // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.ColumnCount = 1;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.Controls.Add(this.dgvThuocTinh, 0, 1);
+            this.tableLayoutPanel17.Controls.Add(this.dgvAttributes1, 0, 0);
+            this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 2;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(478, 609);
+            this.tableLayoutPanel17.TabIndex = 0;
+            // 
+            // dgvAttributes1
+            // 
+            this.dgvAttributes1.AllowUserToAddRows = false;
+            this.dgvAttributes1.AllowUserToDeleteRows = false;
+            this.dgvAttributes1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAttributes1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.AttributeName});
+            this.dgvAttributes1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAttributes1.Location = new System.Drawing.Point(3, 3);
+            this.dgvAttributes1.Name = "dgvAttributes1";
+            this.dgvAttributes1.Size = new System.Drawing.Size(472, 298);
+            this.dgvAttributes1.TabIndex = 0;
+            this.dgvAttributes1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAttributes1_CellClick);
+            // 
+            // dgvThuocTinh
+            // 
+            this.dgvThuocTinh.AllowUserToAddRows = false;
+            this.dgvThuocTinh.AllowUserToDeleteRows = false;
+            this.dgvThuocTinh.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvThuocTinh.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.vt,
+            this.vp,
+            this.tentt});
+            this.dgvThuocTinh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvThuocTinh.Location = new System.Drawing.Point(3, 307);
+            this.dgvThuocTinh.Name = "dgvThuocTinh";
+            this.dgvThuocTinh.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvThuocTinh.Size = new System.Drawing.Size(472, 299);
+            this.dgvThuocTinh.TabIndex = 2;
+            // 
+            // AttributeName
+            // 
+            this.AttributeName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.AttributeName.DataPropertyName = "Name";
+            this.AttributeName.HeaderText = "Tên thuộc tính";
+            this.AttributeName.Name = "AttributeName";
+            // 
+            // vt
+            // 
+            this.vt.HeaderText = "Vế trái";
+            this.vt.Name = "vt";
+            this.vt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.vt.Width = 70;
+            // 
+            // vp
+            // 
+            this.vp.HeaderText = "Vế phải";
+            this.vp.Name = "vp";
+            this.vp.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.vp.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.vp.Width = 70;
+            // 
+            // tentt
+            // 
+            this.tentt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.tentt.DataPropertyName = "Label";
+            this.tentt.HeaderText = "Giá trị thuộc tính";
+            this.tentt.Name = "tentt";
+            this.tentt.ReadOnly = true;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1539,7 +1575,6 @@
             this.tableLayoutPanel11.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvThuocTinh)).EndInit();
             this.groupBox9.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLuat)).EndInit();
@@ -1567,6 +1602,9 @@
             this.groupBox4.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
+            this.tableLayoutPanel17.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvThuocTinh)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1665,15 +1703,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
-        private System.Windows.Forms.DataGridView dgvThuocTinh;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn vt;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn vp;
-        private System.Windows.Forms.DataGridViewTextBoxColumn matt;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tentt;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.DataGridView dgvLuat;
-        private System.Windows.Forms.DataGridViewTextBoxColumn luat;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
         private System.Windows.Forms.Button btnSua;
@@ -1683,6 +1715,14 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private System.Windows.Forms.TextBox txtLuat;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn luat;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
+        private System.Windows.Forms.DataGridView dgvThuocTinh;
+        private System.Windows.Forms.DataGridView dgvAttributes1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AttributeName;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn vt;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn vp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tentt;
     }
 }
 

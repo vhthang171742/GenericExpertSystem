@@ -13,9 +13,17 @@ namespace DataMining
     public class AttributeValue
     {
         #region Declare
+        public String Attribute{get; set;}
         public string Label { get; set; }
         public int Count { get; set; }
         public Dictionary<string, int> Statistic { get; set; }
+        public String Text
+        {
+            get
+            {
+                return Attribute + " = " + Label;
+            }
+        }
         #endregion
 
         #region Constructor

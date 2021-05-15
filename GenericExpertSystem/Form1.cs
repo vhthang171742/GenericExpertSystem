@@ -16,14 +16,18 @@ namespace DataMining
 {
     public partial class FrmMain : Form
     {
+        #region VHTHANG
         #region Declare
         public List<Attribute> attributes;
         public List<List<String>> dataset;
         public List<List<AttributeValue>> attributeValues;
-        public List<List<string>> ruleset;
+        public List<TRule> ruleset;
         public BindingSource dgvAttributesSource;
         public BindingSource dgvSAttributesSource;
         public BindingSource cbxAttributesSource;
+        public BindingSource dgvLuatSource;
+        public BindingSource dgvThuocTinhSource;
+        public BindingSource dgvAttributes1Source;
         string relationName;
         #endregion
 
@@ -37,12 +41,19 @@ namespace DataMining
             InitializeComponent();
             dgvAttributes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSAttributes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvAttributes1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
             dgvAttributes.AutoGenerateColumns = false;
             dgvSAttributes.AutoGenerateColumns = false;
+            dgvLuat.AutoGenerateColumns = false;
+            dgvThuocTinh.AutoGenerateColumns = false;
+            dgvAttributes1.AutoGenerateColumns = false;
+
             dataset = new List<List<string>>();
             attributes = new List<Attribute>();
             attributeValues = new List<List<AttributeValue>>();
-            ruleset = new List<List<string>>();
+            ruleset = new List<TRule>();
+
             dgvAttributesSource = new BindingSource();
             dgvAttributesSource.DataSource = attributes;
             dgvAttributes.DataSource = dgvAttributesSource;
@@ -50,9 +61,22 @@ namespace DataMining
             cbxAttributesSource = new BindingSource();
             cbxAttributesSource.DataSource = attributes;
             cbxAttributes.DataSource = cbxAttributesSource;
+
             cbxAttributes.DisplayMember = "Name";
             cbxAttributes.ValueMember = "Name";
             cbxAttributes.Text = "- -Choose an attribute to visualize- -";
+
+            dgvLuatSource = new BindingSource();
+            dgvLuatSource.DataSource = ruleset;
+            dgvLuat.DataSource = dgvLuatSource;
+
+            dgvThuocTinhSource = new BindingSource();
+            dgvThuocTinhSource.DataSource = dsTT;
+            dgvThuocTinh.DataSource = dgvThuocTinhSource;
+
+            dgvAttributes1Source = new BindingSource();
+            dgvAttributes1Source.DataSource = attributes;
+            dgvAttributes1.DataSource = dgvAttributes1Source;
 
             dgvSAttributesSource = new BindingSource();
 
@@ -62,16 +86,11 @@ namespace DataMining
             btnRemove.Enabled = false;
 
             cbxAttributes.Enabled = false;
-
-            //tạo tạm để thực hiện
-            taoDL();
-            //hiển thị giao diện mặc định
-            HienThiMacDinh();
-
         }
         #endregion
 
         #region Method
+        #region Preporcess
         /// <summary>
         /// Open file dialog to select source data file
         /// </summary>
@@ -135,6 +154,7 @@ namespace DataMining
                                 av.Statistic.Add(s, (from x in dataset select x[i]).Count(x => x == s));
                                 av.Count = (from x in dataset select x[i]).Count(x => x == s);
                                 av.Label = s;
+                                av.Attribute = attributes[i].Name;
                                 avl.Add(av);
                             }
                             attributeValues.Add(avl);
@@ -424,46 +444,47 @@ namespace DataMining
                 }
             }
         }
+        #endregion
 
+        #region OptimizeRule
         /// <summary>
         /// Determine whether a rule is unnecessary in ruleset and remove it
         /// </summary>
-        /// <typeparam name="T">Type of events</typeparam>
         /// <param name="ruleSet">Ruleset</param>
         /// <param name="i">Index of rule in ruleset</param>
         /// <returns>True if rule is unnecessary</returns>
         /// Created by VHTHANG{11/05/2021}
-        public bool RemoveUnnecessaryRule<T>(ref List<List<T>> ruleSet, int i)
+        public bool RemoveUnnecessaryRule(ref List<TRule> ruleSet, int i)
         {
-            HashSet<T> complement = new HashSet<T>();
-            Queue<List<T>> SAT = new Queue<List<T>>();
-            for (int j = 0; j < ruleSet[i].Count - 1; j++)
-                complement.Add(ruleSet[i][j]);
+            HashSet<String> complement = new HashSet<String>();
+            Queue<TRule> SAT = new Queue<TRule>();
+            for (int j = 0; j < ruleSet[i].Rule.Count - 1; j++)
+                complement.Add(ruleSet[i].Rule[j]);
             for (int k = 0; k < ruleSet.Count; k++)
             {
                 if (k == i)
                     continue;
-                if (ruleSet[k].GetRange(0, ruleSet[k].Count - 1).Intersect(complement).Count() == ruleSet[k].Count() - 1)
+                if (ruleSet[k].Rule.GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
                     SAT.Enqueue(ruleSet[k]);
             }
             List<int> served = new List<int>();
             while (SAT.Count != 0)
             {
-                List<T> s = SAT.Dequeue();
+                TRule s = SAT.Dequeue();
                 served.Add(ruleSet.IndexOf(s));
-                complement.Add(s.Last());
+                complement.Add(s.Rule.Last());
                 for (int k = 0; k < ruleSet.Count; k++)
                 {
                     if (k == i)
                         continue;
                     if (served.Contains(k))
                         continue;
-                    if (ruleSet[k].GetRange(0, ruleSet[k].Count - 1).Intersect(complement).Count() == ruleSet[k].Count() - 1)
+                    if (ruleSet[k].Rule.GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
                         if (!SAT.Contains(ruleSet[k]))
                             SAT.Enqueue(ruleSet[k]);
                 }
             }
-            if (complement.Contains(ruleSet[i].Last()))
+            if (complement.Contains(ruleSet[i].Rule.Last()))
             {
                 ruleSet.RemoveAt(i);
                 return true;
@@ -479,40 +500,40 @@ namespace DataMining
         /// <param name="i">Index of rule in ruleset</param>
         /// <param name="j">Index of event in rule</param>
         /// <returns>True if event is unnecessary</returns>
-        public bool RemoveUnnecessaryEvent<T>(ref List<List<T>> ruleSet, int i, int j)
+        public bool RemoveUnnecessaryEvent(ref List<TRule> ruleSet, int i, int j)
         {
-            List<List<T>> tempRuleSet = new List<List<T>>();
+            List<TRule> tempRuleSet = new List<TRule>();
             ruleSet.ForEach((item) =>
             {
-                tempRuleSet.Add(new List<T>(item));
+                tempRuleSet.Add(item);
             });
-            tempRuleSet[i].RemoveAt(j);
+            tempRuleSet[i].Rule.RemoveAt(j);
 
-            HashSet<T> complement = new HashSet<T>();
-            Queue<List<T>> SAT = new Queue<List<T>>();
-            for (int k = 0; k < tempRuleSet[i].Count - 1; k++)
-                complement.Add(tempRuleSet[i][k]);
+            HashSet<String> complement = new HashSet<String>();
+            Queue<TRule> SAT = new Queue<TRule>();
+            for (int k = 0; k < tempRuleSet[i].Rule.Count - 1; k++)
+                complement.Add(tempRuleSet[i].Rule[k]);
             for (int l = 0; l < tempRuleSet.Count; l++)
             {
-                if (tempRuleSet[l].GetRange(0, tempRuleSet[l].Count - 1).Intersect(complement).Count() == tempRuleSet[l].Count() - 1)
+                if (tempRuleSet[l].Rule.GetRange(0, tempRuleSet[l].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[l].Rule.Count() - 1)
                     SAT.Enqueue(tempRuleSet[l]);
             }
             List<int> served = new List<int>();
             while (SAT.Count != 0)
             {
-                List<T> s = SAT.Dequeue();
+                TRule s = SAT.Dequeue();
                 served.Add(tempRuleSet.IndexOf(s));
-                complement.Add(s.Last());
+                complement.Add(s.Rule.Last());
                 for (int m = 0; m < tempRuleSet.Count; m++)
                 {
                     if (served.Contains(m))
                         continue;
-                    if (tempRuleSet[m].GetRange(0, tempRuleSet[m].Count - 1).Intersect(complement).Count() == tempRuleSet[m].Count() - 1)
+                    if (tempRuleSet[m].Rule.GetRange(0, tempRuleSet[m].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[m].Rule.Count() - 1)
                         if (!SAT.Contains(tempRuleSet[m]))
                             SAT.Enqueue(tempRuleSet[m]);
                 }
             }
-            if (complement.Contains(ruleSet[i][j]))
+            if (complement.Contains(ruleSet[i].Rule[j]))
             {
                 ruleSet = tempRuleSet;
                 return true;
@@ -526,19 +547,19 @@ namespace DataMining
         /// <typeparam name="T">Type of events</typeparam>
         /// <param name="ruleSet">Ruleset</param>
         /// Created by VHTHANG{11/05/2021}
-        public void OptimizeRuleSet<T>(ref List<List<T>> ruleSet)
+        public void OptimizeRuleSet(ref List<TRule> ruleSet)
         {
             List<bool> rFlag = new List<bool>();
-            List<List<T>> rawRuleset = new List<List<T>>(ruleSet);
-            List<List<T>> eFlag = new List<List<T>>();
+            List<TRule> rawRuleset = new List<TRule>(ruleSet);
+            List<TRule> eFlag = new List<TRule>();
             //Remove unnecessary rules
             for (int i = 0; i < ruleSet.Count; i++)
             {
                 rFlag.Add(true);
-                if (RemoveUnnecessaryRule<T>(ref ruleSet, i))
+                if (RemoveUnnecessaryRule(ref ruleSet, i))
                 {
                     rFlag[rFlag.Count - 1] = false;
-                    lsbProcess.Items.Add("Removed unnecessary rule r" + rFlag.Count + ": " + VisualizeRule((List<String>)Convert.ChangeType(rawRuleset[rFlag.Count - 1], typeof(List<String>))));
+                    lsbProcess.Items.Add("Removed unnecessary rule r" + rFlag.Count + ": " + rawRuleset[rFlag.Count - 1].RuleText);
                     i--;
                 }
             }
@@ -546,13 +567,13 @@ namespace DataMining
             //Remove unnecessary events
             for (int i = 0; i < ruleSet.Count; i++)
             {
-                if (ruleSet[i].Count == 2)
+                if (ruleSet[i].Rule.Count == 2)
                     continue;
-                for (int j = 0; j < ruleSet[i].Count - 1; j++)
+                for (int j = 0; j < ruleSet[i].Rule.Count - 1; j++)
                 {
-                    if (RemoveUnnecessaryEvent<T>(ref ruleSet, i, j))
+                    if (RemoveUnnecessaryEvent(ref ruleSet, i, j))
                     {
-                        if (RemoveUnnecessaryRule<T>(ref ruleSet, i))
+                        if (RemoveUnnecessaryRule(ref ruleSet, i))
                         {
                             int temp = -1;
                             for (int t = 0; t < ruleSet.Count; t++)
@@ -563,7 +584,7 @@ namespace DataMining
                                 }
                                 if (temp == i)
                                 {
-                                    lsbProcess.Items.Add("Removed unnecessary rule r" + (t + 1) + ": " + VisualizeRule((List<String>)Convert.ChangeType(rawRuleset[t], typeof(List<String>))));
+                                    lsbProcess.Items.Add("Removed unnecessary rule r" + (t + 1) + ": " + rawRuleset[t].RuleText);
                                     rFlag[t] = false;
                                     i--;
                                     break;
@@ -581,7 +602,7 @@ namespace DataMining
                                 }
                                 if (temp == i)
                                 {
-                                    lsbProcess.Items.Add("Removed unnecessary event " + ruleSet[i][j] + " from r" + (i + 1) + ": " + VisualizeRule((List<String>)Convert.ChangeType(rawRuleset[t], typeof(List<String>))) + " => " + VisualizeRule((List<String>)Convert.ChangeType(ruleset[i], typeof(List<String>))));
+                                    lsbProcess.Items.Add("Removed unnecessary event " + ruleSet[i].Rule[j] + " from r" + (i + 1) + ": " + rawRuleset[t].RuleText + " => " + ruleset[i].RuleText);
                                     break;
                                 }
                             }
@@ -598,8 +619,9 @@ namespace DataMining
             {
                 String s = txtInsertRule.Text;
                 var values = s.Split(' ').ToList();
-                ruleset.Add(values);
-                lsbRawRuleset.Items.Add(VisualizeRule(values));
+                TRule newRule = new TRule(values);
+                ruleset.Add(newRule);
+                lsbRawRuleset.Items.Add(newRule.RuleText);
                 txtInsertRule.Clear();
             }
             catch (FormatException ex)
@@ -608,30 +630,11 @@ namespace DataMining
             }
         }
 
-        private String VisualizeRule(List<String> rule)
-        {
-            string s = "";
-            for (int i = 0; i < rule.Count; i++)
-            {
-                if (i < rule.Count - 2)
-                {
-                    s += (rule[i] + " ^ ");
-                }
-                else if (i == rule.Count - 2)
-                {
-                    s += (rule[i] + " -> ");
-                }
-                else
-                    s += (rule[i]);
-            }
-            return s;
-        }
-
         private void btnOptimize_Click(object sender, EventArgs e)
         {
-            OptimizeRuleSet<String>(ref ruleset);
+            OptimizeRuleSet(ref ruleset);
             for (int i = 0; i < ruleset.Count; i++)
-                lsbOptimizedRuleset.Items.Add(VisualizeRule(ruleset[i]));
+                lsbOptimizedRuleset.Items.Add(ruleset[i].RuleText);
         }
 
         private void txtInsertRule_KeyDown(object sender, KeyEventArgs e)
@@ -642,8 +645,10 @@ namespace DataMining
             }
         }
         #endregion
+        #endregion
+        #endregion
 
-
+        #region VXTHANH
         static List<RuleItem> list = new List<RuleItem>();
         static int i = 1;
         private void btnKhoiTao_Click(object sender, EventArgs e)
@@ -747,48 +752,43 @@ namespace DataMining
             }
 
         }
+        #endregion
 
+        #region PTTHE
         // <Generate ruleset>
 
         //Tạo danh sáchthuộc tính
-        Dictionary<string, string> dsTT = new Dictionary<string, string>();
-
-        //Tạo danh sách luật
-        List<List<String>> dsLuat = new List<List<string>>();
+        List<AttributeValue> dsTT = new List<AttributeValue>();
 
         //Tạo một luật mới, vế phải là gtri cuối
-        List<string> luatMoi = new List<string>();
+        TRule luatMoi;
         int dongChonLuat;
 
         //Hiển thị lên các thuộc tính được chọn, cần ấn nút trước khi thực hiện các thao tác thêm, sửa
         private void btnHienThi_Click(object sender, EventArgs e)
         {
-            luatMoi = new List<string>();
+            luatMoi = new TRule();
 
             //thao tác thêm luật
             themLuat(luatMoi);
-
         }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            dsLuat.Add(luatMoi);
+            ruleset.Add(luatMoi);
             MessageBox.Show("Thêm luật mới thành công.");
-            HienThiMacDinh();
         }
 
         private void btnSua_Click(object sender, EventArgs e)
         {
-            dsLuat[dongChonLuat] = luatMoi;
+            ruleset[dongChonLuat] = luatMoi;
             MessageBox.Show("Sửa luật số " + (dongChonLuat + 1) + " thành công.");
-            HienThiMacDinh();
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            dsLuat.RemoveAt(dongChonLuat);
+            ruleset.RemoveAt(dongChonLuat);
             MessageBox.Show("Xóa luật số " + (dongChonLuat + 1) + " thành công.");
-            HienThiMacDinh();
         }
 
         private void dgvThuocTinh_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -817,7 +817,7 @@ namespace DataMining
 
                 txtLuat.Text = dgvLuat.Rows[dongChonLuat].Cells[0].Value.ToString();
 
-                List<string> luat = dsLuat[dongChonLuat];
+                TRule luat = ruleset[dongChonLuat];
 
                 string tam;
 
@@ -830,14 +830,14 @@ namespace DataMining
                         row.Cells[1].Value = false;
 
                         tam = (string)row.Cells[2].Value;
-                        if ((Boolean)tam.Equals(luat[luat.Count - 1]))
+                        if ((Boolean)tam.Equals(luat.Rule[luat.Rule.Count - 1]))
                         {
                             row.Cells[1].Value = true;
                         }
 
-                        for (int i = 0; i < luat.Count - 1; i++)
+                        for (int i = 0; i < luat.Rule.Count - 1; i++)
                         {
-                            if ((Boolean)tam.Equals(luat[i]))
+                            if ((Boolean)tam.Equals(luat.Rule[i]))
                             {
                                 row.Cells[0].Value = true;
                             }
@@ -852,42 +852,6 @@ namespace DataMining
             }
         }
 
-        private void taoDL()
-        {
-            dsTT.Add("tt1", "Số a");
-            dsTT.Add("tt2", "Số b");
-            dsTT.Add("tt3", "Số c");
-            dsTT.Add("tt4", "Số d");
-            dsTT.Add("tt5", "Số e");
-            dsTT.Add("tt6", "Số f");
-            dsTT.Add("tt7", "Số g");
-
-            dsLuat.Add(new List<string> { "tt3", "tt1", "tt2" });
-            dsLuat.Add(new List<string> { "tt4", "tt2", "tt3" });
-            dsLuat.Add(new List<string> { "tt2", "tt1", "tt4" });
-            dsLuat.Add(new List<string> { "tt1", "tt3", "tt5" });
-            dsLuat.Add(new List<string> { "tt5", "tt4" });
-        }
-
-        //Tạo hiển thị luật
-        private string HienThiLuat(List<string> luat)
-        {
-            string tenLuat = "";
-
-            for (int i = 0; i < luat.Count - 1; i++)
-            {
-                string vt = luat[i];
-                tenLuat += dsTT[vt] + " ^ ";
-            }
-
-            int j = luat.Count - 1;
-            string vp = luat[j];
-
-            tenLuat = tenLuat.Remove(tenLuat.Length - 2);
-
-            return tenLuat + " --> " + dsTT[vp];
-        }
-
         private void MacDinh()
         {
             txtLuat.Text = "";
@@ -896,39 +860,7 @@ namespace DataMining
             btnXoa.Enabled = false;
         }
 
-        private void HienThiMacDinh()
-        {
-            MacDinh();
-            dongChonLuat = -1;
-
-            int dongTT = 0;
-            int dongLuat = 0;
-            dgvThuocTinh.Rows.Clear();
-            dgvLuat.Rows.Clear();
-
-            //thêm DL vào bảng dgvThuocTinh
-            foreach (KeyValuePair<string, string> TT in dsTT)
-            {
-                dgvThuocTinh.Rows.Add();
-
-                dgvThuocTinh.Rows[dongTT].Cells[2].Value = TT.Key.ToString();
-                dgvThuocTinh.Rows[dongTT].Cells[3].Value = TT.Value.ToString();
-
-                dongTT++;
-            }
-
-            //thêm DL vào bảng dgvLuat
-            foreach (List<string> luat in dsLuat)
-            {
-                dgvLuat.Rows.Add();
-
-                dgvLuat.Rows[dongLuat].Cells[0].Value = HienThiLuat(luat).ToString();
-
-                dongLuat++;
-            }
-        }
-
-        private void themLuat(List<string> luat)
+        private void themLuat(TRule luat)
         {
             int kt_vt = 0, kt_vp = 0;
 
@@ -946,7 +878,7 @@ namespace DataMining
                         else
                         {
                             string tt = row.Cells[2].Value.ToString();
-                            luat.Add(tt);
+                            luat.Rule.Add(tt);
                             kt_vt++;
                         }
                     }
@@ -960,7 +892,7 @@ namespace DataMining
                     if ((Boolean)row.Cells[1].Value == true)
                     {
                         string tt = row.Cells[2].Value.ToString();
-                        luat.Add(tt);
+                        luat.Rule.Add(tt);
                         kt_vp = 1;
                     }
                 }
@@ -968,7 +900,7 @@ namespace DataMining
 
             if (kt_vt > 0 && kt_vp == 1)
             {
-                txtLuat.Text = HienThiLuat(luat);
+                txtLuat.Text = luat.RuleText;
                 btnThem.Enabled = true;
             }
             else
@@ -995,7 +927,21 @@ namespace DataMining
             btnThem.Enabled = true;
         }
 
+        private void dgvAttributes1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvThuocTinh.Rows.Clear();
+            dsTT.AddRange(attributeValues[e.RowIndex]);
+            dgvThuocTinhSource.ResetBindings(false);
+        }
 
         // </Generate ruleset>
+        #endregion
+
+        private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dgvAttributes1Source.ResetBindings(false);
+        }
+
+        
     }
 }
