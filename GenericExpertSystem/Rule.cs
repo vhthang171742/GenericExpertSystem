@@ -68,7 +68,6 @@ namespace DataMining
         }
         public void SuyDienTien(List<RuleItem> rules, String kl)
         {
-            String str = "";
             List<double> valueHeuristic = new List<double>();
             foreach (RuleItem rule in rules)
             {
