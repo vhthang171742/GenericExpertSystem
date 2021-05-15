@@ -62,6 +62,12 @@ namespace DataMining
             btnRemove.Enabled = false;
 
             cbxAttributes.Enabled = false;
+
+            //tạo tạm để thực hiện
+            taoDL();
+            //hiển thị giao diện mặc định
+            HienThiMacDinh();
+
         }
         #endregion
 
@@ -419,114 +425,6 @@ namespace DataMining
             }
         }
 
-        #endregion
-       static List<RuleItem> list = new List<RuleItem>();
-       static int i = 1;
-        private void btnKhoiTao_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void btnThemGT_Click(object sender, EventArgs e)
-        {
-            string text = lstTapSuKien.GetItemText(lstTapSuKien.SelectedItem);
-            if (String.IsNullOrEmpty(text))
-            {
-
-                MessageBox.Show("Hãy chọn sự kiện thêm vào GT");
-                return;
-            }
-            lstGiaThiet.Items.Add(text);
-        }
-
-        private void btnThemKL_Click(object sender, EventArgs e)
-        {
-            string text = lstTapSuKien.GetItemText(lstTapSuKien.SelectedItem);
-            if (String.IsNullOrEmpty(text))
-            {
-                MessageBox.Show("Hãy chọn sự kiện thêm vào KL");
-                return;
-            }
-            txtKetLuan.Text = text;
-        }
-        private void btnThemLuat_Click(object sender, EventArgs e)
-        {
-            if(lstGiaThiet.Items.Count==0 || txtKetLuan.Text == "")
-            {
-                MessageBox.Show("Chọn GT và KL phù hợp");
-                return;
-            }
-            RuleItem rule;
-            List<string> left = new List<string>();
-            string right = txtKetLuan.Text;
-            for (int i = 0; i < lstGiaThiet.Items.Count; i++)
-            {
-                left.Add(lstGiaThiet.Items[i].ToString());
-            }
-            string nameRule = "r" + i.ToString();
-            rule = new RuleItem(nameRule, left, right);
-            list.Add(rule);
-            i++;
-            lstTapLuat.Items.Add(rule.Name+" : "+rule.ToString());
-            lstGiaThiet.Items.Clear();
-            txtKetLuan.Text = "";
-        }
-
-        private void btnXoaLuat_Click(object sender, EventArgs e)
-        {
-            if (lstTapLuat.Items.Count == 0)
-            {
-                MessageBox.Show("Tập luật rỗng");
-                return;
-            }
-            lstTapLuat.Items.Remove(lstTapLuat.SelectedItem);
-            
-        }
-
-        private void btnSuyDienTien_Click(object sender, EventArgs e)
-        {
-            if (lstGiaThiet.Items.Count == 0 || txtKetLuan.Text == "")
-            {
-                MessageBox.Show("Chọn GT và KL phù hợp");
-                return;
-            }
-            List<string> gt = new List<string>();
-            for (int i = 0; i < lstGiaThiet.Items.Count; i++)
-            {
-                gt.Add(lstGiaThiet.Items[i].ToString());
-            }
-            string kl = txtKetLuan.Text;
-            Rule rule = new Rule(list, gt, kl);
-
-            rule.SuyDienTien(list,kl);
-
-            if (rule.ketQua)
-            {
-                string tg = "", vet="";
-                foreach (var item in rule.TG)
-                {
-                    tg += item.ToString() + " , ";
-                }
-                foreach (var item in rule.VET)
-                {
-                    vet += item.Name+" , ";
-                }
-                lblKetQua.Text = "GT ->  KL là TRUE được chứng minh";
-                txtDuongDi.Text = vet;
-                txtTapSuKienDich.Text = tg;
-            }
-            else
-            {
-                lblKetQua.Text = "GT ->  KL là FALSE";
-                txtDuongDi.Text = "FALSE";
-                txtTapSuKienDich.Text = "FALSE";
-            }
-            
-        }
-
-       
-    }
-
         /// <summary>
         /// Determine whether a rule is unnecessary in ruleset and remove it
         /// </summary>
@@ -693,7 +591,6 @@ namespace DataMining
                 }
             }
         }
-        #endregion
 
         private void btnInsertRule_Click(object sender, EventArgs e)
         {
@@ -744,5 +641,361 @@ namespace DataMining
                 btnInsertRule_Click((object)sender, (EventArgs)e);
             }
         }
+        #endregion
+
+
+        static List<RuleItem> list = new List<RuleItem>();
+        static int i = 1;
+        private void btnKhoiTao_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnThemGT_Click(object sender, EventArgs e)
+        {
+            string text = lstTapSuKien.GetItemText(lstTapSuKien.SelectedItem);
+            if (String.IsNullOrEmpty(text))
+            {
+
+                MessageBox.Show("Hãy chọn sự kiện thêm vào GT");
+                return;
+            }
+            lstGiaThiet.Items.Add(text);
+        }
+
+        private void btnThemKL_Click(object sender, EventArgs e)
+        {
+            string text = lstTapSuKien.GetItemText(lstTapSuKien.SelectedItem);
+            if (String.IsNullOrEmpty(text))
+            {
+                MessageBox.Show("Hãy chọn sự kiện thêm vào KL");
+                return;
+            }
+            txtKetLuan.Text = text;
+        }
+        private void btnThemLuat_Click(object sender, EventArgs e)
+        {
+            if (lstGiaThiet.Items.Count == 0 || txtKetLuan.Text == "")
+            {
+                MessageBox.Show("Chọn GT và KL phù hợp");
+                return;
+            }
+            RuleItem rule;
+            List<string> left = new List<string>();
+            string right = txtKetLuan.Text;
+            for (int i = 0; i < lstGiaThiet.Items.Count; i++)
+            {
+                left.Add(lstGiaThiet.Items[i].ToString());
+            }
+            string nameRule = "r" + i.ToString();
+            rule = new RuleItem(nameRule, left, right);
+            list.Add(rule);
+            i++;
+            lstTapLuat.Items.Add(rule.Name + " : " + rule.ToString());
+            lstGiaThiet.Items.Clear();
+            txtKetLuan.Text = "";
+        }
+
+        private void btnXoaLuat_Click(object sender, EventArgs e)
+        {
+            if (lstTapLuat.Items.Count == 0)
+            {
+                MessageBox.Show("Tập luật rỗng");
+                return;
+            }
+            lstTapLuat.Items.Remove(lstTapLuat.SelectedItem);
+
+        }
+
+        private void btnSuyDienTien_Click(object sender, EventArgs e)
+        {
+            if (lstGiaThiet.Items.Count == 0 || txtKetLuan.Text == "")
+            {
+                MessageBox.Show("Chọn GT và KL phù hợp");
+                return;
+            }
+            List<string> gt = new List<string>();
+            for (int i = 0; i < lstGiaThiet.Items.Count; i++)
+            {
+                gt.Add(lstGiaThiet.Items[i].ToString());
+            }
+            string kl = txtKetLuan.Text;
+            Rule rule = new Rule(list, gt, kl);
+
+            rule.SuyDienTien(list, kl);
+
+            if (rule.ketQua)
+            {
+                string tg = "", vet = "";
+                foreach (var item in rule.TG)
+                {
+                    tg += item.ToString() + " , ";
+                }
+                foreach (var item in rule.VET)
+                {
+                    vet += item.Name + " , ";
+                }
+                lblKetQua.Text = "GT ->  KL là TRUE được chứng minh";
+                txtDuongDi.Text = vet;
+                txtTapSuKienDich.Text = tg;
+            }
+            else
+            {
+                lblKetQua.Text = "GT ->  KL là FALSE";
+                txtDuongDi.Text = "FALSE";
+                txtTapSuKienDich.Text = "FALSE";
+            }
+
+        }
+
+        // <Generate ruleset>
+
+        //Tạo danh sáchthuộc tính
+        Dictionary<string, string> dsTT = new Dictionary<string, string>();
+
+        //Tạo danh sách luật
+        List<List<String>> dsLuat = new List<List<string>>();
+
+        //Tạo một luật mới, vế phải là gtri cuối
+        List<string> luatMoi = new List<string>();
+        int dongChonLuat;
+
+        //Hiển thị lên các thuộc tính được chọn, cần ấn nút trước khi thực hiện các thao tác thêm, sửa
+        private void btnHienThi_Click(object sender, EventArgs e)
+        {
+            luatMoi = new List<string>();
+
+            //thao tác thêm luật
+            themLuat(luatMoi);
+
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            dsLuat.Add(luatMoi);
+            MessageBox.Show("Thêm luật mới thành công.");
+            HienThiMacDinh();
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            dsLuat[dongChonLuat] = luatMoi;
+            MessageBox.Show("Sửa luật số " + (dongChonLuat + 1) + " thành công.");
+            HienThiMacDinh();
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            dsLuat.RemoveAt(dongChonLuat);
+            MessageBox.Show("Xóa luật số " + (dongChonLuat + 1) + " thành công.");
+            HienThiMacDinh();
+        }
+
+        private void dgvThuocTinh_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MacDinh();
+
+            //kiểm tra cột vế phải
+            if (e.ColumnIndex == 1)
+            {
+                foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+                {
+                    row.Cells[1].Value = false;
+                }
+            }
+        }
+
+        private void dgvLuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dongChonLuat = e.RowIndex;
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+
+            if (dongChonLuat >= 0)
+            {
+                btnXoa.Enabled = true;
+
+                txtLuat.Text = dgvLuat.Rows[dongChonLuat].Cells[0].Value.ToString();
+
+                List<string> luat = dsLuat[dongChonLuat];
+
+                string tam;
+
+                //duyệt dgvThuocTinh
+                foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+                {
+                    if (row.Cells[2].Value != null)
+                    {
+                        row.Cells[0].Value = false;
+                        row.Cells[1].Value = false;
+
+                        tam = (string)row.Cells[2].Value;
+                        if ((Boolean)tam.Equals(luat[luat.Count - 1]))
+                        {
+                            row.Cells[1].Value = true;
+                        }
+
+                        for (int i = 0; i < luat.Count - 1; i++)
+                        {
+                            if ((Boolean)tam.Equals(luat[i]))
+                            {
+                                row.Cells[0].Value = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                txtLuat.Text = "Dòng bạn chọn luật không đúng";
+                btnXoa.Enabled = false;
+            }
+        }
+
+        private void taoDL()
+        {
+            dsTT.Add("tt1", "Số a");
+            dsTT.Add("tt2", "Số b");
+            dsTT.Add("tt3", "Số c");
+            dsTT.Add("tt4", "Số d");
+            dsTT.Add("tt5", "Số e");
+            dsTT.Add("tt6", "Số f");
+            dsTT.Add("tt7", "Số g");
+
+            dsLuat.Add(new List<string> { "tt3", "tt1", "tt2" });
+            dsLuat.Add(new List<string> { "tt4", "tt2", "tt3" });
+            dsLuat.Add(new List<string> { "tt2", "tt1", "tt4" });
+            dsLuat.Add(new List<string> { "tt1", "tt3", "tt5" });
+            dsLuat.Add(new List<string> { "tt5", "tt4" });
+        }
+
+        //Tạo hiển thị luật
+        private string HienThiLuat(List<string> luat)
+        {
+            string tenLuat = "";
+
+            for (int i = 0; i < luat.Count - 1; i++)
+            {
+                string vt = luat[i];
+                tenLuat += dsTT[vt] + " ^ ";
+            }
+
+            int j = luat.Count - 1;
+            string vp = luat[j];
+
+            tenLuat = tenLuat.Remove(tenLuat.Length - 2);
+
+            return tenLuat + " --> " + dsTT[vp];
+        }
+
+        private void MacDinh()
+        {
+            txtLuat.Text = "";
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
+        }
+
+        private void HienThiMacDinh()
+        {
+            MacDinh();
+            dongChonLuat = -1;
+
+            int dongTT = 0;
+            int dongLuat = 0;
+            dgvThuocTinh.Rows.Clear();
+            dgvLuat.Rows.Clear();
+
+            //thêm DL vào bảng dgvThuocTinh
+            foreach (KeyValuePair<string, string> TT in dsTT)
+            {
+                dgvThuocTinh.Rows.Add();
+
+                dgvThuocTinh.Rows[dongTT].Cells[2].Value = TT.Key.ToString();
+                dgvThuocTinh.Rows[dongTT].Cells[3].Value = TT.Value.ToString();
+
+                dongTT++;
+            }
+
+            //thêm DL vào bảng dgvLuat
+            foreach (List<string> luat in dsLuat)
+            {
+                dgvLuat.Rows.Add();
+
+                dgvLuat.Rows[dongLuat].Cells[0].Value = HienThiLuat(luat).ToString();
+
+                dongLuat++;
+            }
+        }
+
+        private void themLuat(List<string> luat)
+        {
+            int kt_vt = 0, kt_vp = 0;
+
+            foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+            {
+                if (row.Cells[0].Value != null)
+                {
+                    if ((Boolean)row.Cells[0].Value == true)
+                    {
+                        if ((Boolean)row.Cells[1].Value == true)
+                        {
+                            kt_vt = -1;
+                            break;
+                        }
+                        else
+                        {
+                            string tt = row.Cells[2].Value.ToString();
+                            luat.Add(tt);
+                            kt_vt++;
+                        }
+                    }
+                }
+            }
+
+            foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+            {
+                if (row.Cells[1].Value != null)
+                {
+                    if ((Boolean)row.Cells[1].Value == true)
+                    {
+                        string tt = row.Cells[2].Value.ToString();
+                        luat.Add(tt);
+                        kt_vp = 1;
+                    }
+                }
+            }
+
+            if (kt_vt > 0 && kt_vp == 1)
+            {
+                txtLuat.Text = HienThiLuat(luat);
+                btnThem.Enabled = true;
+            }
+            else
+            {
+                txtLuat.Text = "Lỗi: ";
+                if (kt_vp == 0)
+                {
+                    txtLuat.Text += "chưa thêm vế phải của luật; ";
+                }
+                if (kt_vt == -1)
+                {
+                    txtLuat.Text += "2 vế có 1 thuộc tính giống nhau; ";
+                }
+                if (kt_vt == 0)
+                {
+                    txtLuat.Text += "chưa thêm vế trái của luật; ";
+                }
+            }
+
+            if (dongChonLuat != -1)
+            {
+                btnSua.Enabled = true;
+            }
+            btnThem.Enabled = true;
+        }
+
+
+        // </Generate ruleset>
     }
 }
