@@ -8,8 +8,8 @@ namespace DataMining
 {
     public class TRule
     {
-        private List<String> rule;
-        public List<String> Rule {
+        private List<AttributeValue> rule;
+        public List<AttributeValue> Rule {
             get { return rule; }
             set {
                 rule = value;
@@ -19,18 +19,18 @@ namespace DataMining
             get
             {
                 string s = "";
-                for (int i = 0; i < Rule.Count; i++)
+                for (int i = 0; i < rule.Count; i++)
                 {
-                    if (i < Rule.Count - 2)
+                    if (i < rule.Count - 2)
                     {
-                        s += (Rule[i] + " ^ ");
+                        s += (rule[i].Text + " ^ ");
                     }
-                    else if (i == Rule.Count - 2)
+                    else if (i == rule.Count - 2)
                     {
-                        s += (Rule[i] + " -> ");
+                        s += (rule[i].Text + " -> ");
                     }
                     else
-                        s += (Rule[i]);
+                        s += (rule[i].Text);
                 }
                 return s;
             }
@@ -38,12 +38,17 @@ namespace DataMining
 
         public TRule()
         {
-
+            this.Rule = new List<AttributeValue>();
         }
 
         public TRule(List<String> rule)
         {
-            this.rule = rule;
+            foreach(String s in rule)
+            {
+                AttributeValue av = new AttributeValue();
+                av.Label = s;
+                this.rule.Add(av);
+            }
         }
     }
 }

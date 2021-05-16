@@ -21,7 +21,10 @@ namespace DataMining
         {
             get
             {
-                return Attribute + " = " + Label;
+                if (Attribute != "")
+                    return Attribute + " = " + Label;
+                else
+                    return Label;
             }
         }
         #endregion
