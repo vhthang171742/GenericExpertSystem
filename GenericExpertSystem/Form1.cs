@@ -27,7 +27,6 @@ namespace DataMining
         public BindingSource cbxAttributesSource;
         public BindingSource dgvLuatSource;
         public BindingSource dgvThuocTinhSource;
-        public BindingSource dgvAttributes1Source;
         string relationName;
         #endregion
 
@@ -73,10 +72,6 @@ namespace DataMining
             dgvThuocTinhSource = new BindingSource();
             dgvThuocTinhSource.DataSource = dsTT;
             dgvThuocTinh.DataSource = dgvThuocTinhSource;
-
-            dgvAttributes1Source = new BindingSource();
-            dgvAttributes1Source.DataSource = attributes;
-            dgvAttributes1.DataSource = dgvAttributes1Source;
 
             dgvSAttributesSource = new BindingSource();
 
@@ -459,12 +454,12 @@ namespace DataMining
             HashSet<String> complement = new HashSet<String>();
             Queue<TRule> SAT = new Queue<TRule>();
             for (int j = 0; j < ruleSet[i].Rule.Count - 1; j++)
-                complement.Add(ruleSet[i].Rule[j]);
+                complement.Add(ruleSet[i].Rule[j].Label);
             for (int k = 0; k < ruleSet.Count; k++)
             {
                 if (k == i)
                     continue;
-                if (ruleSet[k].Rule.GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
+                if ((from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
                     SAT.Enqueue(ruleSet[k]);
             }
             List<int> served = new List<int>();
@@ -472,19 +467,19 @@ namespace DataMining
             {
                 TRule s = SAT.Dequeue();
                 served.Add(ruleSet.IndexOf(s));
-                complement.Add(s.Rule.Last());
+                complement.Add(s.Rule.Last().Label);
                 for (int k = 0; k < ruleSet.Count; k++)
                 {
                     if (k == i)
                         continue;
                     if (served.Contains(k))
                         continue;
-                    if (ruleSet[k].Rule.GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
+                    if ((from x in ruleSet[k].Rule select x.Label).ToList().Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
                         if (!SAT.Contains(ruleSet[k]))
                             SAT.Enqueue(ruleSet[k]);
                 }
             }
-            if (complement.Contains(ruleSet[i].Rule.Last()))
+            if (complement.Contains(ruleSet[i].Rule.Last().Label))
             {
                 ruleSet.RemoveAt(i);
                 return true;
@@ -512,10 +507,10 @@ namespace DataMining
             HashSet<String> complement = new HashSet<String>();
             Queue<TRule> SAT = new Queue<TRule>();
             for (int k = 0; k < tempRuleSet[i].Rule.Count - 1; k++)
-                complement.Add(tempRuleSet[i].Rule[k]);
+                complement.Add(tempRuleSet[i].Rule[k].Label);
             for (int l = 0; l < tempRuleSet.Count; l++)
             {
-                if (tempRuleSet[l].Rule.GetRange(0, tempRuleSet[l].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[l].Rule.Count() - 1)
+                if ((from x in ruleSet[l].Rule select x.Label).ToList().Intersect(complement).Count() == tempRuleSet[l].Rule.Count() - 1)
                     SAT.Enqueue(tempRuleSet[l]);
             }
             List<int> served = new List<int>();
@@ -523,17 +518,17 @@ namespace DataMining
             {
                 TRule s = SAT.Dequeue();
                 served.Add(tempRuleSet.IndexOf(s));
-                complement.Add(s.Rule.Last());
+                complement.Add(s.Rule.Last().Label);
                 for (int m = 0; m < tempRuleSet.Count; m++)
                 {
                     if (served.Contains(m))
                         continue;
-                    if (tempRuleSet[m].Rule.GetRange(0, tempRuleSet[m].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[m].Rule.Count() - 1)
+                    if ((from x in ruleSet[m].Rule select x.Label).ToList().Intersect(complement).Count() == tempRuleSet[m].Rule.Count() - 1)
                         if (!SAT.Contains(tempRuleSet[m]))
                             SAT.Enqueue(tempRuleSet[m]);
                 }
             }
-            if (complement.Contains(ruleSet[i].Rule[j]))
+            if (complement.Contains(ruleSet[i].Rule[j].Label))
             {
                 ruleSet = tempRuleSet;
                 return true;
@@ -649,6 +644,7 @@ namespace DataMining
         #endregion
 
         #region VXTHANH
+
         static List<RuleItem> list = new List<RuleItem>();
         static int i = 1;
         private void btnKhoiTao_Click(object sender, EventArgs e)
@@ -761,22 +757,21 @@ namespace DataMining
         List<AttributeValue> dsTT = new List<AttributeValue>();
 
         //Tạo một luật mới, vế phải là gtri cuối
-        TRule luatMoi;
+        TRule luatMoi = new TRule();
         int dongChonLuat;
 
         //Hiển thị lên các thuộc tính được chọn, cần ấn nút trước khi thực hiện các thao tác thêm, sửa
         private void btnHienThi_Click(object sender, EventArgs e)
         {
-            luatMoi = new TRule();
 
-            //thao tác thêm luật
-            themLuat(luatMoi);
         }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
             ruleset.Add(luatMoi);
-            MessageBox.Show("Thêm luật mới thành công.");
+            dgvLuatSource.ResetBindings(false);
+            luatMoi = new TRule();
+            txtLuat.Clear();
         }
 
         private void btnSua_Click(object sender, EventArgs e)
@@ -789,20 +784,6 @@ namespace DataMining
         {
             ruleset.RemoveAt(dongChonLuat);
             MessageBox.Show("Xóa luật số " + (dongChonLuat + 1) + " thành công.");
-        }
-
-        private void dgvThuocTinh_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            MacDinh();
-
-            //kiểm tra cột vế phải
-            if (e.ColumnIndex == 1)
-            {
-                foreach (DataGridViewRow row in dgvThuocTinh.Rows)
-                {
-                    row.Cells[1].Value = false;
-                }
-            }
         }
 
         private void dgvLuat_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -860,88 +841,36 @@ namespace DataMining
             btnXoa.Enabled = false;
         }
 
-        private void themLuat(TRule luat)
-        {
-            int kt_vt = 0, kt_vp = 0;
-
-            foreach (DataGridViewRow row in dgvThuocTinh.Rows)
-            {
-                if (row.Cells[0].Value != null)
-                {
-                    if ((Boolean)row.Cells[0].Value == true)
-                    {
-                        if ((Boolean)row.Cells[1].Value == true)
-                        {
-                            kt_vt = -1;
-                            break;
-                        }
-                        else
-                        {
-                            string tt = row.Cells[2].Value.ToString();
-                            luat.Rule.Add(tt);
-                            kt_vt++;
-                        }
-                    }
-                }
-            }
-
-            foreach (DataGridViewRow row in dgvThuocTinh.Rows)
-            {
-                if (row.Cells[1].Value != null)
-                {
-                    if ((Boolean)row.Cells[1].Value == true)
-                    {
-                        string tt = row.Cells[2].Value.ToString();
-                        luat.Rule.Add(tt);
-                        kt_vp = 1;
-                    }
-                }
-            }
-
-            if (kt_vt > 0 && kt_vp == 1)
-            {
-                txtLuat.Text = luat.RuleText;
-                btnThem.Enabled = true;
-            }
-            else
-            {
-                txtLuat.Text = "Lỗi: ";
-                if (kt_vp == 0)
-                {
-                    txtLuat.Text += "chưa thêm vế phải của luật; ";
-                }
-                if (kt_vt == -1)
-                {
-                    txtLuat.Text += "2 vế có 1 thuộc tính giống nhau; ";
-                }
-                if (kt_vt == 0)
-                {
-                    txtLuat.Text += "chưa thêm vế trái của luật; ";
-                }
-            }
-
-            if (dongChonLuat != -1)
-            {
-                btnSua.Enabled = true;
-            }
-            btnThem.Enabled = true;
-        }
-
         private void dgvAttributes1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             dgvThuocTinh.Rows.Clear();
-            dsTT.AddRange(attributeValues[e.RowIndex]);
+            dsTT.AddRange(attributeValues[attributes.IndexOf(dgvAttributes1.SelectedRows[0].DataBoundItem as Attribute)]);
             dgvThuocTinhSource.ResetBindings(false);
         }
 
+        private void dgvThuocTinh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int i = (from x in luatMoi.Rule select x.Attribute).ToList().IndexOf((dgvThuocTinh.SelectedRows[0].DataBoundItem as AttributeValue).Attribute);
+            if (i != -1)
+            {
+                luatMoi.Rule.RemoveAt(i);
+                luatMoi.Rule.Insert(i, dgvThuocTinh.SelectedRows[0].DataBoundItem as AttributeValue);
+                txtLuat.Text = luatMoi.RuleText;
+            }
+            else
+            {
+                    var newEvent = dgvThuocTinh.SelectedRows[0].DataBoundItem as AttributeValue;
+                    luatMoi.Rule.Add(newEvent);
+                    txtLuat.Text = luatMoi.RuleText;
+            }
+        }
         // </Generate ruleset>
         #endregion
 
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dgvAttributes1Source.ResetBindings(false);
+            dgvAttributes1.DataSource = attributes.Where(x => x.Enabled == true).ToList();
+            dgvLuatSource.ResetBindings(false);
         }
-
-        
     }
 }
