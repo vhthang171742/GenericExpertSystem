@@ -35,5 +35,20 @@ namespace DataMining
             Statistic = new Dictionary<string, int>();
         }
         #endregion
+
+        public override bool Equals(object obj)
+        {
+            // If the passed object is null
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is AttributeValue))
+            {
+                return false;
+            }
+            return (this.Label == ((AttributeValue)obj).Label)
+                && (this.Attribute == ((AttributeValue)obj).Attribute);
+        }
     }
 }
