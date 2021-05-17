@@ -50,5 +50,17 @@ namespace DataMining
                 this.rule.Add(av);
             }
         }
+
+        public TRule(List<AttributeValue> rule)
+        {
+            this.rule = rule;
+        }
+
+        public TRule DeepCopy()
+        {
+            TRule other = (TRule)this.MemberwiseClone();
+            other.rule = new List<AttributeValue>(this.rule);
+            return other;
+        }
     }
 }

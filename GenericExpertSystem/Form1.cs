@@ -41,12 +41,16 @@ namespace DataMining
             dgvAttributes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSAttributes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvAttributes1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRawRuleset.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvOptimizedRuleset.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             dgvAttributes.AutoGenerateColumns = false;
             dgvSAttributes.AutoGenerateColumns = false;
             dgvLuat.AutoGenerateColumns = false;
             dgvThuocTinh.AutoGenerateColumns = false;
             dgvAttributes1.AutoGenerateColumns = false;
+            dgvRawRuleset.AutoGenerateColumns = false;
+            dgvOptimizedRuleset.AutoGenerateColumns = false;
 
             dataset = new List<List<string>>();
             attributes = new List<Attribute>();
@@ -110,8 +114,16 @@ namespace DataMining
                     btnDeselectAll.Enabled = true;
                     btnRemove.Enabled = true;
                     cbxAttributes.Enabled = true;
+
                     dgvSAttributes.Rows.Clear();
                     chtAttribute.Series.Clear();
+                    dgvRawRuleset.Rows.Clear();
+                    dgvOptimizedRuleset.Rows.Clear();
+
+                    ruleset.Clear();
+                    dataset.Clear();
+                    attributes.Clear();
+                    attributeValues.Clear();
 
                     var filePath = o.FileName;
                     relationName = Path.GetFileNameWithoutExtension(filePath);
@@ -122,7 +134,7 @@ namespace DataMining
                         attributeValues.Clear();
 
                         var line = reader.ReadLine();
-                        var values = line.Split(',');
+                        var values = line.Split(',').ToList() ;
                         foreach (String s in values)
                         {
                             Attribute attr = new Attribute();
@@ -134,7 +146,10 @@ namespace DataMining
                         while (!reader.EndOfStream)
                         {
                             line = reader.ReadLine();
-                            values = line.Split(',');
+                            values = line.Split(',').ToList();
+                            for (int i = 0; i < values.Count; i++)
+                                if (values[i] == "")
+                                    values[i] = "?";
                             dataset.Add(values.ToList());
                         }
 
@@ -153,6 +168,22 @@ namespace DataMining
                                 avl.Add(av);
                             }
                             attributeValues.Add(avl);
+                        }
+
+                        for(int i=0; i<dataset.Count; i++)
+                        {
+                            TRule tr = new TRule();
+                            for (int j = 0; j < values.Count; j++)
+                            {
+                                if (dataset[i][j] != "?")
+                                {
+                                    AttributeValue av = new AttributeValue();
+                                    av.Attribute = attributes[j].Name;
+                                    av.Label = dataset[i][j];
+                                    tr.Rule.Add(av);
+                                }
+                            }
+                            ruleset.Add(tr);
                         }
                     }
                     UpdateAttributes();
@@ -237,7 +268,7 @@ namespace DataMining
         {
             int rowIndex = dgvAttributes.Rows.IndexOf(dgvAttributes.SelectedRows[0]);
             lblSAttributeName.Text = attributes[rowIndex].Name;
-            lblSMissingRate.Text = ((float)attributeValues[rowIndex].Count(x => x.Label == "") * 100 / dataset.Count).ToString() + "%";
+            lblSMissingRate.Text = ((float)attributeValues[rowIndex].Count(x => x.Label == "?") * 100 / dataset.Count).ToString() + "%";
             if (Double.TryParse(attributeValues[rowIndex][0].Label, out _))
                 lblSType.Text = "Numeric";
             else
@@ -459,6 +490,7 @@ namespace DataMining
             {
                 if (k == i)
                     continue;
+                var t = (from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1);
                 if ((from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
                     SAT.Enqueue(ruleSet[k]);
             }
@@ -474,7 +506,7 @@ namespace DataMining
                         continue;
                     if (served.Contains(k))
                         continue;
-                    if ((from x in ruleSet[k].Rule select x.Label).ToList().Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
+                    if ((from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
                         if (!SAT.Contains(ruleSet[k]))
                             SAT.Enqueue(ruleSet[k]);
                 }
@@ -498,10 +530,8 @@ namespace DataMining
         public bool RemoveUnnecessaryEvent(ref List<TRule> ruleSet, int i, int j)
         {
             List<TRule> tempRuleSet = new List<TRule>();
-            ruleSet.ForEach((item) =>
-            {
-                tempRuleSet.Add(item);
-            });
+            foreach (TRule tr in ruleSet)
+                tempRuleSet.Add(tr.DeepCopy());
             tempRuleSet[i].Rule.RemoveAt(j);
 
             HashSet<String> complement = new HashSet<String>();
@@ -510,7 +540,7 @@ namespace DataMining
                 complement.Add(tempRuleSet[i].Rule[k].Label);
             for (int l = 0; l < tempRuleSet.Count; l++)
             {
-                if ((from x in ruleSet[l].Rule select x.Label).ToList().Intersect(complement).Count() == tempRuleSet[l].Rule.Count() - 1)
+                if ((from x in tempRuleSet[l].Rule select x.Label).ToList().GetRange(0, tempRuleSet[l].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[l].Rule.Count() - 1)
                     SAT.Enqueue(tempRuleSet[l]);
             }
             List<int> served = new List<int>();
@@ -523,7 +553,7 @@ namespace DataMining
                 {
                     if (served.Contains(m))
                         continue;
-                    if ((from x in ruleSet[m].Rule select x.Label).ToList().Intersect(complement).Count() == tempRuleSet[m].Rule.Count() - 1)
+                    if ((from x in tempRuleSet[m].Rule select x.Label).ToList().GetRange(0, tempRuleSet[m].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[m].Rule.Count() - 1)
                         if (!SAT.Contains(tempRuleSet[m]))
                             SAT.Enqueue(tempRuleSet[m]);
                 }
@@ -554,7 +584,7 @@ namespace DataMining
                 if (RemoveUnnecessaryRule(ref ruleSet, i))
                 {
                     rFlag[rFlag.Count - 1] = false;
-                    lsbProcess.Items.Add("Removed unnecessary rule r" + rFlag.Count + ": " + rawRuleset[rFlag.Count - 1].RuleText);
+                    lsbProcess.Items.Add("Removed r" + rFlag.Count + ": " + rawRuleset[rFlag.Count - 1].RuleText);
                     i--;
                 }
             }
@@ -579,7 +609,7 @@ namespace DataMining
                                 }
                                 if (temp == i)
                                 {
-                                    lsbProcess.Items.Add("Removed unnecessary rule r" + (t + 1) + ": " + rawRuleset[t].RuleText);
+                                    lsbProcess.Items.Add("Removed r" + (t + 1) + ": " + rawRuleset[t].RuleText);
                                     rFlag[t] = false;
                                     i--;
                                     break;
@@ -597,7 +627,7 @@ namespace DataMining
                                 }
                                 if (temp == i)
                                 {
-                                    lsbProcess.Items.Add("Removed unnecessary event " + ruleSet[i].Rule[j] + " from r" + (i + 1) + ": " + rawRuleset[t].RuleText + " => " + ruleset[i].RuleText);
+                                    lsbProcess.Items.Add("Removed " + rawRuleset[t].Rule.Except(ruleSet[i].Rule).ToList().Last().Text + " from r" + (i + 1) + ": " + rawRuleset[t].RuleText + " => " + ruleset[i].RuleText);
                                     break;
                                 }
                             }
@@ -608,37 +638,18 @@ namespace DataMining
             }
         }
 
-        private void btnInsertRule_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                String s = txtInsertRule.Text;
-                var values = s.Split(' ').ToList();
-                TRule newRule = new TRule(values);
-                ruleset.Add(newRule);
-                lsbRawRuleset.Items.Add(newRule.RuleText);
-                txtInsertRule.Clear();
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         private void btnOptimize_Click(object sender, EventArgs e)
         {
             OptimizeRuleSet(ref ruleset);
+            dgvOptimizedRuleset.Rows.Clear();
             for (int i = 0; i < ruleset.Count; i++)
-                lsbOptimizedRuleset.Items.Add(ruleset[i].RuleText);
-        }
-
-        private void txtInsertRule_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
             {
-                btnInsertRule_Click((object)sender, (EventArgs)e);
+                dgvOptimizedRuleset.Rows.Add();
+                dgvOptimizedRuleset.Rows[i].HeaderCell.Value = (i + 1).ToString();
+                dgvOptimizedRuleset.Rows[i].Cells[0].Value = ruleset[i].RuleText;
             }
         }
+
         #endregion
         #endregion
         #endregion
@@ -871,6 +882,16 @@ namespace DataMining
         {
             dgvAttributes1.DataSource = attributes.Where(x => x.Enabled == true).ToList();
             dgvLuatSource.ResetBindings(false);
+
+            lsbProcess.Items.Clear();
+            dgvOptimizedRuleset.Rows.Clear();
+            dgvRawRuleset.Rows.Clear();
+            foreach(TRule tr in ruleset)
+            {
+                dgvRawRuleset.Rows.Add();
+                dgvRawRuleset.Rows[dgvRawRuleset.Rows.Count - 1].Cells[0].Value = tr.RuleText;
+                dgvRawRuleset.Rows[dgvRawRuleset.Rows.Count - 1].HeaderCell.Value = dgvRawRuleset.Rows.Count.ToString();
+            }
         }
     }
 }
