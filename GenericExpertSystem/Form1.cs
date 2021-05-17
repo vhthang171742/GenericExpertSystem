@@ -16,13 +16,17 @@ namespace DataMining
 {
     public partial class FrmMain : Form
     {
+        #region VHTHANG
         #region Declare
         public List<Attribute> attributes;
         public List<List<String>> dataset;
         public List<List<AttributeValue>> attributeValues;
+        public List<TRule> ruleset;
         public BindingSource dgvAttributesSource;
         public BindingSource dgvSAttributesSource;
         public BindingSource cbxAttributesSource;
+        public BindingSource dgvLuatSource;
+        public BindingSource dgvThuocTinhSource;
         string relationName;
         #endregion
 
@@ -36,11 +40,23 @@ namespace DataMining
             InitializeComponent();
             dgvAttributes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSAttributes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvAttributes1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRawRuleset.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvOptimizedRuleset.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
             dgvAttributes.AutoGenerateColumns = false;
             dgvSAttributes.AutoGenerateColumns = false;
+            dgvLuat.AutoGenerateColumns = false;
+            dgvThuocTinh.AutoGenerateColumns = false;
+            dgvAttributes1.AutoGenerateColumns = false;
+            dgvRawRuleset.AutoGenerateColumns = false;
+            dgvOptimizedRuleset.AutoGenerateColumns = false;
+
             dataset = new List<List<string>>();
             attributes = new List<Attribute>();
             attributeValues = new List<List<AttributeValue>>();
+            ruleset = new List<TRule>();
+
             dgvAttributesSource = new BindingSource();
             dgvAttributesSource.DataSource = attributes;
             dgvAttributes.DataSource = dgvAttributesSource;
@@ -48,15 +64,22 @@ namespace DataMining
             cbxAttributesSource = new BindingSource();
             cbxAttributesSource.DataSource = attributes;
             cbxAttributes.DataSource = cbxAttributesSource;
+
             cbxAttributes.DisplayMember = "Name";
             cbxAttributes.ValueMember = "Name";
             cbxAttributes.Text = "- -Choose an attribute to visualize- -";
 
+            dgvLuatSource = new BindingSource();
+            dgvLuatSource.DataSource = ruleset;
+            dgvLuat.DataSource = dgvLuatSource;
+
+            dgvThuocTinhSource = new BindingSource();
+            dgvThuocTinhSource.DataSource = dsTT;
+            dgvThuocTinh.DataSource = dgvThuocTinhSource;
+
             dgvSAttributesSource = new BindingSource();
 
             //Disable buttons by default
-            btnEdit.Enabled = false;
-            btnSave.Enabled = false;
             btnSelectAll.Enabled = false;
             btnDeselectAll.Enabled = false;
             btnRemove.Enabled = false;
@@ -66,6 +89,7 @@ namespace DataMining
         #endregion
 
         #region Method
+        #region Preporcess
         /// <summary>
         /// Open file dialog to select source data file
         /// </summary>
@@ -86,14 +110,20 @@ namespace DataMining
                 try
                 {
                     //Enable file actions
-                    btnEdit.Enabled = true;
-                    btnSave.Enabled = true;
                     btnSelectAll.Enabled = true;
                     btnDeselectAll.Enabled = true;
                     btnRemove.Enabled = true;
                     cbxAttributes.Enabled = true;
+
                     dgvSAttributes.Rows.Clear();
                     chtAttribute.Series.Clear();
+                    dgvRawRuleset.Rows.Clear();
+                    dgvOptimizedRuleset.Rows.Clear();
+
+                    ruleset.Clear();
+                    dataset.Clear();
+                    attributes.Clear();
+                    attributeValues.Clear();
 
                     var filePath = o.FileName;
                     relationName = Path.GetFileNameWithoutExtension(filePath);
@@ -104,7 +134,7 @@ namespace DataMining
                         attributeValues.Clear();
 
                         var line = reader.ReadLine();
-                        var values = line.Split(',');
+                        var values = line.Split(',').ToList() ;
                         foreach (String s in values)
                         {
                             Attribute attr = new Attribute();
@@ -116,7 +146,10 @@ namespace DataMining
                         while (!reader.EndOfStream)
                         {
                             line = reader.ReadLine();
-                            values = line.Split(',');
+                            values = line.Split(',').ToList();
+                            for (int i = 0; i < values.Count; i++)
+                                if (values[i] == "")
+                                    values[i] = "?";
                             dataset.Add(values.ToList());
                         }
 
@@ -124,14 +157,33 @@ namespace DataMining
                         {
                             var avs = (from x in dataset select x[i]).Distinct().ToList();
                             List<AttributeValue> avl = new List<AttributeValue>();
+
                             foreach (String s in avs)
                             {
                                 AttributeValue av = new AttributeValue();
                                 av.Statistic.Add(s, (from x in dataset select x[i]).Count(x => x == s));
+                                av.Count = (from x in dataset select x[i]).Count(x => x == s);
                                 av.Label = s;
+                                av.Attribute = attributes[i].Name;
                                 avl.Add(av);
                             }
                             attributeValues.Add(avl);
+                        }
+
+                        for(int i=0; i<dataset.Count; i++)
+                        {
+                            TRule tr = new TRule();
+                            for (int j = 0; j < values.Count; j++)
+                            {
+                                if (dataset[i][j] != "?")
+                                {
+                                    AttributeValue av = new AttributeValue();
+                                    av.Attribute = attributes[j].Name;
+                                    av.Label = dataset[i][j];
+                                    tr.Rule.Add(av);
+                                }
+                            }
+                            ruleset.Add(tr);
                         }
                     }
                     UpdateAttributes();
@@ -216,7 +268,7 @@ namespace DataMining
         {
             int rowIndex = dgvAttributes.Rows.IndexOf(dgvAttributes.SelectedRows[0]);
             lblSAttributeName.Text = attributes[rowIndex].Name;
-            lblSMissingRate.Text = ((float)attributeValues[rowIndex].Count(x => x.Label == "") * 100 / dataset.Count).ToString() + "%";
+            lblSMissingRate.Text = ((float)attributeValues[rowIndex].Count(x => x.Label == "?") * 100 / dataset.Count).ToString() + "%";
             if (Double.TryParse(attributeValues[rowIndex][0].Label, out _))
                 lblSType.Text = "Numeric";
             else
@@ -248,8 +300,6 @@ namespace DataMining
         {
             if (dgvAttributes.Rows.Count == 0)
             {
-                btnEdit.Enabled = false;
-                btnSave.Enabled = false;
                 btnSelectAll.Enabled = false;
                 btnDeselectAll.Enabled = false;
                 btnRemove.Enabled = false;
@@ -306,7 +356,7 @@ namespace DataMining
             }
             else
             {
-                chtAttribute.Titles.Add("Classify by "+attributes[classIndex].Name);
+                chtAttribute.Titles.Add("Classify by " + attributes[classIndex].Name);
                 foreach (AttributeValue av in attributeValues[classIndex])
                 {
                     Series series1 = new Series(av.Label);
@@ -314,9 +364,10 @@ namespace DataMining
                     series1.IsValueShownAsLabel = true;
                     chtAttribute.Series.Add(series1);
                 }
-                foreach(AttributeValue av in attributeValues[cbxAttributes.SelectedIndex])
+                foreach (AttributeValue av in attributeValues[cbxAttributes.SelectedIndex])
                 {
-                    foreach (AttributeValue av1 in attributeValues[classIndex]) {
+                    foreach (AttributeValue av1 in attributeValues[classIndex])
+                    {
                         chtAttribute.Series[av1.Label].Points.AddXY(av.Label, av.Statistic[av1.Label]);
                     }
                 }
@@ -350,7 +401,7 @@ namespace DataMining
                         {
                             dgr.Cells[0].Value = true;
                             attributes[dgr.Index].IsClassAttribute = true;
-                            
+
                         }
                         else
                         {
@@ -419,14 +470,197 @@ namespace DataMining
                 }
             }
         }
+        #endregion
 
+        #region OptimizeRule
+        /// <summary>
+        /// Determine whether a rule is unnecessary in ruleset and remove it
+        /// </summary>
+        /// <param name="ruleSet">Ruleset</param>
+        /// <param name="i">Index of rule in ruleset</param>
+        /// <returns>True if rule is unnecessary</returns>
+        /// Created by VHTHANG{11/05/2021}
+        public bool RemoveUnnecessaryRule(ref List<TRule> ruleSet, int i)
+        {
+            HashSet<String> complement = new HashSet<String>();
+            Queue<TRule> SAT = new Queue<TRule>();
+            for (int j = 0; j < ruleSet[i].Rule.Count - 1; j++)
+                complement.Add(ruleSet[i].Rule[j].Label);
+            for (int k = 0; k < ruleSet.Count; k++)
+            {
+                if (k == i)
+                    continue;
+                var t = (from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1);
+                if ((from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
+                    SAT.Enqueue(ruleSet[k]);
+            }
+            List<int> served = new List<int>();
+            while (SAT.Count != 0)
+            {
+                TRule s = SAT.Dequeue();
+                served.Add(ruleSet.IndexOf(s));
+                complement.Add(s.Rule.Last().Label);
+                for (int k = 0; k < ruleSet.Count; k++)
+                {
+                    if (k == i)
+                        continue;
+                    if (served.Contains(k))
+                        continue;
+                    if ((from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
+                        if (!SAT.Contains(ruleSet[k]))
+                            SAT.Enqueue(ruleSet[k]);
+                }
+            }
+            if (complement.Contains(ruleSet[i].Rule.Last().Label))
+            {
+                ruleSet.RemoveAt(i);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determine whether an event is unnecessary in rule and remove it
+        /// </summary>
+        /// <typeparam name="T">Type of event</typeparam>
+        /// <param name="ruleSet">Ruleset</param>
+        /// <param name="i">Index of rule in ruleset</param>
+        /// <param name="j">Index of event in rule</param>
+        /// <returns>True if event is unnecessary</returns>
+        public bool RemoveUnnecessaryEvent(ref List<TRule> ruleSet, int i, int j)
+        {
+            List<TRule> tempRuleSet = new List<TRule>();
+            foreach (TRule tr in ruleSet)
+                tempRuleSet.Add(tr.DeepCopy());
+            tempRuleSet[i].Rule.RemoveAt(j);
+
+            HashSet<String> complement = new HashSet<String>();
+            Queue<TRule> SAT = new Queue<TRule>();
+            for (int k = 0; k < tempRuleSet[i].Rule.Count - 1; k++)
+                complement.Add(tempRuleSet[i].Rule[k].Label);
+            for (int l = 0; l < tempRuleSet.Count; l++)
+            {
+                if ((from x in tempRuleSet[l].Rule select x.Label).ToList().GetRange(0, tempRuleSet[l].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[l].Rule.Count() - 1)
+                    SAT.Enqueue(tempRuleSet[l]);
+            }
+            List<int> served = new List<int>();
+            while (SAT.Count != 0)
+            {
+                TRule s = SAT.Dequeue();
+                served.Add(tempRuleSet.IndexOf(s));
+                complement.Add(s.Rule.Last().Label);
+                for (int m = 0; m < tempRuleSet.Count; m++)
+                {
+                    if (served.Contains(m))
+                        continue;
+                    if ((from x in tempRuleSet[m].Rule select x.Label).ToList().GetRange(0, tempRuleSet[m].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[m].Rule.Count() - 1)
+                        if (!SAT.Contains(tempRuleSet[m]))
+                            SAT.Enqueue(tempRuleSet[m]);
+                }
+            }
+            if (complement.Contains(ruleSet[i].Rule[j].Label))
+            {
+                ruleSet = tempRuleSet;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Optimize ruleset
+        /// </summary>
+        /// <typeparam name="T">Type of events</typeparam>
+        /// <param name="ruleSet">Ruleset</param>
+        /// Created by VHTHANG{11/05/2021}
+        public void OptimizeRuleSet(ref List<TRule> ruleSet)
+        {
+            List<bool> rFlag = new List<bool>();
+            List<TRule> rawRuleset = new List<TRule>(ruleSet);
+            List<TRule> eFlag = new List<TRule>();
+            //Remove unnecessary rules
+            for (int i = 0; i < ruleSet.Count; i++)
+            {
+                rFlag.Add(true);
+                if (RemoveUnnecessaryRule(ref ruleSet, i))
+                {
+                    rFlag[rFlag.Count - 1] = false;
+                    lsbProcess.Items.Add("Removed r" + rFlag.Count + ": " + rawRuleset[rFlag.Count - 1].RuleText);
+                    i--;
+                }
+            }
+
+            //Remove unnecessary events
+            for (int i = 0; i < ruleSet.Count; i++)
+            {
+                if (ruleSet[i].Rule.Count == 2)
+                    continue;
+                for (int j = 0; j < ruleSet[i].Rule.Count - 1; j++)
+                {
+                    if (RemoveUnnecessaryEvent(ref ruleSet, i, j))
+                    {
+                        if (RemoveUnnecessaryRule(ref ruleSet, i))
+                        {
+                            int temp = -1;
+                            for (int t = 0; t < ruleSet.Count; t++)
+                            {
+                                if (rFlag[t] == true)
+                                {
+                                    temp++;
+                                }
+                                if (temp == i)
+                                {
+                                    lsbProcess.Items.Add("Removed r" + (t + 1) + ": " + rawRuleset[t].RuleText);
+                                    rFlag[t] = false;
+                                    i--;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int temp = -1;
+                            for (int t = 0; t < ruleSet.Count; t++)
+                            {
+                                if (rFlag[t] == true)
+                                {
+                                    temp++;
+                                }
+                                if (temp == i)
+                                {
+                                    lsbProcess.Items.Add("Removed " + rawRuleset[t].Rule.Except(ruleSet[i].Rule).ToList().Last().Text + " from r" + (i + 1) + ": " + rawRuleset[t].RuleText + " => " + ruleset[i].RuleText);
+                                    break;
+                                }
+                            }
+                            j--;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnOptimize_Click(object sender, EventArgs e)
+        {
+            OptimizeRuleSet(ref ruleset);
+            dgvOptimizedRuleset.Rows.Clear();
+            for (int i = 0; i < ruleset.Count; i++)
+            {
+                dgvOptimizedRuleset.Rows.Add();
+                dgvOptimizedRuleset.Rows[i].HeaderCell.Value = (i + 1).ToString();
+                dgvOptimizedRuleset.Rows[i].Cells[0].Value = ruleset[i].RuleText;
+            }
+        }
 
         #endregion
-       static List<RuleItem> list = new List<RuleItem>();
-       static int i = 1;
+        #endregion
+        #endregion
+
+        #region VXTHANH
+
+        static List<RuleItem> list = new List<RuleItem>();
+        static int i = 1;
         private void btnKhoiTao_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void btnThemGT_Click(object sender, EventArgs e)
@@ -453,7 +687,7 @@ namespace DataMining
         }
         private void btnThemLuat_Click(object sender, EventArgs e)
         {
-            if(lstGiaThiet.Items.Count==0 || txtKetLuan.Text == "")
+            if (lstGiaThiet.Items.Count == 0 || txtKetLuan.Text == "")
             {
                 MessageBox.Show("Chọn GT và KL phù hợp");
                 return;
@@ -469,7 +703,7 @@ namespace DataMining
             rule = new RuleItem(nameRule, left, right);
             list.Add(rule);
             i++;
-            lstTapLuat.Items.Add(rule.Name+" : "+rule.ToString());
+            lstTapLuat.Items.Add(rule.Name + " : " + rule.ToString());
             lstGiaThiet.Items.Clear();
             txtKetLuan.Text = "";
         }
@@ -482,7 +716,7 @@ namespace DataMining
                 return;
             }
             lstTapLuat.Items.Remove(lstTapLuat.SelectedItem);
-            
+
         }
 
         private void btnSuyDienTien_Click(object sender, EventArgs e)
@@ -500,18 +734,18 @@ namespace DataMining
             string kl = txtKetLuan.Text;
             Rule rule = new Rule(list, gt, kl);
 
-            rule.SuyDienTien(list,kl);
+            rule.SuyDienTien(list, kl);
 
             if (rule.ketQua)
             {
-                string tg = "", vet="";
+                string tg = "", vet = "";
                 foreach (var item in rule.TG)
                 {
                     tg += item.ToString() + " , ";
                 }
                 foreach (var item in rule.VET)
                 {
-                    vet += item.Name+" , ";
+                    vet += item.Name + " , ";
                 }
                 lblKetQua.Text = "GT ->  KL là TRUE được chứng minh";
                 txtDuongDi.Text = vet;
@@ -523,37 +757,141 @@ namespace DataMining
                 txtDuongDi.Text = "FALSE";
                 txtTapSuKienDich.Text = "FALSE";
             }
-            
+
         }
-
-       
-    }
-
-    /// <summary>
-    /// Attribute class
-    /// </summary>
-    /// Created by VHTHANG{02/05/2021}
-    public class Attribute
-    {
-        #region Declare
-        public bool Enabled { get; set; }
-        public String Name { get; set; }
-        public bool IsClassAttribute { get; set; }
-        #endregion
-    }
-
-    public class AttributeValue
-    {
-        #region Declare
-        public string Label { get; set; }
-        public Dictionary<string, int> Statistic { get; set; }
         #endregion
 
-        #region Constructor
-        public AttributeValue()
+        #region PTTHE
+        // <Generate ruleset>
+
+        //Tạo danh sáchthuộc tính
+        List<AttributeValue> dsTT = new List<AttributeValue>();
+
+        //Tạo một luật mới, vế phải là gtri cuối
+        TRule luatMoi = new TRule();
+        int dongChonLuat;
+
+        //Hiển thị lên các thuộc tính được chọn, cần ấn nút trước khi thực hiện các thao tác thêm, sửa
+        private void btnHienThi_Click(object sender, EventArgs e)
         {
-            Statistic = new Dictionary<string, int>();
+
         }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            ruleset.Add(luatMoi);
+            dgvLuatSource.ResetBindings(false);
+            luatMoi = new TRule();
+            txtLuat.Clear();
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            ruleset[dongChonLuat] = luatMoi;
+            MessageBox.Show("Sửa luật số " + (dongChonLuat + 1) + " thành công.");
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            ruleset.RemoveAt(dongChonLuat);
+            MessageBox.Show("Xóa luật số " + (dongChonLuat + 1) + " thành công.");
+        }
+
+        private void dgvLuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dongChonLuat = e.RowIndex;
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+
+            if (dongChonLuat >= 0)
+            {
+                btnXoa.Enabled = true;
+
+                txtLuat.Text = dgvLuat.Rows[dongChonLuat].Cells[0].Value.ToString();
+
+                TRule luat = ruleset[dongChonLuat];
+
+                string tam;
+
+                //duyệt dgvThuocTinh
+                foreach (DataGridViewRow row in dgvThuocTinh.Rows)
+                {
+                    if (row.Cells[2].Value != null)
+                    {
+                        row.Cells[0].Value = false;
+                        row.Cells[1].Value = false;
+
+                        tam = (string)row.Cells[2].Value;
+                        if ((Boolean)tam.Equals(luat.Rule[luat.Rule.Count - 1]))
+                        {
+                            row.Cells[1].Value = true;
+                        }
+
+                        for (int i = 0; i < luat.Rule.Count - 1; i++)
+                        {
+                            if ((Boolean)tam.Equals(luat.Rule[i]))
+                            {
+                                row.Cells[0].Value = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                txtLuat.Text = "Dòng bạn chọn luật không đúng";
+                btnXoa.Enabled = false;
+            }
+        }
+
+        private void MacDinh()
+        {
+            txtLuat.Text = "";
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
+        }
+
+        private void dgvAttributes1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvThuocTinh.Rows.Clear();
+            dsTT.AddRange(attributeValues[attributes.IndexOf(dgvAttributes1.SelectedRows[0].DataBoundItem as Attribute)]);
+            dgvThuocTinhSource.ResetBindings(false);
+        }
+
+        private void dgvThuocTinh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int i = (from x in luatMoi.Rule select x.Attribute).ToList().IndexOf((dgvThuocTinh.SelectedRows[0].DataBoundItem as AttributeValue).Attribute);
+            if (i != -1)
+            {
+                luatMoi.Rule.RemoveAt(i);
+                luatMoi.Rule.Insert(i, dgvThuocTinh.SelectedRows[0].DataBoundItem as AttributeValue);
+                txtLuat.Text = luatMoi.RuleText;
+            }
+            else
+            {
+                    var newEvent = dgvThuocTinh.SelectedRows[0].DataBoundItem as AttributeValue;
+                    luatMoi.Rule.Add(newEvent);
+                    txtLuat.Text = luatMoi.RuleText;
+            }
+        }
+        // </Generate ruleset>
         #endregion
+
+        private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dgvAttributes1.DataSource = attributes.Where(x => x.Enabled == true).ToList();
+            dgvLuatSource.ResetBindings(false);
+
+            lsbProcess.Items.Clear();
+            dgvOptimizedRuleset.Rows.Clear();
+            dgvRawRuleset.Rows.Clear();
+            foreach(TRule tr in ruleset)
+            {
+                dgvRawRuleset.Rows.Add();
+                dgvRawRuleset.Rows[dgvRawRuleset.Rows.Count - 1].Cells[0].Value = tr.RuleText;
+                dgvRawRuleset.Rows[dgvRawRuleset.Rows.Count - 1].HeaderCell.Value = dgvRawRuleset.Rows.Count.ToString();
+            }
+        }
     }
 }
