@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace DataMining
 {
     // class này để tạo các đỉnh trong đồ thị FPG
-    public class Vert : IComparable<Vert>
+    public class Vert /*: IComparable<Vert>*/
     {
         public  bool visited;
-        public String name;
+        public AttributeValue name;
         public ArrayList List = new ArrayList();
         public double dist = Double.MaxValue;
         public Vert pr;
@@ -20,7 +20,7 @@ namespace DataMining
         {
         }
 
-        public Vert(string name)
+        public Vert(AttributeValue name)
         {
             this.name = name;
         }
@@ -30,12 +30,12 @@ namespace DataMining
             return List;
         }
 
-        public String getName()
+        public AttributeValue getName()
         {
             return name;
         }
 
-        public void setName(String name)
+        public void setName(AttributeValue name)
         {
             this.name = name;
         }
@@ -81,10 +81,10 @@ namespace DataMining
             this.dist = dist;
         }
 
-        public int CompareTo(Vert other)
-        {
-            return (this.name).CompareTo(other.name);
-        }
+        //public int CompareTo(Vert other)
+        //{
+        //    return (this.name).CompareTo(other.name);
+        //}
 
         public override string ToString()
         {
