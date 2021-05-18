@@ -7,56 +7,31 @@ using System.Threading.Tasks;
 namespace DataMining
 {
     // tập luật
-    public class Rule
+    public class InferEngine
     {
-        public List<RuleItem> rules;
-        public List<string> gt;
-        public string kl;
+        public List<TRule> rules;
+        public List<AttributeValue> assumptions;
+        public AttributeValue conclusion;
 
-        public bool ketQua;
-        public List<String> TG;
-        public List<RuleItem> VET = new List<RuleItem>();
-        public Rule()
+        public bool result;
+        public List<AttributeValue> TG;
+        public List<TRule> VET = new List<TRule>();
+
+        public InferEngine()
         {
 
         }
 
-        public Rule(List<RuleItem> rules, List<string> gt, string kl)
+        public InferEngine(List<TRule> rules, List<AttributeValue> gt, AttributeValue kl)
         {
             this.rules = rules;
-            this.gt = gt;
-            this.kl = kl;
+            this.assumptions = gt;
+            this.conclusion = kl;
         }
 
-        public void writeGT()
+        public TRule minItemQueue(Queue<TRule> SAT)
         {
-            string str = "GT = { ";
-            foreach (string item in gt)
-            {
-                str += item + " , ";
-            }
-            str += " }\n";
-            Console.WriteLine("\n " + str);
-        }
-        public void writeRules()
-        {
-            string str = "Tap luat R : \n";
-            foreach (RuleItem item in rules)
-            {
-                str += item.Name + ": ";
-                foreach (var itemLeft in item.Left)
-                {
-                    str += itemLeft + " ^ ";
-                }
-                str += " --> " + item.Right;
-                str += "\n";
-            }
-            str += "\n";
-            Console.WriteLine(str);
-        }
-        public RuleItem minItemQueue(Queue<RuleItem> SAT)
-        {
-            RuleItem rule = new RuleItem();
+            TRule rule = new TRule();
             List<double> valueHeuristic = new List<double>();
             foreach (var item in SAT)
             {
@@ -66,32 +41,26 @@ namespace DataMining
             rule = SAT.ToList().Find(x => x.Heuristic == min);
             return rule;
         }
-        public void SuyDienTien(List<RuleItem> rules, String kl)
+        public void ForwardInfer(List<TRule> rules, AttributeValue kl)
         {
             List<double> valueHeuristic = new List<double>();
-            foreach (RuleItem rule in rules)
+            foreach (TRule rule in rules)
             {
                 rule.Heuristic = executeHeuristic(rules, rule.Right, kl);
-                //     Console.WriteLine(rule.Right+ " đến đích : "+ rule.Heuristic);
                 valueHeuristic.Add(rule.Heuristic);
             }
-            List<String> TG = gt;
-            Queue<RuleItem> SAT = new Queue<RuleItem>();
-            SAT = Loc(gt, rules);
-            Console.WriteLine("SAT ban đầu: ");
-            foreach (var item in SAT)
-            {
-                Console.WriteLine(item.Name);
-            }
+            List<AttributeValue> TG = assumptions;
+            Queue<TRule> SAT = new Queue<TRule>();
+            SAT = Filter(assumptions, rules);
 
-            List<RuleItem> VET = new List<RuleItem>();
+            List<TRule> VET = new List<TRule>();
 
             while (SAT.Count > 0 && !KL_to_GT(TG))
             {
                 int i = 1;
                 if (TG.IndexOf(minItemQueue(SAT).Right) < 0)
                 {
-                    TG.Add(minItemQueue(SAT).Right.Trim().ToString());
+                    TG.Add(minItemQueue(SAT).Right);
                 }
                 rules.Remove(minItemQueue(SAT));
                 if (!VET.Contains(minItemQueue(SAT)))
@@ -99,34 +68,23 @@ namespace DataMining
                     VET.Add(minItemQueue(SAT));
                 }
                 SAT.Clear();
-                SAT = Loc(TG, rules);
-                Console.WriteLine("SAT: ");
-                foreach (var item in SAT)
-                {
-                    Console.WriteLine(item.Name);
-                }
+                SAT = Filter(TG, rules);
                 i++;
             }
-            this.ketQua = KL_to_GT(TG);
+            this.result = KL_to_GT(TG);
             this.VET = VET;
             this.TG = TG;
-            /*Console.WriteLine("TG: ");
-            foreach (var item in TG)
-            {
-                Console.WriteLine(item + "\t");
-            }
 
-            Console.WriteLine("Ket qua: " + KL_to_GT(TG));*/
         }
-        private Queue<RuleItem> Loc(List<String> gt, List<RuleItem> rulesClone)
+        private Queue<TRule> Filter(List<AttributeValue> gt, List<TRule> rulesClone)
         {
-            Queue<RuleItem> SAT = new Queue<RuleItem>();
-            foreach (RuleItem r in rulesClone)
+            Queue<TRule> SAT = new Queue<TRule>();
+            foreach (TRule r in rulesClone)
             {
                 if (r.Left.Count <= gt.Count)
                 {
                     int count = 0;
-                    foreach (string tt in gt)
+                    foreach (AttributeValue tt in gt)
                     {
                         if (r.Left.Contains(tt))
                         {
@@ -140,11 +98,10 @@ namespace DataMining
                 }
             }
             return SAT;
-            //  throw new NotImplementedException();
         }
-        public bool KL_to_GT(List<String> TG)
+        public bool KL_to_GT(List<AttributeValue> TG)
         {
-            if (TG.Contains(kl))
+            if (TG.Contains(conclusion))
             {
                 return true;
             }
@@ -153,9 +110,9 @@ namespace DataMining
 
         // vẽ đồ thị FPG
         // 1 vẽ đỉnh
-        public List<Vert> createVertex(List<RuleItem> rules)
+        public List<Vert> createVertex(List<TRule> rules)
         {
-            List<string> verts = new List<string>();
+            List<AttributeValue> verts = new List<AttributeValue>();
             foreach (var ruleItem in rules)
             {
                 foreach (var item in ruleItem.Left)
@@ -179,29 +136,23 @@ namespace DataMining
             return vertsList;
         }
         //2 vẽ cạnh và tính hr
-        public double executeHeuristic(List<RuleItem> rules, String nameBeginVert, String nameTargetVert)
+        public double executeHeuristic(List<TRule> rules, AttributeValue nameBeginVert, AttributeValue nameTargetVert)
         {
             // nối đỉnh thành cạnh
             List<Vert> vertsList = new List<Vert>();
             vertsList = createVertex(rules);
-            foreach (RuleItem ruleItem in rules)
+            foreach (TRule ruleItem in rules)
             {
                 Vert vertC = new Vert(ruleItem.Right);
                 int vt = vertsList.FindIndex(r => r.name.Equals(vertC.name));
-                foreach (string item in ruleItem.Left)
+                foreach (AttributeValue item in ruleItem.Left)
                 {
                     Vert vert = new Vert(item);
                     //  int vtd= vertsList.IndexOf(vert);
                     int vtd = vertsList.FindIndex(r => r.name.Equals(vert.name));
                     //  vertsList[vtd] = new Vert();
-                    vertsList[vtd].addNeighbour(new Edge(1, vertsList[vtd], vertsList[vt]));// nối đoạn thẳng
-                                                                                            //      Console.WriteLine("canh: " + vertsList[vtd].name + ".addNeighbour() " + vertsList[vt]);
-
-                    // Console.WriteLine("\t"+ vertsList[vtd].ToString());
+                    vertsList[vtd].addNeighbour(new Edge(1, vertsList[vtd], vertsList[vt]));// nối đoạn thẳng                                                                                         
                 }
-
-                // Console.WriteLine("*****"+vertsList[vt].ToString());
-
             }
             // tính hàm đánh giá
             Vert beginVert = new Vert(nameBeginVert);
@@ -219,9 +170,7 @@ namespace DataMining
             {
                 Console.WriteLine(ex.Message);
                 return Double.MaxValue;
-            }
-            
+            } 
         }
-       
     }
 }
