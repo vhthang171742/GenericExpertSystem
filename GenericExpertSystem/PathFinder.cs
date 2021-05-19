@@ -43,7 +43,7 @@ namespace DataMining
         }
         public List<Vert> getShortestP(Vert targetVertex)
         {
-            
+
             List<Vert> list = new List<Vert>();
             for (Vert vertex = targetVertex; vertex != null; vertex = vertex.getPr())
             {
