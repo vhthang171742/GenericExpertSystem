@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePreprocess = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -77,6 +77,8 @@
             this.cbxAttributes = new System.Windows.Forms.ComboBox();
             this.chtAttribute = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rdoUnlabeled = new System.Windows.Forms.RadioButton();
+            this.rdoLabeled = new System.Windows.Forms.RadioButton();
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
@@ -131,7 +133,9 @@
             this.btnAddConclusion = new System.Windows.Forms.Button();
             this.lsbAssumptions = new System.Windows.Forms.ListBox();
             this.txtConclusion = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel24 = new System.Windows.Forms.TableLayoutPanel();
             this.btnFowardChaining = new System.Windows.Forms.Button();
+            this.btnClear = new System.Windows.Forms.Button();
             this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.lsbInferenceProcess = new System.Windows.Forms.ListBox();
@@ -194,6 +198,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.tableLayoutPanel21.SuspendLayout();
+            this.tableLayoutPanel24.SuspendLayout();
             this.tableLayoutPanel22.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -422,6 +427,7 @@
             this.btnAddAttribute.TabIndex = 2;
             this.btnAddAttribute.Text = "Add";
             this.btnAddAttribute.UseVisualStyleBackColor = true;
+            this.btnAddAttribute.Click += new System.EventHandler(this.btnAddAttribute_Click);
             // 
             // btnDeselectAll
             // 
@@ -469,6 +475,7 @@
             // 
             this.dgvAttributes.AllowUserToAddRows = false;
             this.dgvAttributes.AllowUserToDeleteRows = false;
+            this.dgvAttributes.AllowUserToOrderColumns = true;
             this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAttributes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Class,
@@ -699,16 +706,16 @@
             this.chtAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.chtAttribute.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chtAttribute.Legends.Add(legend2);
+            chartArea3.Name = "ChartArea1";
+            this.chtAttribute.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chtAttribute.Legends.Add(legend3);
             this.chtAttribute.Location = new System.Drawing.Point(3, 357);
             this.chtAttribute.Name = "chtAttribute";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chtAttribute.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chtAttribute.Series.Add(series3);
             this.chtAttribute.Size = new System.Drawing.Size(532, 284);
             this.chtAttribute.TabIndex = 5;
             // 
@@ -717,18 +724,42 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.rdoUnlabeled);
+            this.panel1.Controls.Add(this.rdoLabeled);
             this.panel1.Controls.Add(this.btnOpenFile);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1099, 34);
             this.panel1.TabIndex = 1;
             // 
+            // rdoUnlabeled
+            // 
+            this.rdoUnlabeled.AutoSize = true;
+            this.rdoUnlabeled.Location = new System.Drawing.Point(993, 9);
+            this.rdoUnlabeled.Name = "rdoUnlabeled";
+            this.rdoUnlabeled.Size = new System.Drawing.Size(97, 17);
+            this.rdoUnlabeled.TabIndex = 2;
+            this.rdoUnlabeled.TabStop = true;
+            this.rdoUnlabeled.Text = "Unlabeled data";
+            this.rdoUnlabeled.UseVisualStyleBackColor = true;
+            // 
+            // rdoLabeled
+            // 
+            this.rdoLabeled.AutoSize = true;
+            this.rdoLabeled.Location = new System.Drawing.Point(15, 9);
+            this.rdoLabeled.Name = "rdoLabeled";
+            this.rdoLabeled.Size = new System.Drawing.Size(87, 17);
+            this.rdoLabeled.TabIndex = 1;
+            this.rdoLabeled.TabStop = true;
+            this.rdoLabeled.Text = "Labeled data";
+            this.rdoLabeled.UseVisualStyleBackColor = true;
+            // 
             // btnOpenFile
             // 
             this.btnOpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFile.Location = new System.Drawing.Point(9, 0);
+            this.btnOpenFile.Location = new System.Drawing.Point(112, 0);
             this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(1081, 34);
+            this.btnOpenFile.Size = new System.Drawing.Size(853, 34);
             this.btnOpenFile.TabIndex = 0;
             this.btnOpenFile.Text = "Open file...";
             this.btnOpenFile.UseVisualStyleBackColor = true;
@@ -823,6 +854,7 @@
             // 
             this.dgvEvents.AllowUserToAddRows = false;
             this.dgvEvents.AllowUserToDeleteRows = false;
+            this.dgvEvents.AllowUserToOrderColumns = true;
             this.dgvEvents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEvents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.tentt});
@@ -847,6 +879,7 @@
             // 
             this.dgvAttributes1.AllowUserToAddRows = false;
             this.dgvAttributes1.AllowUserToDeleteRows = false;
+            this.dgvAttributes1.AllowUserToOrderColumns = true;
             this.dgvAttributes1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAttributes1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AttributeName});
@@ -895,6 +928,7 @@
             // 
             this.dgvRules.AllowUserToAddRows = false;
             this.dgvRules.AllowUserToDeleteRows = false;
+            this.dgvRules.AllowUserToOrderColumns = true;
             this.dgvRules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRules.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.luat});
@@ -1136,6 +1170,7 @@
             // 
             this.dgvRawRuleset.AllowUserToAddRows = false;
             this.dgvRawRuleset.AllowUserToDeleteRows = false;
+            this.dgvRawRuleset.AllowUserToOrderColumns = true;
             this.dgvRawRuleset.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRawRuleset.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Rule});
@@ -1203,13 +1238,13 @@
             // 
             this.dgvOptimizedRuleset.AllowUserToAddRows = false;
             this.dgvOptimizedRuleset.AllowUserToDeleteRows = false;
+            this.dgvOptimizedRuleset.AllowUserToOrderColumns = true;
             this.dgvOptimizedRuleset.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOptimizedRuleset.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.OptimizedRule});
             this.dgvOptimizedRuleset.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvOptimizedRuleset.Location = new System.Drawing.Point(3, 16);
             this.dgvOptimizedRuleset.Name = "dgvOptimizedRuleset";
-            this.dgvOptimizedRuleset.ReadOnly = true;
             this.dgvOptimizedRuleset.RowHeadersWidth = 60;
             this.dgvOptimizedRuleset.Size = new System.Drawing.Size(535, 330);
             this.dgvOptimizedRuleset.TabIndex = 0;
@@ -1254,7 +1289,7 @@
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel19.Controls.Add(this.dgvRules1, 0, 0);
             this.tableLayoutPanel19.Controls.Add(this.tableLayoutPanel20, 0, 1);
-            this.tableLayoutPanel19.Controls.Add(this.btnFowardChaining, 0, 2);
+            this.tableLayoutPanel19.Controls.Add(this.tableLayoutPanel24, 0, 2);
             this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel19.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel19.Name = "tableLayoutPanel19";
@@ -1269,13 +1304,13 @@
             // 
             this.dgvRules1.AllowUserToAddRows = false;
             this.dgvRules1.AllowUserToDeleteRows = false;
+            this.dgvRules1.AllowUserToOrderColumns = true;
             this.dgvRules1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRules1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Rules});
             this.dgvRules1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRules1.Location = new System.Drawing.Point(3, 3);
             this.dgvRules1.Name = "dgvRules1";
-            this.dgvRules1.ReadOnly = true;
             this.dgvRules1.RowHeadersWidth = 60;
             this.dgvRules1.Size = new System.Drawing.Size(632, 328);
             this.dgvRules1.TabIndex = 0;
@@ -1404,16 +1439,42 @@
             this.txtConclusion.Size = new System.Drawing.Size(307, 176);
             this.txtConclusion.TabIndex = 3;
             // 
+            // tableLayoutPanel24
+            // 
+            this.tableLayoutPanel24.ColumnCount = 2;
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel24.Controls.Add(this.btnFowardChaining, 1, 0);
+            this.tableLayoutPanel24.Controls.Add(this.btnClear, 0, 0);
+            this.tableLayoutPanel24.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel24.Location = new System.Drawing.Point(3, 671);
+            this.tableLayoutPanel24.Name = "tableLayoutPanel24";
+            this.tableLayoutPanel24.RowCount = 1;
+            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel24.Size = new System.Drawing.Size(632, 35);
+            this.tableLayoutPanel24.TabIndex = 2;
+            // 
             // btnFowardChaining
             // 
             this.btnFowardChaining.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnFowardChaining.Location = new System.Drawing.Point(3, 671);
+            this.btnFowardChaining.Location = new System.Drawing.Point(319, 3);
             this.btnFowardChaining.Name = "btnFowardChaining";
-            this.btnFowardChaining.Size = new System.Drawing.Size(632, 35);
-            this.btnFowardChaining.TabIndex = 2;
+            this.btnFowardChaining.Size = new System.Drawing.Size(310, 29);
+            this.btnFowardChaining.TabIndex = 3;
             this.btnFowardChaining.Text = "Infer";
             this.btnFowardChaining.UseVisualStyleBackColor = true;
             this.btnFowardChaining.Click += new System.EventHandler(this.btnForwardInfer_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnClear.Location = new System.Drawing.Point(3, 3);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(310, 29);
+            this.btnClear.TabIndex = 0;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // tableLayoutPanel22
             // 
@@ -1566,6 +1627,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSAttributes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chtAttribute)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel11.ResumeLayout(false);
@@ -1602,6 +1664,7 @@
             this.groupBox10.ResumeLayout(false);
             this.tableLayoutPanel21.ResumeLayout(false);
             this.tableLayoutPanel21.PerformLayout();
+            this.tableLayoutPanel24.ResumeLayout(false);
             this.tableLayoutPanel22.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
@@ -1717,7 +1780,6 @@
         private System.Windows.Forms.Button btnAddAssumptions;
         private System.Windows.Forms.Button btnAddConclusion;
         private System.Windows.Forms.ListBox lsbAssumptions;
-        private System.Windows.Forms.Button btnFowardChaining;
         private System.Windows.Forms.TextBox txtConclusion;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel22;
         private System.Windows.Forms.GroupBox groupBox11;
@@ -1730,6 +1792,11 @@
         private System.Windows.Forms.TextBox txtTG;
         private System.Windows.Forms.GroupBox groupBox15;
         private System.Windows.Forms.TextBox txtVET;
+        private System.Windows.Forms.RadioButton rdoUnlabeled;
+        private System.Windows.Forms.RadioButton rdoLabeled;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel24;
+        private System.Windows.Forms.Button btnFowardChaining;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 
