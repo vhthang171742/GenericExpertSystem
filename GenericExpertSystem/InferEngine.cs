@@ -49,6 +49,11 @@ namespace DataMining
                 rule.Heuristic = executeHeuristic(rules, rule.Right, kl);
                 valueHeuristic.Add(rule.Heuristic);
             }
+            for(int i=0; i<this.rules.Count; i++)
+            {
+                this.rules[i].Heuristic = rules[i].Heuristic;
+            }
+
             List<AttributeValue> TG = assumptions;
             Queue<TRule> SAT = new Queue<TRule>();
             SAT = Filter(assumptions, rules);
