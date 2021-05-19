@@ -34,7 +34,10 @@ namespace DataMining
 
         TRule newRule = new TRule();
         List<AttributeValue> eventList = new List<AttributeValue>();
+        AttributeValue newAttribute;
         int selectedRow;
+        int selectedRowEvent;
+        int testRow;
         #endregion
 
         #region Constructor
@@ -834,122 +837,318 @@ namespace DataMining
         #endregion
 
         #region PTTHE
-        // <Generate ruleset>
 
-        //Tạo danh sáchthuộc tính
-
-        //Hiển thị lên các thuộc tính được chọn, cần ấn nút trước khi thực hiện các thao tác thêm, sửa
-        private void btnHienThi_Click(object sender, EventArgs e)
+        #region Buttons
+        private void btnReset_Click(object sender, EventArgs e)
         {
-
+            MacDinh();
         }
 
-        private void btnThem_Click(object sender, EventArgs e)
+        private void btnAddRuleset_Click(object sender, EventArgs e)
         {
-            ruleset.Add(newRule);
-            dgvRulesSource.ResetBindings(false);
-            foreach (DataGridViewRow dgr in dgvRules.Rows)
+            int t = newRule.Rule.Count;
+            if (t > 1 && newRule.Rule[t - 1].Test == 1)
             {
-                dgr.HeaderCell.Value = "r" + (dgr.Index + 1).ToString();
+                newRule.Rule[t - 1].Test = new int();
+                ruleset.Add(newRule);
+                newRule = new TRule();
+                dgvRulesSource.ResetBindings(false);
+                MacDinh();
+                txtLuat.Text = "Successfully";
             }
-            newRule = new TRule();
-            txtLuat.Clear();
+            else txtLuat.Text = "Error";
         }
 
-        private void btnSua_Click(object sender, EventArgs e)
-        {
-            ruleset[selectedRow] = newRule;
-            MessageBox.Show("Sửa luật số " + (selectedRow + 1) + " thành công.");
-        }
-
-        private void btnXoa_Click(object sender, EventArgs e)
+        private void btnEditRuleset_Click(object sender, EventArgs e)
         {
             ruleset.RemoveAt(selectedRow);
-            MessageBox.Show("Xóa luật số " + (selectedRow + 1) + " thành công.");
+            int t = newRule.Rule.Count - 1;
+            newRule.Rule[t].Test = new int();
+            ruleset.Insert(selectedRow, newRule);
+            dgvRulesSource.ResetBindings(false);
+            MacDinh();
+            txtLuat.Text = "Successfully corrected r" + (selectedRow + 1);
         }
 
-        private void dgvLuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void btnDeleteRuleset_Click(object sender, EventArgs e)
         {
-            selectedRow = e.RowIndex;
-            btnThem.Enabled = false;
-            btnSua.Enabled = false;
-
-            if (selectedRow >= 0)
-            {
-                btnXoa.Enabled = true;
-
-                txtLuat.Text = dgvRules.Rows[selectedRow].Cells[0].Value.ToString();
-
-                TRule luat = ruleset[selectedRow];
-
-                string tam;
-
-                //duyệt dgvThuocTinh
-                foreach (DataGridViewRow row in dgvEvents.Rows)
-                {
-                    if (row.Cells[2].Value != null)
-                    {
-                        row.Cells[0].Value = false;
-                        row.Cells[1].Value = false;
-
-                        tam = (string)row.Cells[2].Value;
-                        if ((Boolean)tam.Equals(luat.Rule[luat.Rule.Count - 1]))
-                        {
-                            row.Cells[1].Value = true;
-                        }
-
-                        for (int i = 0; i < luat.Rule.Count - 1; i++)
-                        {
-                            if ((Boolean)tam.Equals(luat.Rule[i]))
-                            {
-                                row.Cells[0].Value = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                txtLuat.Text = "Dòng bạn chọn luật không đúng";
-                btnXoa.Enabled = false;
-            }
+            ruleset.RemoveAt(selectedRow);
+            dgvRulesSource.ResetBindings(false);
+            MacDinh();
+            txtLuat.Text = "Deleted successfully";
         }
 
-        private void MacDinh()
-        {
-            txtLuat.Text = "";
-            btnThem.Enabled = false;
-            btnSua.Enabled = false;
-            btnXoa.Enabled = false;
-        }
+        #endregion
+
+        #region Events
+
 
         private void dgvAttributes1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            dgvEvents.Rows.Clear();
-            eventList.AddRange(attributeValues[attributes.IndexOf(dgvAttributes1.SelectedRows[0].DataBoundItem as Attribute)]);
-            dgvEventsSource.ResetBindings(false);
-            foreach (AttributeValue av in eventList)
-                dgvEvents.Rows[dgvEvents.Rows.Count - 1].HeaderCell.Value = dgvEvents.Rows.Count.ToString();
+            if (e.RowIndex >= 0)
+            {
+                dgvEvents.Rows.Clear();
+                eventList.AddRange(attributeValues[attributes.IndexOf(dgvAttributes1.SelectedRows[0].DataBoundItem as Attribute)]);
+                dgvEventsSource.ResetBindings(false);
+
+                foreach (DataGridViewRow dgr in dgvEvents.Rows)
+                {
+                    dgr.HeaderCell.Value = (dgr.Index + 1).ToString();
+                }
+
+                selectedRowEvent = e.RowIndex;
+
+                HienThiGTTT(newRule, e.RowIndex);
+
+                if (testRow != -1)
+                {
+                    btnEditRuleset.Enabled = true;
+                }
+                else
+                {
+                    btnAddRuleset.Enabled = true;
+                }
+            }
         }
 
-        private void dgvThuocTinh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvAttributes1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (dgvAttributes1.Rows.Count == 0 || e.ColumnIndex != 1)
+                return;
+            else
+            {
+                foreach (DataGridViewRow dgr in dgvAttributes1.Rows)
+                {
+                    if (dgvAttributes1.Rows.IndexOf(dgr) != e.RowIndex)
+                    {
+                        dgr.Cells[1].Value = false;
+                        dgr.ReadOnly = false;
+                    }
+                    else
+                    {
+                        if (dgr.Cells[0].Value != null && (bool)dgr.Cells[0].Value == true)
+                        {
+                            dgr.Cells[0].Value = false;
+                        }
+                        dgr.Cells[1].Value = true;
+                        foreach (DataGridViewRow dgr1 in dgvEvents.Rows)
+                        {
+                            dgr1.Cells[0].Value = false;
+                        }
+                        dgr.ReadOnly = true;
+                    }
+                }
+            }
+        }
+
+        private void dgvEvents_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (dgvEvents.Rows.Count == 0 || e.ColumnIndex != 0)
+                return;
+            else
+            {
+                foreach (DataGridViewRow dgr in dgvEvents.Rows)
+                {
+                    if (dgvEvents.Rows.IndexOf(dgr) != e.RowIndex)
+                    {
+                        dgr.Cells[0].Value = false;
+                        dgr.ReadOnly = false;
+                    }
+                    else
+                    {
+                        dgr.Cells[0].Value = true;
+                        dgr.ReadOnly = true;
+                    }
+                    dgvAttributes1.Rows[selectedRowEvent].Cells[0].ReadOnly = true;
+                }
+            }
+
+            newAttribute = new AttributeValue();
+            DataGridViewRow tam = dgvAttributes1.Rows[selectedRowEvent];
+            newAttribute.Attribute = tam.Cells[2].Value.ToString();
+            newAttribute.Label = dgvEvents.Rows[e.RowIndex].Cells[1].Value.ToString();
+            for (int j = 0; j < dgvEvents.RowCount; j++)
+            {
+                if (tam.Cells[1].Value != null && (bool)tam.Cells[1].Value == true)
+                {
+                    newAttribute.Test = 1;
+                    break;
+                }
+            }
+
+            if (newAttribute.Test == 1)
+            {
+                for (int j = 0; j < newRule.Rule.Count; j++)
+                {
+                    if (newRule.Rule[j].Test == 1)
+                    {
+                        newRule.Rule.RemoveAt(j);
+                    }
+                }
+            }
 
             int i = (from x in newRule.Rule select x.Attribute).ToList().IndexOf((dgvEvents.SelectedRows[0].DataBoundItem as AttributeValue).Attribute);
             if (i != -1)
             {
                 newRule.Rule.RemoveAt(i);
-                newRule.Rule.Insert(i, dgvEvents.SelectedRows[0].DataBoundItem as AttributeValue);
+                newRule.Rule.Insert(i, newAttribute);
+            }
+            else
+            {
+                newRule.Rule.Add(newAttribute);
+            }
+            Kiemtra(newRule);
+        }
+
+        private void dgvRules_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MacDinh();
+            selectedRow = e.RowIndex;
+            if (selectedRow >= 0)
+            {
+                testRow = 0;
+
+                newRule = ruleset[selectedRow];
+                int t = newRule.Rule.Count - 1;
+                newRule.Rule[t].Test = 1;
+                txtLuat.Text = newRule.RuleText;
+
+                HienThiTT(newRule);
+                btnDeleteRuleset.Enabled = true;
+            }
+            else
+            {
+
+                txtLuat.Text = "Choose line is incorrect";
+            }
+        }
+
+
+        #endregion
+
+        #region Method
+
+        private void MacDinh()
+        {
+            newRule = new TRule();
+            txtLuat.Clear();
+
+            dgvEvents.Rows.Clear();
+            dgvAttributes1.DataSource = attributes.Where(x => x.Enabled == true).ToList();
+
+            dgvRulesSource.ResetBindings(false);
+
+            foreach (DataGridViewRow dgr in dgvAttributes1.Rows)
+            {
+                dgr.HeaderCell.Value = (dgr.Index + 1).ToString();
+            }
+
+            dgvRulesSource.ResetBindings(false);
+            foreach (DataGridViewRow dgr in dgvRules.Rows)
+            {
+                dgr.HeaderCell.Value = "r" + (dgr.Index + 1).ToString();
+            }
+
+            foreach (DataGridViewRow dgr in dgvAttributes1.Rows)
+            {
+                dgr.Cells[0].Value = false;
+                dgr.Cells[1].Value = false;
+            }
+
+            testRow = -1;
+            btnAddRuleset.Enabled = false;
+            btnEditRuleset.Enabled = false;
+            btnDeleteRuleset.Enabled = false;
+        }
+
+        private void HienThiTT(TRule luat)
+        {
+            for (int i = 0; i < luat.Rule.Count - 1; i++)
+            {
+                AttributeValue tam = luat.Rule[i];
+                string tam2 = tam.Attribute;
+                foreach (DataGridViewRow dgr in dgvAttributes1.Rows)
+                {
+                    string tam3 = dgr.Cells[2].Value.ToString();
+                    if (tam2.Equals(tam3))
+                    {
+                        dgr.Cells[0].Value = true;
+                        dgr.Cells[0].ReadOnly = true;
+                    }
+                }
+            }
+            int d = luat.Rule.Count - 1;
+            AttributeValue t = luat.Rule[d];
+            string t2 = t.Attribute;
+            foreach (DataGridViewRow dgr in dgvAttributes1.Rows)
+            {
+                string t3 = dgr.Cells[2].Value.ToString();
+                if (t2.Equals(t3))
+                {
+                    dgr.Cells[1].Value = true;
+                }
+            }
+        }
+
+        private void HienThiGTTT(TRule luat, int chiso)
+        {
+            if (luat.Rule.Count > 0)
+            {
+                DataGridViewRow row = dgvAttributes1.Rows[chiso];
+                string tam = row.Cells[2].Value.ToString();
+                for (int i = 0; i < luat.Rule.Count; i++)
+                {
+                    AttributeValue TT = luat.Rule[i];
+                    string tam2 = TT.Attribute;
+                    string tam3 = TT.Label;
+                    if (tam2.Equals(tam))
+                    {
+                        foreach (DataGridViewRow dgr in dgvEvents.Rows)
+                        {
+                            string tam4 = dgr.Cells[1].Value.ToString();
+                            if (tam3.Equals(tam4))
+                            {
+                                dgr.Cells[0].Value = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Kiemtra(TRule luat)
+        {
+            int kt = 0;
+            AttributeValue tam = new AttributeValue();
+            for (int i = 0; i < luat.Rule.Count; i++)
+            {
+                if (luat.Rule[i].Test == 1)
+                {
+                    kt = 1;
+                    tam = luat.Rule[i];
+                    luat.Rule.RemoveAt(i);
+                    luat.Rule.Add(tam);
+                    break;
+                }
+            }
+            if (kt == 1)
+            {
                 txtLuat.Text = newRule.RuleText;
             }
             else
             {
-                var newEvent = dgvEvents.SelectedRows[0].DataBoundItem as AttributeValue;
-                newRule.Rule.Add(newEvent);
-                txtLuat.Text = newRule.RuleText;
+                string s = luat.Rule[0].Text + "";
+                for (int i = 1; i < luat.Rule.Count; i++)
+                {
+                    s += " ^ " + luat.Rule[i].Text;
+                }
+                txtLuat.Text = s + " ->";
             }
         }
-        // </Generate ruleset>
+
+        #endregion
+
         #endregion
 
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -959,6 +1158,7 @@ namespace DataMining
                 tr.Name = "r" + (ruleset.IndexOf(tr) + 1).ToString();
             }
 
+            MacDinh();
             dgvAttributes1.DataSource = attributes.Where(x => x.Enabled == true).ToList();
             foreach (DataGridViewRow dgr in dgvAttributes1.Rows)
             {
