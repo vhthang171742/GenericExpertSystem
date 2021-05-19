@@ -19,17 +19,16 @@ namespace DataMining
         #region VHTHANG
         #region Declare
         public List<Attribute> attributes;
-        public List<List<String>> dataset;
-        public List<List<AttributeValue>> attributeValues;
-        public List<TRule> ruleset;
-        public BindingSource dgvAttributesSource;
-        public BindingSource dgvSAttributesSource;
-        public BindingSource cbxAttributesSource;
-        public BindingSource dgvRulesSource;
-        public BindingSource dgvEventsSource;
+        private List<List<String>> dataset;
+        private List<List<AttributeValue>> attributeValues;
+        private List<TRule> ruleset;
+        private BindingSource dgvAttributesSource;
+        private BindingSource dgvSAttributesSource;
+        private BindingSource cbxAttributesSource;
+        private BindingSource dgvRulesSource;
+        private BindingSource dgvEventsSource;
         string relationName;
 
-        private List<TRule> list = new List<TRule>();
         private List<AttributeValue> assumptions = new List<AttributeValue>();
         private AttributeValue conclusion;
 
@@ -80,10 +79,12 @@ namespace DataMining
 
             cbxAttributes.DisplayMember = "Name";
             cbxAttributes.ValueMember = "Name";
+            cbxAttributes.SelectedIndex = -1;
             cbxAttributes.Text = "- -Choose an attribute to visualize- -";
 
             cbxAttributes1.DisplayMember = "Name";
             cbxAttributes1.ValueMember = "Name";
+            cbxAttributes1.SelectedIndex = -1;
             cbxAttributes.Text = "- -Choose an attribute- -";
 
             dgvRulesSource = new BindingSource();
@@ -99,8 +100,6 @@ namespace DataMining
             dgvEventsSource.DataSource = eventList;
             dgvEvents.DataSource = dgvEventsSource;
 
-            dgvSAttributesSource = new BindingSource();
-
             //Disable buttons by default
             btnSelectAll.Enabled = false;
             btnDeselectAll.Enabled = false;
@@ -111,7 +110,21 @@ namespace DataMining
         #endregion
 
         #region Method
-        #region Preporcess
+        public void AddNewAttribute(List<Attribute> la, List<List<AttributeValue>> lav)
+        {
+            attributes.AddRange(la);
+            attributeValues.AddRange(lav);
+           
+            MessageBox.Show("Added " + la.Count.ToString() +" attributes");
+            dgvAttributesSource.ResetBindings(false);
+            foreach (DataGridViewRow row in dgvAttributes.Rows)
+            {
+                row.HeaderCell.Value = (row.Index + 1).ToString();
+            }
+            cbxAttributesSource.ResetBindings(false);
+            cbxAttributes.Enabled = false;
+        }
+        #region Preprocess
         /// <summary>
         /// Open file dialog to select source data file
         /// </summary>
@@ -120,6 +133,11 @@ namespace DataMining
         /// Created by VHTHANG{02/05/2021}
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
+            if(!rdoLabeled.Checked&&!rdoUnlabeled.Checked)
+            {
+                MessageBox.Show("Please choose input data structure");
+                return;
+            }
             OpenFileDialog o = new OpenFileDialog()
             {
                 FileName = "Select a csv file",
@@ -155,57 +173,102 @@ namespace DataMining
                         dataset.Clear();
                         attributeValues.Clear();
 
-                        var line = reader.ReadLine();
-                        var values = line.Split(',').ToList();
-                        foreach (String s in values)
+                        if (rdoLabeled.Checked)
                         {
-                            Attribute attr = new Attribute();
-                            attr.Enabled = true;
-                            attr.Name = s;
-                            attributes.Add(attr);
-                        }
-
-                        while (!reader.EndOfStream)
-                        {
-                            line = reader.ReadLine();
-                            values = line.Split(',').ToList();
-                            for (int i = 0; i < values.Count; i++)
-                                if (values[i] == "")
-                                    values[i] = "?";
-                            dataset.Add(values.ToList());
-                        }
-
-                        for (int i = 0; i < attributes.Count; i++)
-                        {
-                            var avs = (from x in dataset select x[i]).Distinct().ToList();
-                            List<AttributeValue> avl = new List<AttributeValue>();
-
-                            foreach (String s in avs)
+                            var line = reader.ReadLine();
+                            var values = line.Split(',').ToList();
+                            foreach (String s in values)
                             {
-                                AttributeValue av = new AttributeValue();
-                                av.Statistic.Add(s, (from x in dataset select x[i]).Count(x => x == s));
-                                av.Count = (from x in dataset select x[i]).Count(x => x == s);
-                                av.Label = s;
-                                av.Attribute = attributes[i].Name;
-                                avl.Add(av);
+                                Attribute attr = new Attribute();
+                                attr.Enabled = true;
+                                attr.Name = s;
+                                attributes.Add(attr);
                             }
-                            attributeValues.Add(avl);
-                        }
 
-                        for (int i = 0; i < dataset.Count; i++)
-                        {
-                            TRule tr = new TRule();
-                            for (int j = 0; j < values.Count; j++)
+
+                            while (!reader.EndOfStream)
                             {
-                                if (dataset[i][j] != "?")
+                                line = reader.ReadLine();
+                                values = line.Split(',').ToList();
+                                for (int i = 0; i < values.Count; i++)
+                                    if (values[i] == "")
+                                        values[i] = "?";
+                                dataset.Add(values.ToList());
+                            }
+
+                            for (int i = 0; i < attributes.Count; i++)
+                            {
+                                var avs = (from x in dataset select x[i]).Distinct().ToList();
+                                List<AttributeValue> avl = new List<AttributeValue>();
+
+                                foreach (String s in avs)
                                 {
                                     AttributeValue av = new AttributeValue();
-                                    av.Attribute = attributes[j].Name;
+                                    av.Statistic.Add(s, (from x in dataset select x[i]).Count(x => x == s));
+                                    av.Count = (from x in dataset select x[i]).Count(x => x == s);
+                                    av.Label = s;
+                                    av.Attribute = attributes[i].Name;
+                                    avl.Add(av);
+                                }
+                                attributeValues.Add(avl);
+                            }
+
+                            for (int i = 0; i < dataset.Count; i++)
+                            {
+                                TRule tr = new TRule();
+                                for (int j = 0; j < values.Count; j++)
+                                {
+                                    if (dataset[i][j] != "?")
+                                    {
+                                        AttributeValue av = new AttributeValue();
+                                        av.Attribute = attributes[j].Name;
+                                        av.Label = dataset[i][j];
+                                        tr.Rule.Add(av);
+                                    }
+                                }
+                                ruleset.Add(tr);
+                            }
+                        }
+                        else
+                        {
+                            while (!reader.EndOfStream)
+                            {
+                                var line = reader.ReadLine();
+                                var values = line.Split(',').ToList();
+                                values.RemoveAll(x => x == "");
+                                dataset.Add(values.ToList());
+                            }
+                            attributes.Add(new Attribute("Unknown", true));
+
+                            attributeValues.Add(new List<AttributeValue>());
+
+                            List<String> tempList = new List<string>();
+                            foreach (List<String> row in dataset)
+                                tempList.AddRange(row);
+
+                            foreach (String s in tempList)
+                            {
+                                AttributeValue av = new AttributeValue();
+                                av.Attribute = "Unknown";
+                                av.Label = s;
+                                av.Count = tempList.Count(x => x == s);
+                                av.Statistic.Add(s, av.Count);
+                                if (!attributeValues[0].Contains(av))
+                                    attributeValues[0].Add(av);
+                            }
+
+                            for (int i = 0; i < dataset.Count; i++)
+                            {
+                                TRule tr = new TRule();
+                                for (int j = 0; j < dataset[i].Count; j++)
+                                {
+                                    AttributeValue av = new AttributeValue();
+                                    av.Attribute = "Unknown";
                                     av.Label = dataset[i][j];
                                     tr.Rule.Add(av);
                                 }
+                                ruleset.Add(tr);
                             }
-                            ruleset.Add(tr);
                         }
                     }
                     UpdateAttributes();
@@ -226,12 +289,12 @@ namespace DataMining
         /// Created by VHTHANG{02/05/2021}
         private void UpdateAttributes()
         {
-            foreach (DataGridViewRow row in dgvAttributes.Rows)
-            {
-                row.HeaderCell.Value = row.Index + 1;
-            }
             dgvAttributesSource.ResetBindings(false);
             cbxAttributesSource.ResetBindings(false);
+            foreach (DataGridViewRow row in dgvAttributes.Rows)
+            {
+                row.HeaderCell.Value = (row.Index + 1).ToString();
+            }
 
             lblAttributesCount.Text = attributes.Count.ToString();
             lblInstancesCount.Text = dataset.Count.ToString();
@@ -261,6 +324,18 @@ namespace DataMining
         {
             foreach (DataGridViewRow dgr in dgvAttributes.Rows)
                 dgr.Cells[1].Value = false;
+        }
+
+        /// <summary>
+        /// Add new attributes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// Created by VHTHANG{19/05/2021}
+        private void btnAddAttribute_Click(object sender, EventArgs e)
+        {
+            FormAddAttributes frmAdd = new FormAddAttributes(this);
+            frmAdd.Show();
         }
 
         /// <summary>
@@ -302,14 +377,15 @@ namespace DataMining
                     uniqueCount++;
             lblSUnique.Text = uniqueCount.ToString();
 
-            dgvSAttributesSource.DataSource = attributeValues[rowIndex];
+            List<AttributeValue> sAttributeValues  = attributeValues[rowIndex];
+            dgvSAttributesSource = new BindingSource();
+            dgvSAttributesSource.DataSource = sAttributeValues;
             dgvSAttributes.DataSource = dgvSAttributesSource;
             dgvSAttributesSource.ResetBindings(false);
             foreach (DataGridViewRow row in dgvSAttributes.Rows)
             {
-                row.HeaderCell.Value = row.Index + 1;
+                row.HeaderCell.Value = (row.Index + 1).ToString();
             }
-            dgvSAttributes.CurrentRow.Selected = false;
         }
 
         /// <summary>
@@ -681,6 +757,7 @@ namespace DataMining
         {
             cbxAttributeValues.DataSource = attributeValues[cbxAttributes1.SelectedIndex];
             cbxAttributeValues.DisplayMember = "Label";
+            cbxAttributeValues.SelectedIndex = -1;
             cbxAttributeValues.Text = "- -Choose an event- -";
         }
 
@@ -707,6 +784,18 @@ namespace DataMining
             txtConclusion.Text = conclusion.Text;
         }
 
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            assumptions.Clear();
+            lsbAssumptions.Items.Clear();
+            conclusion = new AttributeValue();
+            txtConclusion.Clear();
+            lsbInferenceProcess.Items.Clear();
+            txtResult.Clear();
+            txtTG.Clear();
+            txtVET.Clear();
+        }
+
         private void btnForwardInfer_Click(object sender, EventArgs e)
         {
             if (lsbAssumptions.Items.Count == 0 || txtConclusion.Text == "")
@@ -715,9 +804,9 @@ namespace DataMining
                 return;
             }
 
-            InferEngine InferEngine = new InferEngine(list, assumptions, conclusion);
+            InferEngine InferEngine = new InferEngine(ruleset, assumptions, conclusion);
 
-            InferEngine.ForwardInfer(list, conclusion);
+            InferEngine.ForwardInfer(ruleset, conclusion);
 
             if (InferEngine.result)
             {
@@ -845,7 +934,7 @@ namespace DataMining
 
         private void dgvThuocTinh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
             int i = (from x in newRule.Rule select x.Attribute).ToList().IndexOf((dgvEvents.SelectedRows[0].DataBoundItem as AttributeValue).Attribute);
             if (i != -1)
             {

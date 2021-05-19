@@ -17,5 +17,16 @@ namespace DataMining
         public String Name { get; set; }
         public bool IsClassAttribute { get; set; }
         #endregion
+        #region Constructor
+        public Attribute()
+        {
+
+        }
+        public Attribute(String name, bool enabled)
+        {
+            this.Name = name;
+            this.Enabled = enabled;
+        }
+        #endregion
     }
 }
