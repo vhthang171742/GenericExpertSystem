@@ -34,6 +34,13 @@ namespace DataMining
         {
             Statistic = new Dictionary<string, int>();
         }
+        public AttributeValue(String attribute, string label)
+        {
+            this.Attribute = attribute;
+            this.Label = label;
+            this.Count = 0;
+            Statistic = new Dictionary<string, int>();
+        }
         #endregion
 
         public override bool Equals(object obj)
