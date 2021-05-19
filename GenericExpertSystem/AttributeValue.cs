@@ -17,6 +17,7 @@ namespace DataMining
         public string Label { get; set; }
         public int Count { get; set; }
         public Dictionary<string, int> Statistic { get; set; }
+        public int Test { get; set; }
         public String Text
         {
             get
