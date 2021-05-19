@@ -126,6 +126,7 @@ namespace DataMining
             }
             cbxAttributesSource.ResetBindings(false);
             cbxAttributes.Enabled = false;
+            btnRemove.Enabled = true;
         }
         #region Preprocess
         /// <summary>
@@ -809,7 +810,13 @@ namespace DataMining
 
             InferEngine InferEngine = new InferEngine(ruleset, assumptions, conclusion);
 
-            InferEngine.ForwardInfer(ruleset, conclusion);
+            List<TRule> tempRuleset = new List<TRule>();
+            tempRuleset = (from x in ruleset select x.DeepCopy()).ToList();
+            InferEngine.ForwardInfer(tempRuleset, conclusion);
+            foreach(TRule tr in ruleset)
+            {
+                lsbInferenceProcess.Items.Add("h(" + tr.Name + ") = kc(" + tr.Right.Text + "," + conclusion.Text + ") = " + tr.Heuristic.ToString());
+            }
 
             if (InferEngine.result)
             {
@@ -943,24 +950,31 @@ namespace DataMining
 
         private void dgvEvents_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
-            if (dgvEvents.Rows.Count == 0 || e.ColumnIndex != 0)
+            if (dgvEvents.Rows.Count == 0 || e.ColumnIndex!=0 )
                 return;
             else
             {
-                foreach (DataGridViewRow dgr in dgvEvents.Rows)
+                if (rdoLabeled.Checked)
                 {
-                    if (dgvEvents.Rows.IndexOf(dgr) != e.RowIndex)
+                    foreach (DataGridViewRow dgr in dgvEvents.Rows)
                     {
-                        dgr.Cells[0].Value = false;
-                        dgr.ReadOnly = false;
+                        if (dgvEvents.Rows.IndexOf(dgr) != e.RowIndex)
+                        {
+                            dgr.Cells[0].Value = false;
+                            dgr.ReadOnly = false;
+                        }
+                        else
+                        {
+                            dgr.Cells[0].Value = true;
+                            dgr.ReadOnly = true;
+                        }
+                        dgvAttributes1.Rows[selectedRowEvent].Cells[0].ReadOnly = true;
                     }
-                    else
-                    {
-                        dgr.Cells[0].Value = true;
-                        dgr.ReadOnly = true;
-                    }
-                    dgvAttributes1.Rows[selectedRowEvent].Cells[0].ReadOnly = true;
+                }
+                else
+                {
+                    dgvEvents.Rows[e.RowIndex].Cells[0].Value = true;
+                    dgvEvents.Rows[e.RowIndex].ReadOnly = true;
                 }
             }
 
@@ -988,14 +1002,103 @@ namespace DataMining
                 }
             }
 
-            int i = (from x in newRule.Rule select x.Attribute).ToList().IndexOf((dgvEvents.SelectedRows[0].DataBoundItem as AttributeValue).Attribute);
-            if (i != -1)
+            if (rdoLabeled.Checked)
             {
-                newRule.Rule.RemoveAt(i);
-                newRule.Rule.Insert(i, newAttribute);
+                int i = (from x in newRule.Rule select x.Attribute).ToList().IndexOf((dgvEvents.SelectedRows[0].DataBoundItem as AttributeValue).Attribute);
+                if (i != -1)
+                {
+                    newRule.Rule.RemoveAt(i);
+                    newRule.Rule.Insert(i, newAttribute);
+                }
+                else
+                {
+                    newRule.Rule.Add(newAttribute);
+                }
             }
             else
             {
+                if (newRule.Rule.Contains(newAttribute))
+                    return;
+                newRule.Rule.Add(newAttribute);
+            }
+            Kiemtra(newRule);
+        }
+
+        private void dgvEvents_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
+            if (dgvEvents.Rows.Count == 0)
+                return;
+            else
+            {
+                if (rdoLabeled.Checked)
+                {
+                    foreach (DataGridViewRow dgr in dgvEvents.Rows)
+                    {
+                        if (dgvEvents.Rows.IndexOf(dgr) != e.RowIndex)
+                        {
+                            dgr.Cells[0].Value = false;
+                            dgr.ReadOnly = false;
+                        }
+                        else
+                        {
+                            dgr.Cells[0].Value = true;
+                            dgr.ReadOnly = true;
+                        }
+                        dgvAttributes1.Rows[selectedRowEvent].Cells[0].ReadOnly = true;
+                    }
+                }
+                else
+                {
+                    dgvEvents.Rows[e.RowIndex].Cells[0].Value = true;
+                    dgvEvents.Rows[e.RowIndex].ReadOnly = true;
+                }
+            }
+
+            newAttribute = new AttributeValue();
+            DataGridViewRow tam = dgvAttributes1.Rows[selectedRowEvent];
+            newAttribute.Attribute = tam.Cells[2].Value.ToString();
+            newAttribute.Label = dgvEvents.Rows[e.RowIndex].Cells[1].Value.ToString();
+            for (int j = 0; j < dgvEvents.RowCount; j++)
+            {
+                if (tam.Cells[1].Value != null && (bool)tam.Cells[1].Value == true)
+                {
+                    newAttribute.Test = 1;
+                    break;
+                }
+            }
+
+            if (newAttribute.Test == 1)
+            {
+                for (int j = 0; j < newRule.Rule.Count; j++)
+                {
+                    if (newRule.Rule[j].Test == 1)
+                    {
+                        newRule.Rule.RemoveAt(j);
+                    }
+                }
+            }
+
+            if (rdoLabeled.Checked)
+            {
+                int i = (from x in newRule.Rule select x.Attribute).ToList().IndexOf((dgvEvents.SelectedRows[0].DataBoundItem as AttributeValue).Attribute);
+                if (i != -1)
+                {
+                    newRule.Rule.RemoveAt(i);
+                    newRule.Rule.Insert(i, newAttribute);
+                }
+                else
+                {
+                    newRule.Rule.Add(newAttribute);
+                }
+            }
+            else
+            {
+                if (newRule.Rule.Contains(newAttribute))
+                {
+                    MessageBox.Show("You already choose this");
+                    return;
+                }
                 newRule.Rule.Add(newAttribute);
             }
             Kiemtra(newRule);
@@ -1186,5 +1289,7 @@ namespace DataMining
                 dgvRawRuleset.Rows[dgvRawRuleset.Rows.Count - 1].HeaderCell.Value = "r" + dgvRawRuleset.Rows.Count.ToString();
             }
         }
+
+        
     }
 }
