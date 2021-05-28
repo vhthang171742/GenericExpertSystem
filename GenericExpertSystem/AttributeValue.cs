@@ -23,9 +23,12 @@ namespace DataMining
             get
             {
                 if (Attribute != "")
-                    return Attribute + " = " + Label;
+                    if (Attribute == "Unknown")
+                        return Label;
+                    else
+                        return Attribute + " = " + Label;
                 else
-                    return Label;
+                    return "?";
             }
         }
         #endregion

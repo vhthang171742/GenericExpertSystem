@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPagePreprocess = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -150,6 +150,9 @@
             this.txtTG = new System.Windows.Forms.TextBox();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.txtVET = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnOverwrite = new System.Windows.Forms.Button();
+            this.btnSaveNew = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabPagePreprocess.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -209,6 +212,7 @@
             this.groupBox13.SuspendLayout();
             this.groupBox14.SuspendLayout();
             this.groupBox15.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
@@ -709,16 +713,16 @@
             this.chtAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea3.Name = "ChartArea1";
-            this.chtAttribute.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chtAttribute.Legends.Add(legend3);
+            chartArea2.Name = "ChartArea1";
+            this.chtAttribute.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chtAttribute.Legends.Add(legend2);
             this.chtAttribute.Location = new System.Drawing.Point(3, 357);
             this.chtAttribute.Name = "chtAttribute";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chtAttribute.Series.Add(series3);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chtAttribute.Series.Add(series2);
             this.chtAttribute.Size = new System.Drawing.Size(532, 284);
             this.chtAttribute.TabIndex = 5;
             // 
@@ -1210,15 +1214,17 @@
             // tableLayoutPanel8
             // 
             this.tableLayoutPanel8.ColumnCount = 1;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.Controls.Add(this.groupBox6, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.groupBox7, 0, 1);
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel17, 0, 2);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(555, 3);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 2;
+            this.tableLayoutPanel8.RowCount = 3;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(547, 709);
             this.tableLayoutPanel8.TabIndex = 1;
             // 
@@ -1228,7 +1234,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(3, 3);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(541, 348);
+            this.groupBox6.Size = new System.Drawing.Size(541, 328);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Process";
@@ -1239,16 +1245,16 @@
             this.lsbProcess.FormattingEnabled = true;
             this.lsbProcess.Location = new System.Drawing.Point(3, 16);
             this.lsbProcess.Name = "lsbProcess";
-            this.lsbProcess.Size = new System.Drawing.Size(535, 329);
+            this.lsbProcess.Size = new System.Drawing.Size(535, 309);
             this.lsbProcess.TabIndex = 0;
             // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.dgvOptimizedRuleset);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox7.Location = new System.Drawing.Point(3, 357);
+            this.groupBox7.Location = new System.Drawing.Point(3, 337);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(541, 349);
+            this.groupBox7.Size = new System.Drawing.Size(541, 328);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Optimized ruleset";
@@ -1265,7 +1271,7 @@
             this.dgvOptimizedRuleset.Location = new System.Drawing.Point(3, 16);
             this.dgvOptimizedRuleset.Name = "dgvOptimizedRuleset";
             this.dgvOptimizedRuleset.RowHeadersWidth = 60;
-            this.dgvOptimizedRuleset.Size = new System.Drawing.Size(535, 330);
+            this.dgvOptimizedRuleset.Size = new System.Drawing.Size(535, 309);
             this.dgvOptimizedRuleset.TabIndex = 0;
             // 
             // OptimizedRule
@@ -1618,6 +1624,43 @@
             this.txtVET.Size = new System.Drawing.Size(431, 107);
             this.txtVET.TabIndex = 0;
             // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.ColumnCount = 2;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.Controls.Add(this.btnOverwrite, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.btnSaveNew, 1, 0);
+            this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(3, 671);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 1;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(541, 35);
+            this.tableLayoutPanel17.TabIndex = 2;
+            // 
+            // btnOverwrite
+            // 
+            this.btnOverwrite.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOverwrite.Location = new System.Drawing.Point(3, 3);
+            this.btnOverwrite.Name = "btnOverwrite";
+            this.btnOverwrite.Size = new System.Drawing.Size(264, 29);
+            this.btnOverwrite.TabIndex = 0;
+            this.btnOverwrite.Text = "Save to current file";
+            this.btnOverwrite.UseVisualStyleBackColor = true;
+            this.btnOverwrite.Click += new System.EventHandler(this.btnOverwrite_Click);
+            // 
+            // btnSaveNew
+            // 
+            this.btnSaveNew.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSaveNew.Location = new System.Drawing.Point(273, 3);
+            this.btnSaveNew.Name = "btnSaveNew";
+            this.btnSaveNew.Size = new System.Drawing.Size(265, 29);
+            this.btnSaveNew.TabIndex = 1;
+            this.btnSaveNew.Text = "Save to new file";
+            this.btnSaveNew.UseVisualStyleBackColor = true;
+            this.btnSaveNew.Click += new System.EventHandler(this.btnSaveNew_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1694,6 +1737,7 @@
             this.groupBox14.PerformLayout();
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
+            this.tableLayoutPanel17.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1819,6 +1863,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private System.Windows.Forms.TextBox txtLuat;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
+        private System.Windows.Forms.Button btnOverwrite;
+        private System.Windows.Forms.Button btnSaveNew;
     }
 }
 

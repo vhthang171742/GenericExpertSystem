@@ -26,8 +26,10 @@ namespace DataMining
         private BindingSource dgvSAttributesSource;
         private BindingSource cbxAttributesSource;
         private BindingSource dgvRulesSource;
+        private BindingSource dgvRules1Source;
         private BindingSource dgvEventsSource;
         string relationName;
+        string filePath;
 
         private List<AttributeValue> assumptions = new List<AttributeValue>();
         private AttributeValue conclusion;
@@ -93,7 +95,10 @@ namespace DataMining
             dgvRulesSource = new BindingSource();
             dgvRulesSource.DataSource = ruleset;
             dgvRules.DataSource = dgvRulesSource;
-            dgvRules1.DataSource = dgvRulesSource;
+
+            dgvRules1Source = new BindingSource();
+            dgvRules1Source.DataSource = ruleset;
+            dgvRules1.DataSource = dgvRules1Source;
 
             dgvRulesSource = new BindingSource();
             dgvRulesSource.DataSource = ruleset;
@@ -113,12 +118,19 @@ namespace DataMining
         #endregion
 
         #region Method
+        #region Preprocess
+        /// <summary>
+        /// Create attributes for rules generating process
+        /// </summary>
+        /// <param name="la">List of attributes which are returned from child form</param>
+        /// <param name="lav">List of attribute values which are returned from child form</param>
+        /// Created by VHTHANG{10/5/2021}
         public void AddNewAttribute(List<Attribute> la, List<List<AttributeValue>> lav)
         {
             attributes.AddRange(la);
             attributeValues.AddRange(lav);
-           
-            MessageBox.Show("Added " + la.Count.ToString() +" attributes");
+
+            MessageBox.Show("Added " + la.Count.ToString() + " attributes");
             dgvAttributesSource.ResetBindings(false);
             foreach (DataGridViewRow row in dgvAttributes.Rows)
             {
@@ -128,7 +140,7 @@ namespace DataMining
             cbxAttributes.Enabled = false;
             btnRemove.Enabled = true;
         }
-        #region Preprocess
+
         /// <summary>
         /// Open file dialog to select source data file
         /// </summary>
@@ -169,7 +181,7 @@ namespace DataMining
                     attributes.Clear();
                     attributeValues.Clear();
 
-                    var filePath = o.FileName;
+                    filePath = o.FileName;
                     relationName = Path.GetFileNameWithoutExtension(filePath);
                     using (StreamReader reader = new StreamReader(filePath))
                     {
@@ -574,7 +586,7 @@ namespace DataMining
         }
         #endregion
 
-        #region OptimizeRule
+        #region OptimizeRuleset
         /// <summary>
         /// Determine whether a rule is unnecessary in ruleset and remove it
         /// </summary>
@@ -584,10 +596,14 @@ namespace DataMining
         /// Created by VHTHANG{11/05/2021}
         public bool RemoveUnnecessaryRule(ref List<TRule> ruleSet, int i)
         {
+            //Declare complement and SAT
             HashSet<String> complement = new HashSet<String>();
             Queue<TRule> SAT = new Queue<TRule>();
+            //Add current rule's left side to complement
             for (int j = 0; j < ruleSet[i].Rule.Count - 1; j++)
                 complement.Add(ruleSet[i].Rule[j].Label);
+
+            //Initialize SAT for the first time, add rules to SAT if complement contains their left side, except current rule
             for (int k = 0; k < ruleSet.Count; k++)
             {
                 if (k == i)
@@ -595,12 +611,20 @@ namespace DataMining
                 if ((from x in ruleSet[k].Rule select x.Label).ToList().GetRange(0, ruleSet[k].Rule.Count - 1).Intersect(complement).Count() == ruleSet[k].Rule.Count() - 1)
                     SAT.Enqueue(ruleSet[k]);
             }
+
+            //Served rules which will not be used again
             List<int> served = new List<int>();
+
+            //Loop through each rule in SAT
             while (SAT.Count != 0)
             {
+                //Get the rule at the queue's head
                 TRule s = SAT.Dequeue();
+                //Mark it as served
                 served.Add(ruleSet.IndexOf(s));
+                //Add the right side of the rule to complement
                 complement.Add(s.Rule.Last().Label);
+                //Loop through rule in ruleset and add them to SAT if complement contains their left side, except current rule and served rules
                 for (int k = 0; k < ruleSet.Count; k++)
                 {
                     if (k == i)
@@ -612,6 +636,7 @@ namespace DataMining
                             SAT.Enqueue(ruleSet[k]);
                 }
             }
+            //If complement contains current rule's right side, the rule is unnecessary, remove it from ruleset
             if (complement.Contains(ruleSet[i].Rule.Last().Label))
             {
                 ruleSet.RemoveAt(i);
@@ -624,32 +649,44 @@ namespace DataMining
         /// Determine whether an event is unnecessary in rule and remove it
         /// </summary>
         /// <typeparam name="T">Type of event</typeparam>
-        /// <param name="ruleSet">Ruleset</param>
+        /// <param name="ruleset">Ruleset</param>
         /// <param name="i">Index of rule in ruleset</param>
         /// <param name="j">Index of event in rule</param>
         /// <returns>True if event is unnecessary</returns>
-        public bool RemoveUnnecessaryEvent(ref List<TRule> ruleSet, int i, int j)
+        public bool RemoveUnnecessaryEvent(ref List<TRule> ruleset, int i, int j)
         {
+            //Make a deep copy of ruleset
             List<TRule> tempRuleSet = new List<TRule>();
-            foreach (TRule tr in ruleSet)
+            foreach (TRule tr in ruleset)
                 tempRuleSet.Add(tr.DeepCopy());
+            //Remove current event from current rule
             tempRuleSet[i].Rule.RemoveAt(j);
 
+            //Declare complement and SAT
             HashSet<String> complement = new HashSet<String>();
             Queue<TRule> SAT = new Queue<TRule>();
             for (int k = 0; k < tempRuleSet[i].Rule.Count - 1; k++)
                 complement.Add(tempRuleSet[i].Rule[k].Label);
+
+            //Initialize SAT for the first time, add rules to SAT if complement contains their left side
             for (int l = 0; l < tempRuleSet.Count; l++)
             {
                 if ((from x in tempRuleSet[l].Rule select x.Label).ToList().GetRange(0, tempRuleSet[l].Rule.Count - 1).Intersect(complement).Count() == tempRuleSet[l].Rule.Count() - 1)
                     SAT.Enqueue(tempRuleSet[l]);
             }
+            //Served rules which will not be used again
             List<int> served = new List<int>();
+
+            //Loop through each rule in SAT
             while (SAT.Count != 0)
             {
+                //Get the rule at the queue's head
                 TRule s = SAT.Dequeue();
+                //Mark it as served
                 served.Add(tempRuleSet.IndexOf(s));
+                //Add the right side of the rule to complement
                 complement.Add(s.Rule.Last().Label);
+                //Loop through rule in ruleset and add them to SAT if complement contains their left side, except served rules
                 for (int m = 0; m < tempRuleSet.Count; m++)
                 {
                     if (served.Contains(m))
@@ -659,9 +696,10 @@ namespace DataMining
                             SAT.Enqueue(tempRuleSet[m]);
                 }
             }
-            if (complement.Contains(ruleSet[i].Rule[j].Label))
+            //If complement contains current event, the event is unnecessary, remove it from rule
+            if (complement.Contains(ruleset[i].Rule[j].Label))
             {
-                ruleSet = tempRuleSet;
+                ruleset = tempRuleSet;
                 return true;
             }
             return false;
@@ -751,6 +789,42 @@ namespace DataMining
             }
         }
 
+        private void btnOverwrite_Click(object sender, EventArgs e)
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach(TRule tr in ruleset)
+                {
+                    var line = (from x in tr.Rule select x.Text).ToList();
+                    writer.WriteLine(string.Join(",",line));
+                }
+                writer.Close();
+            }
+            MessageBox.Show("Saved to " + Path.GetFileName(filePath));
+        }
+
+        private void btnSaveNew_Click(object sender, EventArgs e)
+        {
+            var folderBrowserDialog1 = new FolderBrowserDialog();
+
+            // Show the FolderBrowserDialog.
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string folderPath = folderBrowserDialog1.SelectedPath;
+                var path = Path.Combine(folderPath, "NewCsv.csv");
+                using (var file = File.CreateText(path))
+                {
+                    foreach (TRule tr in ruleset)
+                    {
+                        var line = (from x in tr.Rule select x.Text).ToList();
+                        file.WriteLine(string.Join(",", line));
+                    }
+                    file.Close();
+                    MessageBox.Show("Saved to " + "NewCsv.csv");
+                }
+            }
+        }
         #endregion
         #endregion
         #endregion
@@ -1273,6 +1347,7 @@ namespace DataMining
             {
                 dgr.HeaderCell.Value = "r" + (dgr.Index + 1).ToString();
             }
+            dgvRules1Source.ResetBindings(false);
             foreach (DataGridViewRow dgr in dgvRules1.Rows)
             {
                 dgr.HeaderCell.Value = "r" + (dgr.Index + 1).ToString();
@@ -1289,7 +1364,5 @@ namespace DataMining
                 dgvRawRuleset.Rows[dgvRawRuleset.Rows.Count - 1].HeaderCell.Value = "r" + dgvRawRuleset.Rows.Count.ToString();
             }
         }
-
-        
     }
 }
